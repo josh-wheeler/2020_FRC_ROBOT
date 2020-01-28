@@ -21,6 +21,7 @@ public class ShooterSubsystem extends Subsystem {
 
   CANSparkMax topShooterMotor = new CANSparkMax(RobotMap.topShooterMotorPort, RobotMap.topShooterMotorType);
   CANSparkMax bottomShooterMotor = new CANSparkMax(RobotMap.bottomShooterMotorPort, RobotMap.bottomShooterMotorType);
+  
   private boolean shooterOn;
   private double topTargetSpeed, bottomTargetSpeed;
 
@@ -35,31 +36,27 @@ public class ShooterSubsystem extends Subsystem {
   public boolean shooterStatus(){
     return shooterOn;
   }
+
   //starts motors and sets target speeds to whatever input the command specifies
-  public void startShooter(double topMotorSpeed, double bottomMotorSpeed){
+  public void setShooter(double topMotorSpeed, double bottomMotorSpeed){
    setTargets(topMotorSpeed, bottomMotorSpeed);
    topShooterMotor.set(topMotorSpeed);
    bottomShooterMotor.set(bottomMotorSpeed);
    shooterOn = true;
-   //ystem.out.println("Shooter Started");
    SmartDashboard.putNumber("Top Shooter Motor Speed", Robot.shooterSubsystem.getTopMotorSpeed());
    SmartDashboard.putNumber("Bottom Shooter Motor Speed", Robot.shooterSubsystem.getBottomMotorSpeed());
    SmartDashboard.putBoolean("Shooter upToSpeed", Robot.shooterSubsystem.upToSpeed());
-
-
   }
+
   //stops motors and sets target speeds to 0.0
   public void stopShooter(){   
     setTargets(0.0, 0.0);
     topShooterMotor.set(0.0);
     bottomShooterMotor.set(0.0);
     shooterOn = false;
-    //System.out.println("Shooter Stopped");
     SmartDashboard.putNumber("Top Shooter Motor Speed", Robot.shooterSubsystem.getTopMotorSpeed());
     SmartDashboard.putNumber("Bottom Shooter Motor Speed", Robot.shooterSubsystem.getBottomMotorSpeed());
     SmartDashboard.putBoolean("Shooter upToSpeed", Robot.shooterSubsystem.upToSpeed());
-
-
   }
 
   //this will be for the conveyor, to tell it to only release balls when the motors are at speed.
