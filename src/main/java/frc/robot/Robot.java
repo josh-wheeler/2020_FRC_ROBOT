@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.HumanDriveCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.subsystems.MotorNanny;
 import frc.robot.subsystems.DriveSubsystem;
 
 /**
@@ -28,7 +27,6 @@ import frc.robot.subsystems.DriveSubsystem;
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  public static MotorNanny motorNanny = new MotorNanny();
   public static OI oi;
 
   Command autonomousCommand;

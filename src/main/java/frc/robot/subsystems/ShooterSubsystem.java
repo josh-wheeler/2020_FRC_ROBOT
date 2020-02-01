@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -21,7 +22,8 @@ public class ShooterSubsystem extends Subsystem {
 
   CANSparkMax topShooterMotor = new CANSparkMax(RobotMap.topShooterMotorPort, RobotMap.topShooterMotorType);
   CANSparkMax bottomShooterMotor = new CANSparkMax(RobotMap.bottomShooterMotorPort, RobotMap.bottomShooterMotorType);
-  
+  CANEncoder topEncoder = topShooterMotor.getEncoder();
+  CANEncoder bottomEncoder = bottomShooterMotor.getEncoder();
   private boolean shooterOn;
   private double topTargetSpeed, bottomTargetSpeed;
 
@@ -61,18 +63,20 @@ public class ShooterSubsystem extends Subsystem {
 
   //this will be for the conveyor, to tell it to only release balls when the motors are at speed.
   public boolean upToSpeed(){
-    if(speedRange(topShooterMotor.get()) && speedRange(bottomShooterMotor.get()))
+    if(speedRange(topEncoder.getVelocity()) && speedRange(bottomEncoder.getVelocity()))
     return true;
     else
     return false;
   }
 
   public double getTopMotorSpeed(){
-    return topShooterMotor.get();
+    //return topShooterMotor.get();
+    return topEncoder.getVelocity();
   }
 
   public double getBottomMotorSpeed(){
-    return bottomShooterMotor.get();
+    //return bottomShooterMotor.get();
+    return bottomEncoder.getVelocity();
   }
 
   //sets target speeds for motors whenever the startShooter() or stopShooter() methods are called

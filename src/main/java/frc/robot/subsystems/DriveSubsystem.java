@@ -7,10 +7,11 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import frc.robot.Robot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.HumanDriveCommand;
 
@@ -20,19 +21,17 @@ import frc.robot.commands.HumanDriveCommand;
 public class DriveSubsystem extends Subsystem {
 
   // instantiate new motor controller objects
-
   CANSparkMax leftMaster = new CANSparkMax(RobotMap.leftMasterPort, RobotMap.leftMasterMotorType);
   CANSparkMax leftSlave = new CANSparkMax(RobotMap.leftSlavePort, RobotMap.leftSlaveMotorType);
   CANSparkMax rightMaster = new CANSparkMax(RobotMap.rightMasterPort, RobotMap.rightMasterMotorType);
   CANSparkMax rightSlave = new CANSparkMax(RobotMap.rightSlavePort, RobotMap.rightSlaveMotorType);
- 
-  // instantiate a new DifferentialDrive object pass motor controllers as arguments
+  CANEncoder rightEncoder = rightMaster.getEncoder();
+  CANEncoder leftEncoder  = leftMaster.getEncoder();
+  // instantiate a new DifferentialDrive object and pass motor controllers as arguments
   public DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
   
-  // constant multiplier to slow turn rate
-  //private double turnMultiplier = .5;
- 
-  // create constructor function
+  //current speed for acceleratorControl method
+  double currSpeed = 0.0;
 
   public DriveSubsystem(){
   
@@ -41,7 +40,6 @@ public class DriveSubsystem extends Subsystem {
     rightSlave.follow(rightMaster);
 
   }
-
 
   // add manualDrive() method
 
@@ -54,15 +52,55 @@ public class DriveSubsystem extends Subsystem {
     if (Math.abs(turn) < 0.30) {
       turn = 0;
     }
-    move = Robot.motorNanny.newSpeed(move);
+    //should show current speed on smartdashboard (the move variable after filtering)
+    SmartDashboard.putNumber("Current Set Speed", currSpeed);
 
-    drive.arcadeDrive(move, turn*RobotMap.turnMultiplier);
+    //modifies the joystick inputs to smooth them out and passes hem to the drive to move it
+    drive.arcadeDrive(acceleratorControl(move), turn*RobotMap.turnMultiplier);
+
+    //shows left and right drivetrain velocitys
+    SmartDashboard.putNumber("Right Master Velocity", rightEncoder.getVelocity());
+    SmartDashboard.putNumber("Left Master Velocity", leftEncoder.getVelocity());
 
   }
   
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  //for smoothing acceleration. It uses a maxAccel variable to use the periodic function timing to slowly increase robot speed. 
+  //i.e. periodic calls every 20ms, the robot's speed can only increase by the maxAccel (.02) every 20ms. prevents jerky robot motion
+  private double acceleratorControl(double newSpeed){
+   
+    double sign = 0;
+
+    if (newSpeed > currSpeed){
+      sign = 1.0;
+    }
+    else{
+      sign = -1.0;
+    }
+
+    double deltaSpeed = Math.abs(currSpeed - newSpeed);
+
+    if (deltaSpeed > RobotMap.maxAccel){
+      deltaSpeed = RobotMap.maxAccel;
+    }
+
+    currSpeed = currSpeed + (sign *deltaSpeed);
+
+    if (currSpeed > 0){
+      sign = 1; 
+    }
+    else{ 
+      sign = -1;
+    }
+    
+    if (Math.abs(currSpeed) > RobotMap.maxSpeed){
+      currSpeed = sign * RobotMap.maxSpeed;
+    }
+
+      return currSpeed;
+  }
 
   @Override
   public void initDefaultCommand() {
