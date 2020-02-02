@@ -29,7 +29,7 @@ public class RobotMap {
   public static double maxAccel = .02;
   public static double maxSpeed = 1.0;
   public static double turnMultiplier = .5;
-  public static double upToSpeedRange = .05;
+  public static double upToSpeedRange = 150.0;
   //constants for shooter low and high speed shots
   public static double lowShotSpeed = .25;
   public static double highShotSpeed = .5;

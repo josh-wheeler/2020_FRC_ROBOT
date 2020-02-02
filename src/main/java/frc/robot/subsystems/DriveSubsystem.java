@@ -53,14 +53,14 @@ public class DriveSubsystem extends Subsystem {
       turn = 0;
     }
     //should show current speed on smartdashboard (the move variable after filtering)
-    SmartDashboard.putNumber("Current Set Speed", currSpeed);
+    SmartDashboard.putNumber("Current Set Drive Speed", currSpeed);
 
     //modifies the joystick inputs to smooth them out and passes hem to the drive to move it
     drive.arcadeDrive(acceleratorControl(move), turn*RobotMap.turnMultiplier);
 
     //shows left and right drivetrain velocitys
-    SmartDashboard.putNumber("Right Master Velocity", rightEncoder.getVelocity());
-    SmartDashboard.putNumber("Left Master Velocity", leftEncoder.getVelocity());
+    SmartDashboard.putNumber("Right Master Drive Velocity", rightEncoder.getVelocity());
+    SmartDashboard.putNumber("Left Master Drive Velocity", leftEncoder.getVelocity());
 
   }
   

@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,6 +25,8 @@ public class ShooterSubsystem extends Subsystem {
   CANSparkMax bottomShooterMotor = new CANSparkMax(RobotMap.bottomShooterMotorPort, RobotMap.bottomShooterMotorType);
   CANEncoder topEncoder = topShooterMotor.getEncoder();
   CANEncoder bottomEncoder = bottomShooterMotor.getEncoder();
+  CANPIDController topPID = topShooterMotor.getPIDController();
+  CANPIDController bottomPID = bottomShooterMotor.getPIDController();
   private boolean shooterOn;
   private double topTargetSpeed, bottomTargetSpeed;
 
@@ -81,8 +84,12 @@ public class ShooterSubsystem extends Subsystem {
 
   //sets target speeds for motors whenever the startShooter() or stopShooter() methods are called
   private void setTargets(double topMoto, double bottomMoto){
-    topTargetSpeed = topMoto;
-    bottomTargetSpeed = bottomMoto;
+    topTargetSpeed = (topMoto*5676);
+    bottomTargetSpeed = (bottomMoto*5676);
+    SmartDashboard.putNumber("Top Target Speed", topTargetSpeed);
+    SmartDashboard.putNumber("Bottom Target Speed", bottomTargetSpeed);
+ 
+
   }
 
   public boolean speedRange(double input){
