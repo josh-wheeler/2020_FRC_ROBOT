@@ -16,6 +16,7 @@ import frc.robot.commands.HumanDriveCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Limelight;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,6 +28,7 @@ import frc.robot.subsystems.DriveSubsystem;
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+  public static Limelight limelight = new Limelight();
   public static OI oi;
 
   Command autonomousCommand;
@@ -56,7 +58,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
   }
-
+  
   /**
    * This function is called once each time the robot enters Disabled mode.
    * You can use it to reset any subsystem information you want to clear when
@@ -124,6 +126,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
+    limelight.Limelightinfo();
   }
 
   /**

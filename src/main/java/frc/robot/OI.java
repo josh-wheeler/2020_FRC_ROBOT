@@ -10,6 +10,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ShooterSpinCommand;
 import frc.robot.commands.ShooterStopCommand;
 
@@ -40,19 +41,16 @@ public class OI {
 
   public OI(){
     //old method for buttons - UPDATE: only method for buttons, it is WPILIB specific, and would require a lot of additions to match WPILIB's functionality.
-    A.whenPressed(new ShooterSpinCommand(-RobotMap.highShotSpeed, RobotMap.highShotSpeed));
+    Y.whenPressed(new ShooterSpinCommand(-RobotMap.highShotSpeed, RobotMap.highShotSpeed));
     B.whenPressed(new ShooterSpinCommand(-RobotMap.lowShotSpeed, RobotMap.lowShotSpeed));
     X.whenPressed(new ShooterStopCommand());
+    A.whenPressed(new ShooterSpinCommand(-RobotMap.topVarShotSpeed, RobotMap.bottomVarShotSpeed));
 
-    if(joystick.getBButton() || joystick.getAButton() || joystick.getXButton()){
-      System.out.println("upToSpeed = " + Robot.shooterSubsystem.upToSpeed());
-    }
+
+
     //joystick trigger stuff. This should be what we'd need for variable speed control on a motor using the triggers as pressure sensitive input devices.
     //joystick.getTriggerAxis(Hand.kRight);
 
-  
-  
-  
 
     // There are a few additional built in buttons you can use. Additionally,
     // by subclassing Button you can create custom triggers and bind those to
