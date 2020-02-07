@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.HumanDriveCommand;
 
@@ -45,18 +46,18 @@ public class DriveSubsystem extends Subsystem {
 
   public void humanDrive(double move, double turn){
 
-
+    //for joystick deadspots(less touchy conrols)
     if (Math.abs(move) < 0.10) {				
       move = 0;
     }
     if (Math.abs(turn) < 0.30) {
       turn = 0;
     }
-    //should show current speed on smartdashboard (the move variable after filtering)
-    SmartDashboard.putNumber("Current Set Drive Speed", currSpeed);
 
     //modifies the joystick inputs to smooth them out and passes hem to the drive to move it
     drive.arcadeDrive(acceleratorControl(move), turn*RobotMap.turnMultiplier);
+    //should show current set speed on smartdashboard (the move variable after filtering)
+    SmartDashboard.putNumber("Current Set Drive Speed", currSpeed);
 
     //shows left and right drivetrain velocitys
     SmartDashboard.putNumber("Right Master Drive Velocity", rightEncoder.getVelocity());
@@ -67,6 +68,12 @@ public class DriveSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
+  //this will turn the robot when the AIM() method is called on the lmelight. It will probably need to be filtered to go slowly
+public void turnToTarget(double turnError){
+
+  drive.arcadeDrive(0.0, turnError);
+
+}
   //for smoothing acceleration. It uses a maxAccel variable to use the periodic function timing to slowly increase robot speed. 
   //i.e. periodic calls every 20ms, the robot's speed can only increase by the maxAccel (.02) every 20ms. prevents jerky robot motion
   private double acceleratorControl(double newSpeed){
