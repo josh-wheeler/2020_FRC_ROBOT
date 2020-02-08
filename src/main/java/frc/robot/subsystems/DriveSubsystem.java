@@ -42,7 +42,16 @@ public class DriveSubsystem extends Subsystem {
 
   }
 
-  // add manualDrive() method
+  //updates smartdashboard. called in robot periodic
+  public void driveStatus(){
+    //should show current set speed on smartdashboard (the move variable after filtering)
+    SmartDashboard.putNumber("Current Set Drive Speed", currSpeed);
+
+    //shows left and right drivetrain velocitys
+    SmartDashboard.putNumber("Right Master Drive Velocity", rightEncoder.getVelocity());
+    SmartDashboard.putNumber("Left Master Drive Velocity", leftEncoder.getVelocity());
+
+  }
 
   public void humanDrive(double move, double turn){
 
@@ -54,23 +63,21 @@ public class DriveSubsystem extends Subsystem {
       turn = 0;
     }
 
-    //modifies the joystick inputs to smooth them out and passes hem to the drive to move it
+    //modifies the joystick inputs to smooth them out and passes them to the drive to move it
     drive.arcadeDrive(acceleratorControl(move), turn*RobotMap.turnMultiplier);
-    //should show current set speed on smartdashboard (the move variable after filtering)
-    SmartDashboard.putNumber("Current Set Drive Speed", currSpeed);
-
-    //shows left and right drivetrain velocitys
-    SmartDashboard.putNumber("Right Master Drive Velocity", rightEncoder.getVelocity());
-    SmartDashboard.putNumber("Left Master Drive Velocity", leftEncoder.getVelocity());
 
   }
   
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-public void turnToTarget(double rightTurn, double leftTurn){
+public void turnToTarget(double turnAngle){
   //this will turn the robot when the AIM() method is called on the limelight. It will probably need to be filtered to go slowly
-  drive.tankDrive(leftTurn, rightTurn);
+  //lmelight x values are from -29.8 to positive 29.8
+  //turnAngle = turnAngle * 0.01;
+
+  //TUNING: once mounted, we'll need to measure how much of an input to the tankdrive = 1 degree of motion. Then I can PID to that number
+  drive.tankDrive(turnAngle, -turnAngle);
 }
   //for smoothing acceleration. It uses a maxAccel variable to use the periodic function timing to slowly increase robot speed. 
   //i.e. periodic calls every 20ms, the robot's speed can only increase by the maxAccel (.02) every 20ms. prevents jerky robot motion

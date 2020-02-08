@@ -43,11 +43,11 @@ public class OI {
 
   public OI(){
     //old method for buttons - UPDATE: only method for buttons, it is WPILIB specific, and would require a lot of additions to match WPILIB's functionality.
-    Y.whenPressed(new ShooterSpinCommand(RobotMap.highShotSpeed, -RobotMap.highShotSpeed));
-    B.whenPressed(new ShooterSpinCommand(RobotMap.lowShotSpeed, -RobotMap.lowShotSpeed));
+  
+    B.whenPressed(new ShooterSpinCommand(.15));
     X.whenPressed(new ShooterStopCommand());
-    A.whileHeld(new ShooterSpinCommand(RobotMap.topShooterMotorSpeed, -RobotMap.bottomShooterMotorSpeed));
-    BACK.whileHeld(new AimCommand());
+    Y.whenPressed(new ShooterSpinCommand());
+    A.whileHeld(new AimCommand());
     RBumper.whenPressed(new CameraToggleCommand());
     LBumper.whenPressed(new LimelightLEDToggleCommand());
 

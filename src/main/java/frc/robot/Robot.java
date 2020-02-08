@@ -57,6 +57,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    limelight.LimelightUpdate();
+    shooterSubsystem.shooterStatus();
+    driveSubsystem.driveStatus();
+
   }
   
   /**
@@ -126,7 +130,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     Scheduler.getInstance().run();
-    limelight.LimelightUpdate();
   }
 
   /**

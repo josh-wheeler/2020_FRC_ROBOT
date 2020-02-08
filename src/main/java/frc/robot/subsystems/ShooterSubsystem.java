@@ -10,10 +10,10 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
@@ -27,30 +27,29 @@ public class ShooterSubsystem extends Subsystem {
   CANEncoder bottomEncoder = bottomShooterMotor.getEncoder();
   CANPIDController topPID = topShooterMotor.getPIDController();
   CANPIDController bottomPID = bottomShooterMotor.getPIDController();
-  private boolean shooterOn;
-  private double topTargetSpeed, bottomTargetSpeed;
+  public boolean shooterOn;
+  private double topTargetRPM, bottomTargetRPM;
 
 //constructor
   public ShooterSubsystem(){
     shooterOn = false;
- 
+    setTargets(0.0, 0.0);
   }
 
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
-  public boolean shooterStatus(){
-    return shooterOn;
+  //updates smartdashboard. called in robot's periodic method
+  public void shooterStatus(){
+    SmartDashboard.putNumber("Top Target Speed", topTargetRPM);
+    SmartDashboard.putNumber("Bottom Target Speed", bottomTargetRPM);
+    SmartDashboard.putNumber("Top Shooter Motor Speed", topEncoder.getVelocity());
+    SmartDashboard.putNumber("Bottom Shooter Motor Speed", bottomEncoder.getVelocity());
+    SmartDashboard.putBoolean("Shooter upToSpeed", upToSpeed());
   }
 
-  //starts motors and sets target speeds to whatever input the command specifies
-  public void setShooter(double topMotorSpeed, double bottomMotorSpeed){
-   setTargets(topMotorSpeed, bottomMotorSpeed);
-   topShooterMotor.set(topMotorSpeed);
-   bottomShooterMotor.set(bottomMotorSpeed);
-   shooterOn = true;
-   SmartDashboard.putNumber("Top Shooter Motor Speed", Robot.shooterSubsystem.getTopMotorSpeed());
-   SmartDashboard.putNumber("Bottom Shooter Motor Speed", Robot.shooterSubsystem.getBottomMotorSpeed());
-   SmartDashboard.putBoolean("Shooter upToSpeed", Robot.shooterSubsystem.upToSpeed());
+  //starts motors to currently set targets.
+  public void startShooter(){
+    topPID.setReference(topTargetRPM, ControlType.kVelocity);
+    bottomPID.setReference(-bottomTargetRPM, ControlType.kVelocity);
+    shooterOn = true;
   }
 
   //stops motors and sets target speeds to 0.0
@@ -59,10 +58,13 @@ public class ShooterSubsystem extends Subsystem {
     topShooterMotor.set(0.0);
     bottomShooterMotor.set(0.0);
     shooterOn = false;
-    SmartDashboard.putNumber("Top Shooter Motor Speed", Robot.shooterSubsystem.getTopMotorSpeed());
-    SmartDashboard.putNumber("Bottom Shooter Motor Speed", Robot.shooterSubsystem.getBottomMotorSpeed());
-    SmartDashboard.putBoolean("Shooter upToSpeed", Robot.shooterSubsystem.upToSpeed());
   }
+  //sets target speeds for motors whenever the startShooter() or stopShooter() methods are called
+  public void setTargets(double topSetting, double bottomSetting){
+     topTargetRPM = (topSetting*5676);
+     bottomTargetRPM = (bottomSetting*5676); 
+   }
+ 
 
   //this will be for the conveyor, to tell it to only release balls when the motors are at speed.
   public boolean upToSpeed(){
@@ -72,35 +74,18 @@ public class ShooterSubsystem extends Subsystem {
     return false;
   }
 
-  public double getTopMotorSpeed(){
-    //return topShooterMotor.get();
-    return topEncoder.getVelocity();
-  }
-
-  public double getBottomMotorSpeed(){
-    //return bottomShooterMotor.get();
-    return bottomEncoder.getVelocity();
-  }
-
-  //sets target speeds for motors whenever the startShooter() or stopShooter() methods are called
-  private void setTargets(double topMoto, double bottomMoto){
-    topTargetSpeed = (topMoto*5676);
-    bottomTargetSpeed = (bottomMoto*5676);
-    SmartDashboard.putNumber("Top Target Speed", topTargetSpeed);
-    SmartDashboard.putNumber("Bottom Target Speed", bottomTargetSpeed);
- 
-
-  }
 
   public boolean speedRange(double input){
     double high,low;
-    high = Math.abs(topTargetSpeed) + RobotMap.upToSpeedRange;
-    low = Math.abs(bottomTargetSpeed) - RobotMap.upToSpeedRange;
+    high = Math.abs(topTargetRPM) + RobotMap.upToSpeedRange;
+    low = Math.abs(bottomTargetRPM) - RobotMap.upToSpeedRange;
     if(Math.abs(input) < high && Math.abs(input) > low)
     return true;
     else 
     return false;
   }
+
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

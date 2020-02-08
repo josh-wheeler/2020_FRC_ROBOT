@@ -9,11 +9,22 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 public class ShooterSpinCommand extends Command {
   private double topSpd, bottomSpd;
 
- 
+  public ShooterSpinCommand(){
+    this.topSpd = RobotMap.topShooterDefaultSpeed;
+    this.bottomSpd = RobotMap.bottomShooterDefaultSpeed;
+    requires(Robot.shooterSubsystem);
+ }
+
+  public ShooterSpinCommand(double input){
+    this.topSpd = this.bottomSpd = input;
+    requires(Robot.shooterSubsystem);
+  }
+
   public ShooterSpinCommand(double topSpd, double bottomSpd) {
     this.topSpd = topSpd;
     this.bottomSpd = bottomSpd;
@@ -25,19 +36,18 @@ public class ShooterSpinCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-
+    Robot.shooterSubsystem.setTargets(topSpd, bottomSpd); 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.shooterSubsystem.setShooter(topSpd, bottomSpd);
+    Robot.shooterSubsystem.startShooter();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    //return Robot.shooterSubsystem.getStandby();
     return false;
   }
 

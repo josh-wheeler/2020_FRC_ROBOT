@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.ShooterSpinCommand;
 
 /**
  * Add your docs here.
@@ -20,13 +21,19 @@ import frc.robot.RobotMap;
 public class Limelight extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
+  
   NetworkTable llTable = NetworkTableInstance.getDefault().getTable("limelight");
-  //private double leftTurn, rightTurn, steerAdjust = 0;
 
- 
+  public enum camMode{
+    driver, target
+  }
+  public enum ledMode{
+    def, off, blink, on
+  }
+
   public Limelight(){
     //sets camera mode to driver cam for initial startup
-   SetTargetMode(false);
+   SetCamMode(camMode.driver);
 
   }
   //returns current value for limelight variables
@@ -38,6 +45,7 @@ public class Limelight extends Subsystem {
   public double camMode(){return llTable.getEntry("camMode").getDouble(0);}
   public double ledMode(){return llTable.getEntry("ledMode").getDouble(0);}
 
+  //posts smartdashboard values
   public void LimelightUpdate(){
 
     SmartDashboard.putNumber("Y angle", ty());
@@ -48,56 +56,84 @@ public class Limelight extends Subsystem {
 
   }
   //sets the camera mode to Vision processor if true, driver cam if false
-  public void SetTargetMode(boolean mode){
+  public void SetCamMode(camMode mode){
 
-    if(mode){
+    switch(mode){
+      case driver:
+      llTable.getEntry("camMode").setNumber(1);
+      case target:
       llTable.getEntry("camMode").setNumber(0);
     }
-    else{
-      llTable.getEntry("camMode").setNumber(1);
-    }
   }
-  public void targetModeToggle(){
+  public void camModeToggle(){
   if(camMode()==1){
-    SetTargetMode(true);
+    SetCamMode(camMode.target);
   }
-  else{
-    SetTargetMode(false);
+  else if(camMode()==0){
+    SetCamMode(camMode.driver);
   }
 
   }
 
   public void toggleLimelightLed(){
-    if(ledMode()==1){
-      setLed(3);
+    if(ledMode()==1 || ledMode()==0){
+      setLed(ledMode.on);
     }
-    else{
-      setLed(1);
+    else if(ledMode()==2 || ledMode()==3) {
+      setLed(ledMode.off);
     }
     
   }
-  public void setLed(double mode){
+  public void setLed(ledMode mode){
     //0 is use pipeline default, 1 is force off, 2 is force blink, 3 is force on
-      llTable.getEntry("ledMode").setNumber(mode);
+      switch(mode){
+        case def:
+        llTable.getEntry("ledMode").setNumber(0);
+        case off:
+        llTable.getEntry("ledMode").setNumber(1);
+        case blink:
+        llTable.getEntry("ledMode").setNumber(2);
+        case on:
+        llTable.getEntry("ledMode").setNumber(3);
+      }
     
   }
   public void AIM(){
+    double steerAdjust = 0;
+    double minAdjust = .15;
+    double kP = 0.01;
 
-    double steerAdjust = (RobotMap.aimIncrement * tx());
-    SmartDashboard.putNumber("turnToTarget setting", steerAdjust);
+    //tx() range: -29.8 to 29.8
+    double error = tx();
+
     //checks to see if limelight has target
-    if(tv() == 1){
-      //deadzone for steering adjustment
-      if(Math.abs(steerAdjust) > RobotMap.aimDeadzone){
-        //sends adjusted limelight tx() to turnToTarget method on drive subsystem              
-        Robot.driveSubsystem.turnToTarget(steerAdjust, -steerAdjust);   
+    if(tv() == 0){
+      //when target not found, set steerAdjust to slowly scan right
+      steerAdjust = 0.1;           
+    }  
+   else{
+      if(Math.abs(error)>1.0){
+        steerAdjust = (kP*error)-minAdjust;
       }
-      else{
-        //READYTOFIRE = true;
+      else if(Math.abs(error)<1.0){
+        steerAdjust = (kP*error) + minAdjust;
       }
+   }
+   SmartDashboard.putNumber("turnToTarget setting", steerAdjust);
+   //sends adjusted limelight tx() to turnToTarget method on drive subsystem              
+    if(steerAdjust > .01)
+    Robot.driveSubsystem.turnToTarget(steerAdjust);   
+    else{
+      new ShooterSpinCommand(calcRPM()*.8, calcRPM());
     }
   }
+  public double calcRPM(){
+    //ty() range:-24.85 to 24.85
+    //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
 
+    return ((RobotMap.targetHeight - RobotMap.limelightHeight) / Math.tan(ty()+ RobotMap.limelightAngle))*RobotMap.RPMCoefficient;
+
+  }
 
 
   @Override

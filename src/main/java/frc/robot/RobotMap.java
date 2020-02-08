@@ -29,19 +29,20 @@ public class RobotMap {
   public static double maxAccel = .02;
   public static double maxSpeed = 1.0;
   public static double turnMultiplier = .5;
-  //constants for shooter low and high speed shots
-  public static double lowShotSpeed = .1;
-  public static double highShotSpeed = .8;
-  //for variable speed shots
-  public static double topShooterMotorSpeed = .30;
-  public static double bottomShooterMotorSpeed = .40;
+  //default shooter speeds
+  public static double topShooterDefaultSpeed = .30;
+  public static double bottomShooterDefaultSpeed = .40;
   //for shooter upToSpeed boolean
   public static double upToSpeedRange = 150.0;
   //other constants
   public static int wheelDiam = 6;
-
-  public static double aimIncrement = 0.1;
-  public static double aimDeadzone = 0.08;
+  //for AIM method
+  public static double RPMCoefficient = 100;
+    
+  //limelight angle: 45 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in
+  public static double limelightHeight = 22.25;
+  public static double targetHeight = 98.25;
+  public static double limelightAngle = 45; 
 
   //joysticks
   public static int joyStickPort = 0;
