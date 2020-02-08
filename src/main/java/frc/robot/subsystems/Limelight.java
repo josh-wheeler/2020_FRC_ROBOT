@@ -92,6 +92,9 @@ public class Limelight extends Subsystem {
         //sends adjusted limelight tx() to turnToTarget method on drive subsystem              
         Robot.driveSubsystem.turnToTarget(steerAdjust, -steerAdjust);   
       }
+      else{
+        //READYTOFIRE = true;
+      }
     }
   }
 

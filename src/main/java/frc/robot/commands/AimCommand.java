@@ -14,6 +14,7 @@ public class AimCommand extends Command {
   public AimCommand() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.driveSubsystem);
+    requires(Robot.limelight);
   }
 
   // Called just before this Command runs the first time
