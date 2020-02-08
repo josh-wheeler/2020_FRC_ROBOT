@@ -11,9 +11,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.ShooterSpinCommand;
 
 /**
  * Add your docs here.
@@ -98,34 +96,37 @@ public class Limelight extends Subsystem {
       }
     
   }
-  public void AIM(){
+  public double AIM(){
     double steerAdjust = 0;
-    double minAdjust = .15;
-    double kP = 0.01;
+    double minAdjust = .02;
+    double maxAdjust = .2;
+    double kP = 0.05;
 
     //tx() range: -29.8 to 29.8
     double error = tx();
 
     //checks to see if limelight has target
-    if(tv() == 0){
+    if(tv() == 0.0){
       //when target not found, set steerAdjust to slowly scan right
       steerAdjust = 0.1;           
     }  
    else{
-      if(Math.abs(error)>1.0){
+      if(Math.abs(error)>2.0){
         steerAdjust = (kP*error)-minAdjust;
       }
-      else if(Math.abs(error)<1.0){
+      else if(Math.abs(error)<2.0){
         steerAdjust = (kP*error) + minAdjust;
       }
    }
    SmartDashboard.putNumber("turnToTarget setting", steerAdjust);
-   //sends adjusted limelight tx() to turnToTarget method on drive subsystem              
-    if(steerAdjust > .01)
-    Robot.driveSubsystem.turnToTarget(steerAdjust);   
-    else{
-      new ShooterSpinCommand(calcRPM()*.8, calcRPM());
-    }
+   //sends adjusted limelight tx() to turnToTarget method on drive subsystem  
+   if(steerAdjust > maxAdjust){
+     steerAdjust = maxAdjust;
+   }
+   else if(steerAdjust < minAdjust){
+     steerAdjust = 0.0;
+   }
+   return steerAdjust;            
   }
   public double calcRPM(){
     //ty() range:-24.85 to 24.85

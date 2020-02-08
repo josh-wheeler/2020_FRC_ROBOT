@@ -29,12 +29,16 @@ public class AimCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.limelight.AIM();
+   Robot.driveSubsystem.turnToTarget(Robot.limelight.AIM());
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(Robot.limelight.AIM() == 0.0){
+      return true;
+    }
+    else
     return false;
   }
 
