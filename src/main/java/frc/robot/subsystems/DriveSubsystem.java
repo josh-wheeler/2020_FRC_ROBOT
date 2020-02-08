@@ -22,10 +22,10 @@ import frc.robot.commands.HumanDriveCommand;
 public class DriveSubsystem extends Subsystem {
 
   // instantiate new motor controller objects
-  CANSparkMax leftMaster = new CANSparkMax(RobotMap.leftMasterPort, RobotMap.leftMasterMotorType);
-  CANSparkMax leftSlave = new CANSparkMax(RobotMap.leftSlavePort, RobotMap.leftSlaveMotorType);
-  CANSparkMax rightMaster = new CANSparkMax(RobotMap.rightMasterPort, RobotMap.rightMasterMotorType);
-  CANSparkMax rightSlave = new CANSparkMax(RobotMap.rightSlavePort, RobotMap.rightSlaveMotorType);
+  CANSparkMax leftMaster = new CANSparkMax(RobotMap.leftMasterPort, RobotMap.NEO);
+  CANSparkMax leftSlave = new CANSparkMax(RobotMap.leftSlavePort, RobotMap.NEO);
+  CANSparkMax rightMaster = new CANSparkMax(RobotMap.rightMasterPort, RobotMap.NEO);
+  CANSparkMax rightSlave = new CANSparkMax(RobotMap.rightSlavePort, RobotMap.NEO);
   CANEncoder rightEncoder = rightMaster.getEncoder();
   CANEncoder leftEncoder  = leftMaster.getEncoder();
   // instantiate a new DifferentialDrive object and pass motor controllers as arguments
@@ -68,11 +68,9 @@ public class DriveSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  //this will turn the robot when the AIM() method is called on the lmelight. It will probably need to be filtered to go slowly
-public void turnToTarget(double turnError){
-
-  drive.arcadeDrive(0.0, turnError);
-
+public void turnToTarget(double rightTurn, double leftTurn){
+  //this will turn the robot when the AIM() method is called on the limelight. It will probably need to be filtered to go slowly
+  drive.tankDrive(leftTurn, rightTurn);
 }
   //for smoothing acceleration. It uses a maxAccel variable to use the periodic function timing to slowly increase robot speed. 
   //i.e. periodic calls every 20ms, the robot's speed can only increase by the maxAccel (.02) every 20ms. prevents jerky robot motion

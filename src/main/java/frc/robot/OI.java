@@ -10,7 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AimCommand;
+import frc.robot.commands.CameraToggleCommand;
+import frc.robot.commands.LimelightLEDToggleCommand;
 import frc.robot.commands.ShooterSpinCommand;
 import frc.robot.commands.ShooterStopCommand;
 
@@ -41,10 +43,14 @@ public class OI {
 
   public OI(){
     //old method for buttons - UPDATE: only method for buttons, it is WPILIB specific, and would require a lot of additions to match WPILIB's functionality.
-    Y.whenPressed(new ShooterSpinCommand(-RobotMap.highShotSpeed, RobotMap.highShotSpeed));
-    B.whenPressed(new ShooterSpinCommand(-RobotMap.lowShotSpeed, RobotMap.lowShotSpeed));
+    Y.whenPressed(new ShooterSpinCommand(RobotMap.highShotSpeed, -RobotMap.highShotSpeed));
+    B.whenPressed(new ShooterSpinCommand(RobotMap.lowShotSpeed, -RobotMap.lowShotSpeed));
     X.whenPressed(new ShooterStopCommand());
-    A.whenPressed(new ShooterSpinCommand(-RobotMap.topVarShotSpeed, RobotMap.bottomVarShotSpeed));
+    A.whileHeld(new ShooterSpinCommand(RobotMap.topShooterMotorSpeed, -RobotMap.bottomShooterMotorSpeed));
+    BACK.whileHeld(new AimCommand());
+    RBumper.whenPressed(new CameraToggleCommand());
+    LBumper.whenPressed(new LimelightLEDToggleCommand());
+
 
 
 

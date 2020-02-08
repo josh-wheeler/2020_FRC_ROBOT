@@ -12,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
+import frc.robot.RobotMap;
 
 /**
  * Add your docs here.
@@ -20,11 +21,12 @@ public class Limelight extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   NetworkTable llTable = NetworkTableInstance.getDefault().getTable("limelight");
-  //public double tv, tx, ty, ta, ts = 0;
+  //private double leftTurn, rightTurn, steerAdjust = 0;
+
  
   public Limelight(){
     //sets camera mode to driver cam for initial startup
-    llTable.getEntry("camMode").setNumber(1);
+   SetTargetMode(false);
 
   }
   //returns current value for limelight variables
@@ -33,6 +35,8 @@ public class Limelight extends Subsystem {
   public double tv()  {return llTable.getEntry("tv").getDouble(0);}
   public double ta()  {return llTable.getEntry("ta").getDouble(0);}
   public double ts()  {return llTable.getEntry("ts").getDouble(0);}
+  public double camMode(){return llTable.getEntry("camMode").getDouble(0);}
+  public double ledMode(){return llTable.getEntry("ledMode").getDouble(0);}
 
   public void LimelightUpdate(){
 
@@ -53,18 +57,42 @@ public class Limelight extends Subsystem {
       llTable.getEntry("camMode").setNumber(1);
     }
   }
+  public void targetModeToggle(){
+  if(camMode()==1){
+    SetTargetMode(true);
+  }
+  else{
+    SetTargetMode(false);
+  }
 
-  public void AIM(){
+  }
+
+  public void toggleLimelightLed(){
+    if(ledMode()==1){
+      setLed(3);
+    }
+    else{
+      setLed(1);
+    }
     
-    Robot.limelight.SetTargetMode(true);
+  }
+  public void setLed(double mode){
+    //0 is use pipeline default, 1 is force off, 2 is force blink, 3 is force on
+      llTable.getEntry("ledMode").setNumber(mode);
+    
+  }
+  public void AIM(){
+
+    double steerAdjust = (RobotMap.aimIncrement * tx());
+    SmartDashboard.putNumber("turnToTarget setting", steerAdjust);
     //checks to see if limelight has target
     if(tv() == 1){
-      //add some math to figure the angle
-      //maybe use the gyro for the angle?
+      //deadzone for steering adjustment
+      if(Math.abs(steerAdjust) > RobotMap.aimDeadzone){
+        //sends adjusted limelight tx() to turnToTarget method on drive subsystem              
+        Robot.driveSubsystem.turnToTarget(steerAdjust, -steerAdjust);   
       }
-
     }
-
   }
 
 

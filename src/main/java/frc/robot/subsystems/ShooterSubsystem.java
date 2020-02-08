@@ -21,8 +21,8 @@ import frc.robot.RobotMap;
  */
 public class ShooterSubsystem extends Subsystem {
 
-  CANSparkMax topShooterMotor = new CANSparkMax(RobotMap.topShooterMotorPort, RobotMap.topShooterMotorType);
-  CANSparkMax bottomShooterMotor = new CANSparkMax(RobotMap.bottomShooterMotorPort, RobotMap.bottomShooterMotorType);
+  CANSparkMax topShooterMotor = new CANSparkMax(RobotMap.topShooterMotorPort, RobotMap.NEO);
+  CANSparkMax bottomShooterMotor = new CANSparkMax(RobotMap.bottomShooterMotorPort, RobotMap.NEO);
   CANEncoder topEncoder = topShooterMotor.getEncoder();
   CANEncoder bottomEncoder = bottomShooterMotor.getEncoder();
   CANPIDController topPID = topShooterMotor.getPIDController();

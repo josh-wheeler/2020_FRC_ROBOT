@@ -25,30 +25,28 @@ public class RobotMap {
   public static int topShooterMotorPort = 5;
   public static int bottomShooterMotorPort = 6;
 
-  //constants for motor acceleration and max speed. Used in MotorNanny class
+  //constants for motor acceleration and max speed. Used in drive subsystem
   public static double maxAccel = .02;
   public static double maxSpeed = 1.0;
   public static double turnMultiplier = .5;
-  public static double upToSpeedRange = 150.0;
   //constants for shooter low and high speed shots
-  public static double lowShotSpeed = .3;
+  public static double lowShotSpeed = .1;
   public static double highShotSpeed = .8;
   //for variable speed shots
-  public static double topVarShotSpeed = .40;
-  public static double bottomVarShotSpeed = .60;
-
+  public static double topShooterMotorSpeed = .30;
+  public static double bottomShooterMotorSpeed = .40;
+  //for shooter upToSpeed boolean
+  public static double upToSpeedRange = 150.0;
   //other constants
   public static int wheelDiam = 6;
-  public static double topShooterMotorSpeed = .5;
-  public static double bottomShooterMotorSpeed = .7;
 
-
+  public static double aimIncrement = 0.1;
+  public static double aimDeadzone = 0.08;
 
   //joysticks
   public static int joyStickPort = 0;
     
   //Joystick Buttons
-  //port mapping pulled from XboxController class
   public static int A = 1;
   public static int B = 2;
   public static int X = 3;
@@ -69,10 +67,7 @@ public class RobotMap {
 
 
   //constants for Spark Max motor controller types. cleans up some of the drive subsystem code IMO.
-  public static CANSparkMaxLowLevel.MotorType leftMasterMotorType = CANSparkMaxLowLevel.MotorType.kBrushless;
-  public static CANSparkMaxLowLevel.MotorType leftSlaveMotorType = CANSparkMaxLowLevel.MotorType.kBrushless;
-  public static CANSparkMaxLowLevel.MotorType rightMasterMotorType = CANSparkMaxLowLevel.MotorType.kBrushless;
-  public static CANSparkMaxLowLevel.MotorType rightSlaveMotorType = CANSparkMaxLowLevel.MotorType.kBrushless;
-  public static CANSparkMaxLowLevel.MotorType topShooterMotorType = CANSparkMaxLowLevel.MotorType.kBrushless;
-  public static CANSparkMaxLowLevel.MotorType bottomShooterMotorType = CANSparkMaxLowLevel.MotorType.kBrushless;
+  public static CANSparkMaxLowLevel.MotorType NEO = CANSparkMaxLowLevel.MotorType.kBrushless;
+  public static CANSparkMaxLowLevel.MotorType neo550 = CANSparkMaxLowLevel.MotorType.kBrushless;
+
 }
