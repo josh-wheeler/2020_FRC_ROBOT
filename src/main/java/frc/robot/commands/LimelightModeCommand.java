@@ -9,16 +9,24 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.Robot;
+import frc.robot.subsystems.LimelightSubsystem.camMode;
+import frc.robot.subsystems.LimelightSubsystem.ledMode;
 
 /**
  * Add your docs here.
  */
-public class LimelightLEDToggleCommand extends InstantCommand {
+public class LimelightModeCommand extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public LimelightLEDToggleCommand() {
+
+   camMode camMode;
+   ledMode ledMode;
+
+  public LimelightModeCommand(camMode camMode, ledMode ledMode) {
     super();
+    this.camMode = camMode;
+    this.ledMode = ledMode;
     // Use requires() here to declare subsystem dependencies
     requires(Robot.limelight);
   }
@@ -26,7 +34,9 @@ public class LimelightLEDToggleCommand extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.limelight.toggleLimelightLed();
+    Robot.limelight.setCamMode(camMode);
+    Robot.limelight.setLed(ledMode);
+
   }
 
 }

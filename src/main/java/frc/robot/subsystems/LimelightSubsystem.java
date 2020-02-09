@@ -16,7 +16,7 @@ import frc.robot.RobotMap;
 /**
  * Add your docs here.
  */
-public class Limelight extends Subsystem {
+public class LimelightSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   
@@ -29,9 +29,10 @@ public class Limelight extends Subsystem {
     def, off, blink, on
   }
 
-  public Limelight(){
-    //sets camera mode to driver cam for initial startup
-   SetCamMode(camMode.driver);
+  public LimelightSubsystem(){
+    //sets camera mode to driver cam and led off for initial startup
+   setCamMode(camMode.driver);
+   setLed(ledMode.off);
 
   }
   //returns current value for limelight variables
@@ -54,7 +55,7 @@ public class Limelight extends Subsystem {
 
   }
   //sets the camera mode to Vision processor if true, driver cam if false
-  public void SetCamMode(camMode mode){
+  public void setCamMode(camMode mode){
 
     switch(mode){
       case driver:
@@ -65,10 +66,10 @@ public class Limelight extends Subsystem {
   }
   public void camModeToggle(){
   if(camMode()==1){
-    SetCamMode(camMode.target);
+    setCamMode(camMode.target);
   }
   else if(camMode()==0){
-    SetCamMode(camMode.driver);
+    setCamMode(camMode.driver);
   }
 
   }

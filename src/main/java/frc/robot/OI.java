@@ -11,10 +11,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AimCommand;
-import frc.robot.commands.CameraToggleCommand;
-import frc.robot.commands.LimelightLEDToggleCommand;
+import frc.robot.commands.LimelightModeCommand;
 import frc.robot.commands.ShooterSpinCommand;
 import frc.robot.commands.ShooterStopCommand;
+import frc.robot.subsystems.LimelightSubsystem.camMode;
+import frc.robot.subsystems.LimelightSubsystem.ledMode;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -48,8 +49,8 @@ public class OI {
     X.whenPressed(new ShooterStopCommand());
     Y.whenPressed(new ShooterSpinCommand());
     A.whileHeld(new AimCommand());
-    RBumper.whenPressed(new CameraToggleCommand());
-    LBumper.whenPressed(new LimelightLEDToggleCommand());
+    RBumper.whenPressed(new LimelightModeCommand(camMode.driver, ledMode.off));
+    LBumper.whenPressed(new LimelightModeCommand(camMode.target, ledMode.def));
 
 
 

@@ -16,7 +16,7 @@ import frc.robot.commands.HumanDriveCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.LimelightSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,7 +28,7 @@ import frc.robot.subsystems.Limelight;
 public class Robot extends TimedRobot {
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  public static Limelight limelight = new Limelight();
+  public static LimelightSubsystem limelight = new LimelightSubsystem();
   public static OI oi;
   public int shooterTimeout = 0;
 

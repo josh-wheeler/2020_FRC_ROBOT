@@ -9,8 +9,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Limelight.camMode;
-import frc.robot.subsystems.Limelight.ledMode;
+import frc.robot.subsystems.LimelightSubsystem.camMode;
+import frc.robot.subsystems.LimelightSubsystem.ledMode;
 
 public class AimCommand extends Command {
   public AimCommand() {
@@ -22,7 +22,7 @@ public class AimCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.limelight.SetCamMode(camMode.target);
+    Robot.limelight.setCamMode(camMode.target);
     Robot.limelight.setLed(ledMode.on);
   }
 
@@ -45,7 +45,7 @@ public class AimCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.limelight.SetCamMode(camMode.driver);
+    Robot.limelight.setCamMode(camMode.driver);
     Robot.limelight.setLed(ledMode.off);
     Robot.driveSubsystem.turnToTarget(0.0);
   }
