@@ -48,7 +48,7 @@ public class ShooterSubsystem extends Subsystem {
   //starts motors to currently set targets.
   public void startShooter(){
     topPID.setReference(topTargetRPM, ControlType.kVelocity);
-    bottomPID.setReference(-bottomTargetRPM, ControlType.kVelocity);
+    bottomPID.setReference(bottomTargetRPM, ControlType.kVelocity);
     shooterOn = true;
   }
 
@@ -59,26 +59,26 @@ public class ShooterSubsystem extends Subsystem {
     bottomShooterMotor.set(0.0);
     shooterOn = false;
   }
-  //sets target speeds for motors whenever the startShooter() or stopShooter() methods are called
+  //sets target speeds for motors
   public void setTargets(double topSetting, double bottomSetting){
-     topTargetRPM = (topSetting*5676);
-     bottomTargetRPM = (bottomSetting*5676); 
+     topTargetRPM = topSetting * 5676;
+     bottomTargetRPM = bottomSetting * (-5676); 
    }
  
 
   //this will be for the conveyor, to tell it to only release balls when the motors are at speed.
   public boolean upToSpeed(){
-    if(speedRange(topEncoder.getVelocity()) && speedRange(bottomEncoder.getVelocity()))
+    if(speedRange(topEncoder.getVelocity(),topTargetRPM) && speedRange(bottomEncoder.getVelocity(), bottomTargetRPM))
     return true;
     else
     return false;
   }
 
 
-  public boolean speedRange(double input){
+  private boolean speedRange(double input, double targetRPM){
     double high,low;
-    high = Math.abs(topTargetRPM) + RobotMap.upToSpeedRange;
-    low = Math.abs(bottomTargetRPM) - RobotMap.upToSpeedRange;
+    high = Math.abs(targetRPM) + RobotMap.upToSpeedRange;
+    low = Math.abs(targetRPM) - RobotMap.upToSpeedRange;
     if(Math.abs(input) < high && Math.abs(input) > low)
     return true;
     else 

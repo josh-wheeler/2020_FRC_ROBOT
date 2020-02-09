@@ -37,12 +37,15 @@ public class RobotMap {
   //other constants
   public static int wheelDiam = 6;
   //for AIM method
-  public static double RPMCoefficient = 100;
+    //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
+    //length of field: roughly 578. 
+    //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output =1 full power)
+    public static double distanceCoefficient = 578;
     
-  //limelight angle: 45 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in
-  public static double limelightHeight = 22.25;
-  public static double targetHeight = 98.25;
-  public static double limelightAngle = 45; 
+    //limelight angle: 45 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in
+    public static double limelightHeight = 22.25;
+    public static double targetHeight = 98.25;
+    public static double limelightAngle = 45; 
 
   //joysticks
   public static int joyStickPort = 0;

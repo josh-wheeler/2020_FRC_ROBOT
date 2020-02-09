@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public static Limelight limelight = new Limelight();
   public static OI oi;
+  public int shooterTimeout = 0;
 
   Command autonomousCommand;
   SendableChooser<Command> chooser = new SendableChooser<>();
@@ -44,6 +45,7 @@ public class Robot extends TimedRobot {
     chooser.setDefaultOption("Default Auto", new HumanDriveCommand());
     chooser.addOption("My Auto", new ShooterStopCommand());
     SmartDashboard.putData("Auto mode", chooser);
+    
    
   }
 
@@ -60,7 +62,18 @@ public class Robot extends TimedRobot {
     limelight.LimelightUpdate();
     shooterSubsystem.shooterStatus();
     driveSubsystem.driveStatus();
+    if(!shooterSubsystem.upToSpeed()){
+      shooterTimeout++;
+    }
+    else{
+      shooterTimeout = 0;
+    }
 
+    if(shooterTimeout > 50){
+      new ShooterStopCommand();
+      for(int i = 0; i<100; i++)
+      System.out.println("SHOOTER E-STOPPED");
+    }
   }
   
   /**
