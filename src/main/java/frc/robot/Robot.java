@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.HumanDriveCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public static LimelightSubsystem limelight = new LimelightSubsystem();
+  public static ColorSensorSubsystem colorSensor = new ColorSensorSubsystem();
   public static OI oi;
   public int shooterTimeout = 0;
 
@@ -62,8 +64,10 @@ public class Robot extends TimedRobot {
     limelight.LimelightUpdate();
     shooterSubsystem.shooterStatus();
     driveSubsystem.driveStatus();
+    colorSensor.checkColor();
     if(!shooterSubsystem.upToSpeed()){
       shooterTimeout++;
+      System.out.println("Shooter Timeout is " + shooterTimeout);
     }
     else{
       shooterTimeout = 0;
