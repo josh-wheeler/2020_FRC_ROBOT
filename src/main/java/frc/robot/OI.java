@@ -43,7 +43,6 @@ public class OI {
   public Button RBumper = new JoystickButton(joystick, RobotMap.RBumpr);
 
   public OI(){
-    //old method for buttons - UPDATE: only method for buttons, it is WPILIB specific, and would require a lot of additions to match WPILIB's functionality.
   
     B.whenPressed(new ShooterSpinCommand(.15));
     X.whenPressed(new ShooterStopCommand());

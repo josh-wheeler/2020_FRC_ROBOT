@@ -15,13 +15,14 @@ public class ShooterSpinCommand extends Command {
   private double topSpd, bottomSpd;
 
   public ShooterSpinCommand(){
-    this.topSpd = RobotMap.topShooterDefaultSpeed;
-    this.bottomSpd = RobotMap.bottomShooterDefaultSpeed;
+    this.topSpd = RobotMap.ShooterDefaultSpeed*RobotMap.topShooterPercentage;
+    this.bottomSpd = RobotMap.ShooterDefaultSpeed;
     requires(Robot.shooterSubsystem);
  }
 
   public ShooterSpinCommand(double input){
-    this.topSpd = this.bottomSpd = input;
+    this.topSpd = input;//*RobotMap.topShooterPercentage;
+    this.bottomSpd = input;
     requires(Robot.shooterSubsystem);
   }
 

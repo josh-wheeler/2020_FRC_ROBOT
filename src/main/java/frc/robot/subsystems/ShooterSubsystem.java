@@ -11,10 +11,12 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.ShooterStopCommand;
 
 /**
  * Add your docs here.
@@ -34,6 +36,8 @@ public class ShooterSubsystem extends Subsystem {
   public ShooterSubsystem(){
     shooterOn = false;
     setTargets(0.0, 0.0);
+    topShooterMotor.setIdleMode(IdleMode.kCoast);
+    bottomShooterMotor.setIdleMode(IdleMode.kCoast);
   }
 
   //updates smartdashboard. called in robot's periodic method
@@ -43,9 +47,10 @@ public class ShooterSubsystem extends Subsystem {
     SmartDashboard.putNumber("Top Shooter Motor Speed", topEncoder.getVelocity());
     SmartDashboard.putNumber("Bottom Shooter Motor Speed", bottomEncoder.getVelocity());
     SmartDashboard.putBoolean("Shooter upToSpeed", upToSpeed());
+    SmartDashboard.putBoolean("ShooterOn", shooterOn);
   }
 
-  //starts motors to currently set targets.
+  //starts motors to currently set target RPMS.
   public void startShooter(){
     topPID.setReference(topTargetRPM, ControlType.kVelocity);
     bottomPID.setReference(bottomTargetRPM, ControlType.kVelocity);
@@ -89,6 +94,6 @@ public class ShooterSubsystem extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new ShooterStopCommand());
   }
 }

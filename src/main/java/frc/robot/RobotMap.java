@@ -29,14 +29,17 @@ public class RobotMap {
   public static double maxAccel = .02;
   public static double maxSpeed = 1.0;
   public static double turnMultiplier = .5;
-  //default shooter speeds
-  public static double topShooterDefaultSpeed = .30;
-  public static double bottomShooterDefaultSpeed = .40;
+  //default shooter speed. .4 seems good at 10 feet
+  public static double ShooterDefaultSpeed = .40;
+  //percentage that top motor will slow to for backspin. (set to 1 to make them spin equally)
+  public static double topShooterPercentage = .75;
   //for shooter upToSpeed boolean
   public static double upToSpeedRange = 150.0;
+ 
   //other constants
   public static int wheelDiam = 6;
-  //for AIM method
+
+  //constants for AIM method
     //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
     //length of field: roughly 578. 
     //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output =1 full power)
