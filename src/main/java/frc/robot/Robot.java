@@ -66,15 +66,15 @@ public class Robot extends TimedRobot {
     driveSubsystem.driveStatus();
     colorSensor.checkColor();
     if(!shooterSubsystem.upToSpeed()){
-      shooterTimeout++;
+      //shooterTimeout++;
       System.out.println("Shooter Timeout is " + shooterTimeout);
     }
     else{
       shooterTimeout = 0;
     }
 
-    if(shooterTimeout > 50){
-      new ShooterStopCommand();
+    if(shooterTimeout > RobotMap.shooterTimout){
+      shooterSubsystem.stopShooter();
       for(int i = 0; i<100; i++)
       System.out.println("SHOOTER E-STOPPED");
     }

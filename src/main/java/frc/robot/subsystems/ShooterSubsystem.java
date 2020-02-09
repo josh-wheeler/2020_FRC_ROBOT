@@ -31,6 +31,13 @@ public class ShooterSubsystem extends Subsystem {
   CANPIDController bottomPID = bottomShooterMotor.getPIDController();
   public boolean shooterOn;
   private double topTargetRPM, bottomTargetRPM;
+  private static final double p = 0.00005; // .5
+  private static final double i = 0.000001; // .0
+  private static final double d = 0.0; // .0
+  private static final double ff = .00015;
+  private static final double maxOutputRange = 1; 
+  private static final double minOutputRange = -1;
+
 
 //constructor
   public ShooterSubsystem(){
@@ -38,6 +45,17 @@ public class ShooterSubsystem extends Subsystem {
     setTargets(0.0, 0.0);
     topShooterMotor.setIdleMode(IdleMode.kCoast);
     bottomShooterMotor.setIdleMode(IdleMode.kCoast);
+    topPID.setP(p);
+    topPID.setI(i);
+    topPID.setD(d);
+    topPID.setFF(ff);
+
+    bottomPID.setP(p);
+    bottomPID.setI(i);
+    bottomPID.setD(d);
+    bottomPID.setFF(ff);
+
+    topPID.setOutputRange(minOutputRange, maxOutputRange);
   }
 
   //updates smartdashboard. called in robot's periodic method
@@ -54,6 +72,8 @@ public class ShooterSubsystem extends Subsystem {
   public void startShooter(){
     topPID.setReference(topTargetRPM, ControlType.kVelocity);
     bottomPID.setReference(bottomTargetRPM, ControlType.kVelocity);
+    //topShooterMotor.set(topTargetRPM/5676);
+    //bottomShooterMotor.set(bottomTargetRPM/5676);
     shooterOn = true;
   }
 
@@ -94,6 +114,6 @@ public class ShooterSubsystem extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new ShooterStopCommand());
+   //setDefaultCommand(new ShooterStopCommand());
   }
 }

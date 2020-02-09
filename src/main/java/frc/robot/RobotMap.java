@@ -24,6 +24,7 @@ public class RobotMap {
   public static int rightSlavePort = 4;
   public static int topShooterMotorPort = 5;
   public static int bottomShooterMotorPort = 6;
+  public static int leftLiftMotorPort = 7;
 
   //constants for motor acceleration and max speed. Used in drive subsystem
   public static double maxAccel = .02;
@@ -34,7 +35,8 @@ public class RobotMap {
   //percentage that top motor will slow to for backspin. (set to 1 to make them spin equally)
   public static double topShooterPercentage = .75;
   //for shooter upToSpeed boolean
-  public static double upToSpeedRange = 150.0;
+  public static double upToSpeedRange = 100.0;
+  public static double shooterTimout = 50;
  
   //other constants
   public static int wheelDiam = 6;

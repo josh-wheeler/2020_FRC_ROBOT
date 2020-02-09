@@ -21,7 +21,7 @@ public class ShooterSpinCommand extends Command {
  }
 
   public ShooterSpinCommand(double input){
-    this.topSpd = input;//*RobotMap.topShooterPercentage;
+    this.topSpd = input*RobotMap.topShooterPercentage;
     this.bottomSpd = input;
     requires(Robot.shooterSubsystem);
   }
@@ -38,12 +38,13 @@ public class ShooterSpinCommand extends Command {
   @Override
   protected void initialize() {
     Robot.shooterSubsystem.setTargets(topSpd, bottomSpd); 
+    Robot.shooterSubsystem.startShooter();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.shooterSubsystem.startShooter();
+    //Robot.shooterSubsystem.startShooter();
   }
 
   // Make this return true when this Command no longer needs to run execute()

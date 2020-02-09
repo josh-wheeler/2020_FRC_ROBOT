@@ -20,7 +20,7 @@ public class LimelightSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
   
-  NetworkTable llTable = NetworkTableInstance.getDefault().getTable("limelight");
+  public NetworkTable llTable = NetworkTableInstance.getDefault().getTable("limelight");
 
   public enum camMode{
     driver, target
@@ -60,40 +60,29 @@ public class LimelightSubsystem extends Subsystem {
     switch(mode){
       case driver:
       llTable.getEntry("camMode").setNumber(1);
+      break;
       case target:
       llTable.getEntry("camMode").setNumber(0);
+      break;
     }
   }
-  public void camModeToggle(){
-  if(camMode()==1){
-    setCamMode(camMode.target);
-  }
-  else if(camMode()==0){
-    setCamMode(camMode.driver);
-  }
-
-  }
-
-  public void toggleLimelightLed(){
-    if(ledMode()==1 || ledMode()==0){
-      setLed(ledMode.on);
-    }
-    else if(ledMode()==2 || ledMode()==3) {
-      setLed(ledMode.off);
-    }
     
-  }
+  
   public void setLed(ledMode mode){
     //0 is use pipeline default, 1 is force off, 2 is force blink, 3 is force on
       switch(mode){
         case def:
         llTable.getEntry("ledMode").setNumber(0);
+        break;
         case off:
         llTable.getEntry("ledMode").setNumber(1);
+        break;
         case blink:
         llTable.getEntry("ledMode").setNumber(2);
+        break;
         case on:
         llTable.getEntry("ledMode").setNumber(3);
+        break;
       }
     
   }

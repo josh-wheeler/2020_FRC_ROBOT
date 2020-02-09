@@ -15,18 +15,13 @@ import frc.robot.subsystems.LimelightSubsystem.ledMode;
 /**
  * Add your docs here.
  */
-public class LimelightModeCommand extends InstantCommand {
+public class LimelightTargetCamCommand extends InstantCommand {
   /**
    * Add your docs here.
    */
 
-   camMode camMode;
-   ledMode ledMode;
-
-  public LimelightModeCommand(camMode camMode, ledMode ledMode) {
+  public LimelightTargetCamCommand() {
     super();
-    this.camMode = camMode;
-    this.ledMode = ledMode;
     // Use requires() here to declare subsystem dependencies
     requires(Robot.limelight);
   }
@@ -34,8 +29,10 @@ public class LimelightModeCommand extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.limelight.setCamMode(camMode);
-    Robot.limelight.setLed(ledMode);
+    Robot.limelight.setCamMode(camMode.target);
+    Robot.limelight.setLed(ledMode.on);
+    //Robot.limelight.llTable.getEntry("camMode").setNumber(1);
+    //Robot.limelight.llTable.getEntry("ledMode").setNumber(0);
 
   }
 
