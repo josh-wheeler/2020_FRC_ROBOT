@@ -11,10 +11,15 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AimCommand;
+import frc.robot.commands.LiftHomeOutCommand;
+import frc.robot.commands.LiftStopCommand;
+import frc.robot.commands.LiftMoveToPositionCommand;
+import frc.robot.commands.JogLiftCommand;
 import frc.robot.commands.LimelightDriverCamCommand;
 import frc.robot.commands.LimelightTargetCamCommand;
 import frc.robot.commands.ShooterSpinCommand;
 import frc.robot.commands.ShooterStopCommand;
+import frc.robot.subsystems.ScissorLiftSubsystem.liftPosition;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -43,12 +48,20 @@ public class OI {
 
   public OI(){
     
-    Y.whenPressed(new ShooterSpinCommand());
-    B.whenPressed(new ShooterSpinCommand(.35));
-    X.whenPressed(new ShooterStopCommand());
-    A.whileHeld(new AimCommand());
-    RBumper.whenPressed(new LimelightDriverCamCommand());
-    LBumper.whenPressed(new LimelightTargetCamCommand());
+    //Y.whenPressed(new ShooterSpinCommand());
+    //B.whenPressed(new ShooterSpinCommand(.35));
+    //X.whenPressed(new ShooterStopCommand());
+    //A.whileHeld(new AimCommand());
+    
+    Y.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
+    A.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
+   // B.whileHeld(new LiftHomeOutCommand());
+    X.whenPressed(new LiftStopCommand());
+    RBumper.whileHeld(new JogLiftCommand(1));
+    LBumper.whileHeld(new JogLiftCommand(-1));
+
+
+    //LBumper.whenPressed(new LimelightTargetCamCommand());
 
 
 

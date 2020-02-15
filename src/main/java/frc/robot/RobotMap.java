@@ -24,7 +24,9 @@ public class RobotMap {
   public static int rightSlavePort = 4;
   public static int topShooterMotorPort = 5;
   public static int bottomShooterMotorPort = 6;
-  public static int leftLiftMotorPort = 7;
+  public static int liftMasterPort = 7;
+  public static int liftSlavePort = 8;
+
 
   //constants for motor acceleration and max speed. Used in drive subsystem
   public static double maxAccel = .02;
@@ -39,7 +41,12 @@ public class RobotMap {
   public static double shooterTimout = 50;
  
   //other constants
-  public static int wheelDiam = 6;
+  public static int wheelDiam = 8;
+
+  public static double liftHeightMax = 400; //actual max 500-ish. leaving low for testitng purposes
+  public static double liftHeightHome = 5.0;//set to 5 so we aren't constantly contacting the limit switch.
+  public static double liftHeightWheelSetup = 100.0;
+  public static double liftHeightWheelSpin = 90.0;
 
   //constants for AIM method
     //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
@@ -67,7 +74,13 @@ public class RobotMap {
   public static int START = 8;
   public static int BACK = 7;
 
-  
+  //Digital inputs
+  public static int leftLowerLiftLimitSwitchPort = 0;
+  public static int leftUpperLimitSwitchPort     = 1;
+  public static int rightLowerLimitSwitchPort    = 2;
+  public static int rightUpperLimitSwitchPort    = 3;
+  public static int beamBreakPort                = 5;
+
   
   // If you are using multiple modules, make sure to define both the port
   // number and the module. For example you with a rangefinder:

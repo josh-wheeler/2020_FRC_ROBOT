@@ -18,6 +18,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import frc.robot.subsystems.ScissorLiftSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -31,6 +32,7 @@ public class Robot extends TimedRobot {
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public static LimelightSubsystem limelight = new LimelightSubsystem();
   public static ColorSensorSubsystem colorSensor = new ColorSensorSubsystem();
+  public static ScissorLiftSubsystem scissorLift = new ScissorLiftSubsystem();
   public static OI oi;
   public int shooterTimeout = 0;
 
@@ -65,8 +67,9 @@ public class Robot extends TimedRobot {
     shooterSubsystem.shooterStatus();
     driveSubsystem.driveStatus();
     colorSensor.checkColor();
+    scissorLift.liftStatus();
     if(!shooterSubsystem.upToSpeed()){
-      //shooterTimeout++;
+      shooterTimeout++;
       System.out.println("Shooter Timeout is " + shooterTimeout);
     }
     else{

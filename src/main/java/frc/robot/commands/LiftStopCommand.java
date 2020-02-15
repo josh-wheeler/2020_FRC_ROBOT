@@ -9,52 +9,24 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-/*
 
-
-This command can be called three ways. 
-No arguments () makes the speed the default, 
-1 argument (double) set the bottom speed, and the top to a percentage of the bottom, 
-2 arguments (double, double) sets the top and bottom speeds to the setting.
-
-it then passes these to the setTargets() method in the shooter subsystem, and calls startShooter()
-
-*/ 
-public class ShooterSpinCommand extends Command {
-  private double topSpd, bottomSpd;
-
-  public ShooterSpinCommand(){
-    this.topSpd = RobotMap.ShooterDefaultSpeed*RobotMap.topShooterPercentage;
-    this.bottomSpd = RobotMap.ShooterDefaultSpeed;
-    requires(Robot.shooterSubsystem);
- }
-
-  public ShooterSpinCommand(double input){
-    this.topSpd = input*RobotMap.topShooterPercentage;
-    this.bottomSpd = input;
-    requires(Robot.shooterSubsystem);
-  }
-
-  public ShooterSpinCommand(double topSpd, double bottomSpd) {
-    this.topSpd = topSpd;
-    this.bottomSpd = bottomSpd;
+public class LiftStopCommand extends Command {
+  public LiftStopCommand() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.shooterSubsystem);
-
+    requires(Robot.scissorLift);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.shooterSubsystem.setTargets(topSpd, bottomSpd); 
-    Robot.shooterSubsystem.startShooter();
+    //add encoderZero check here
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.shooterSubsystem.startShooter();
+    Robot.scissorLift.stopLift();
+    Robot.scissorLift.zeroSetPosition();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -66,7 +38,7 @@ public class ShooterSpinCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    //Robot.shooterSubsystem.stopShooter();
+    Robot.scissorLift.stopLift();
   }
 
   // Called when another command which requires one or more of the same
