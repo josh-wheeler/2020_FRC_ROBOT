@@ -29,8 +29,8 @@ public class HumanDriveCommand extends Command {
   @Override
   protected void execute() {
 
-   double move = -Robot.oi.joystick.getY(Hand.kLeft);
-   double turn = Robot.oi.joystick.getX(Hand.kLeft);
+   double move = -Robot.oi.pilot.getY(Hand.kLeft);
+   double turn = Robot.oi.pilot.getX(Hand.kLeft);
 
    Robot.driveSubsystem.humanDrive(move, turn);
 

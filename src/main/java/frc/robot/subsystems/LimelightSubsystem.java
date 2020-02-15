@@ -12,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.LimelightDriverCamCommand;
 
 /**
  * Add your docs here.
@@ -31,8 +32,8 @@ public class LimelightSubsystem extends Subsystem {
 
   public LimelightSubsystem(){
     //sets camera mode to driver cam and led off for initial startup
-   setCamMode(camMode.driver);
-   setLed(ledMode.off);
+   //setCamMode(camMode.driver);
+   //setLed(ledMode.off);
 
   }
   //returns current value for limelight variables
@@ -89,7 +90,7 @@ public class LimelightSubsystem extends Subsystem {
   public double AIM(){
     double steerAdjust = 0;
     double minAdjust = .02;
-    double maxAdjust = .2;
+    double maxAdjust = .1;
     double kP = 0.05;
 
     //tx() range: -29.8 to 29.8
@@ -131,6 +132,6 @@ public class LimelightSubsystem extends Subsystem {
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new LimelightDriverCamCommand());
   }
 }

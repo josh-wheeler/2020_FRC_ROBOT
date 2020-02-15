@@ -10,10 +10,8 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
-
-import edu.wpi.first.wpilibj.DigitalInput;
+import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
@@ -30,17 +28,23 @@ public class ScissorLiftSubsystem extends Subsystem {
  // CANEncoder rightEncoder = rightLiftMotor.getEncoder();
   CANPIDController masterPID = liftMasterMotor.getPIDController();
   //CANPIDController rightPID = rightLiftMotor.getPIDController();
-  
+  //public DigitalInput downSwitch = new DigitalInput(RobotMap.leftLowerLiftLimitSwitchPort);
+
   private double kP = 0.03; // .5
   private double kI = 2e-6; // .0
   private double kD = 1e-6;//0.000001;
-  private double kIz = 2;
+  private double kIz = 5;
   private double kFF = 0.0;
   private double kMaxOutput = 1; 
   private double kMinOutput = -1;
+
+  //smartmotion coefficients. set these to 
+  private double maxVel = 50; //RPM the lift will move at full speed
+  private double maxAccel = 25;//RPMs per second it can increase until it hits maxVel
+
   private double setPosition = 0.0;
   public boolean homedOut;
-  public DigitalInput downSwitch = new DigitalInput(RobotMap.leftLowerLiftLimitSwitchPort);
+  private int slotID = 0;
   
 
   public enum liftPosition{home, wheelSetup, wheelEngage, maxHeight}
@@ -59,13 +63,12 @@ public class ScissorLiftSubsystem extends Subsystem {
     masterPID.setIZone(kIz);
     masterPID.setFF(kFF);
     masterPID.setOutputRange(kMinOutput, kMaxOutput);
+
+    masterPID.setSmartMotionMaxVelocity(maxVel, slotID);
+    masterPID.setSmartMotionMaxAccel(maxAccel, slotID);
+
    
-    if(downSwitch.get()){
-      
-      masterEncoder.setPosition(0.0);
-      homedOut = true;
-      
-    }
+    //if(downSwitch.get()){setHomePosition();}else{homedOut=false;}
 
     //liftSlaveMotor.follow(liftMasterMotor);
  
@@ -78,8 +81,11 @@ public class ScissorLiftSubsystem extends Subsystem {
     SmartDashboard.putNumber("Feed Forward", kFF);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
-    //SmartDashboard.putNumber("Set Rotations", 0);
-    
+    //display smartmotion coefficients
+    SmartDashboard.putNumber("Motor Output", liftMasterMotor.getAppliedOutput());
+    SmartDashboard.putNumber("Max Acceleration", maxAccel);
+    SmartDashboard.putNumber("Max Velocity", maxVel);
+
   }
 
   //updates smartdashboard. called in robot's periodic method
@@ -87,7 +93,7 @@ public class ScissorLiftSubsystem extends Subsystem {
     SmartDashboard.putNumber("Lift Motor Speed", masterEncoder.getVelocity());
     SmartDashboard.putNumber("Lift Motor Position", masterEncoder.getPosition());
     SmartDashboard.putNumber("Set Position Variable", setPosition);
-    //SmartDashboard.putBoolean("Target Reached boolean", targetReached);
+    SmartDashboard.putBoolean("Lift Homed Out", homedOut);
 
   }
   
@@ -98,48 +104,52 @@ public class ScissorLiftSubsystem extends Subsystem {
   public void moveToPosition(liftPosition setting){
 
     double position = liftNumber(setting);
-    masterPID.setReference(position, ControlType.kPosition);
+    masterPID.setReference(position, ControlType.kSmartMotion);
   }
 
   public void jogLift(double amount){
-    amount = Math.signum(amount) * .1;
+    amount = Math.signum(amount) * RobotMap.liftJogSpeed;
     liftMasterMotor.set(amount);
   }
   
   public void stopLift(){   
     liftMasterMotor.set(0.0);
   }
-  public void homeOutLift(){
+  /*public void homeOutLift(){
     if(!homedOut){
       while(!downSwitch.get()){
         liftMasterMotor.set(-.01);
       }
     }
     if(downSwitch.get()){
-      homedOut = true;
-      zeroLiftEncoder();
+      setHomePosition();
       //moveToPosition(liftPosition.home);
-      //zeroLiftEncoder();
-
     }
-  }
+  }*/
 
-  public void zeroLiftEncoder(){
+  private void setHomePosition(){
     masterEncoder.setPosition(0.0);
+    homedOut = true;
   }
+  
   private double liftNumber(liftPosition position){
     double output;
     switch(position){
       case home:
       output = RobotMap.liftHeightHome;
+      break;
       case maxHeight:
       output = RobotMap.liftHeightMax;
+      break;
       case wheelEngage:
       output = RobotMap.liftHeightWheelSpin;
+      break;
       case wheelSetup:
       output = RobotMap.liftHeightWheelSetup;
+      break;
       default:
       output = setPosition;
+      break;
     }
     return output;
   }
@@ -152,6 +162,10 @@ public class ScissorLiftSubsystem extends Subsystem {
    double ff = SmartDashboard.getNumber("Feed Forward", 0);
    double max = SmartDashboard.getNumber("Max Output", 0);
    double min = SmartDashboard.getNumber("Min Output", 0);
+   double maxV = SmartDashboard.getNumber("Max Velocity", 0);
+   //double minV = SmartDashboard.getNumber("Min Velocity", 0);
+   double maxA = SmartDashboard.getNumber("Max Acceleration", 0);
+   //double allE = SmartDashboard.getNumber("Allowed Closed Loop Error", 0);
 
    // if PID coefficients on SmartDashboard have changed, write new values to controller
    if((p != kP)) { masterPID.setP(p); kP = p; }
@@ -163,7 +177,10 @@ public class ScissorLiftSubsystem extends Subsystem {
       masterPID.setOutputRange(min, max); 
      kMinOutput = min; kMaxOutput = max; 
    }
-
+   if((maxV != maxVel)) { masterPID.setSmartMotionMaxVelocity(maxV,0); maxVel = maxV; }
+   //if((minV != minVel)) { masterPID.setSmartMotionMinOutputVelocity(minV,0); minVel = minV; }
+   if((maxA != maxAccel)) { masterPID.setSmartMotionMaxAccel(maxA,0); maxAccel = maxA; }
+  // if((allE != allowedErr)) { masterPID.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
   }
 
 

@@ -63,10 +63,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+
+    SmartDashboard.putNumber("Right Trigger Axis Value", Robot.oi.rightTriggerAxis());
+
     limelight.LimelightUpdate();
-    shooterSubsystem.shooterStatus();
-    driveSubsystem.driveStatus();
-    colorSensor.checkColor();
+    //shooterSubsystem.shooterStatus();
+    //driveSubsystem.driveStatus();
+    //colorSensor.checkColor();
     scissorLift.liftStatus();
     if(!shooterSubsystem.upToSpeed()){
       shooterTimeout++;

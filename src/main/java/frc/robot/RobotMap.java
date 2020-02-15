@@ -42,11 +42,12 @@ public class RobotMap {
  
   //other constants
   public static int wheelDiam = 8;
-
+  //lift heights
   public static double liftHeightMax = 400; //actual max 500-ish. leaving low for testitng purposes
   public static double liftHeightHome = 5.0;//set to 5 so we aren't constantly contacting the limit switch.
   public static double liftHeightWheelSetup = 100.0;
   public static double liftHeightWheelSpin = 90.0;
+  public static double liftJogSpeed = 0.05; 
 
   //constants for AIM method
     //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)

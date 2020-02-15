@@ -9,7 +9,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
 
 public class AutomaticShootCommand extends CommandGroup {
   /**
@@ -20,7 +19,7 @@ public class AutomaticShootCommand extends CommandGroup {
     addSequential(new AimCommand());
     addSequential(new ShooterSpinCommand(Robot.limelight.calcShooterSpeed()));
     
-    //add ball conveyor FF command here
+    //add ball magazine FF command here
 
     // addSequential(new Command2());
     // these will run in order.

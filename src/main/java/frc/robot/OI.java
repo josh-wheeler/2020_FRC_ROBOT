@@ -8,17 +8,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import frc.robot.commands.AimCommand;
-import frc.robot.commands.LiftHomeOutCommand;
-import frc.robot.commands.LiftStopCommand;
-import frc.robot.commands.LiftMoveToPositionCommand;
 import frc.robot.commands.JogLiftCommand;
-import frc.robot.commands.LimelightDriverCamCommand;
-import frc.robot.commands.LimelightTargetCamCommand;
-import frc.robot.commands.ShooterSpinCommand;
-import frc.robot.commands.ShooterStopCommand;
+import frc.robot.commands.LiftMoveToPositionCommand;
+import frc.robot.commands.LiftStopCommand;
 import frc.robot.subsystems.ScissorLiftSubsystem.liftPosition;
 
 /**
@@ -33,18 +28,31 @@ public class OI {
   // number it is.
   // Joystick stick = new Joystick(port);  
   // Button button = new JoystickButton(stick, buttonNumber);
-  public XboxController joystick = new XboxController(RobotMap.joyStickPort);
+  public XboxController pilot = new XboxController(RobotMap.joyStickPort);
+  public XboxController copilot = new XboxController(RobotMap.joyStickPort);
+
   
-  public Button A = new JoystickButton(joystick, RobotMap.A);
-  public Button B = new JoystickButton(joystick, RobotMap.B);
-  public Button X = new JoystickButton(joystick, RobotMap.X);
-  public Button Y = new JoystickButton(joystick, RobotMap.Y);
-  public Button BACK = new JoystickButton(joystick, RobotMap.BACK);
-  public Button START = new JoystickButton(joystick, RobotMap.START);
-  public Button LStick = new JoystickButton(joystick, RobotMap.LStick);
-  public Button RStick = new JoystickButton(joystick, RobotMap.RStick);
-  public Button LBumper = new JoystickButton(joystick, RobotMap.LBumpr);
-  public Button RBumper = new JoystickButton(joystick, RobotMap.RBumpr);
+  public Button A1 = new JoystickButton(pilot, RobotMap.A);
+  public Button B1 = new JoystickButton(pilot, RobotMap.B);
+  public Button X1 = new JoystickButton(pilot, RobotMap.X);
+  public Button Y1 = new JoystickButton(pilot, RobotMap.Y);
+  public Button BACK1 = new JoystickButton(pilot, RobotMap.BACK);
+  public Button START1 = new JoystickButton(pilot, RobotMap.START);
+  public Button LStick1 = new JoystickButton(pilot, RobotMap.LStick);
+  public Button RStick1 = new JoystickButton(pilot, RobotMap.RStick);
+  public Button LBumper1 = new JoystickButton(pilot, RobotMap.LBumpr);
+  public Button RBumper1 = new JoystickButton(pilot, RobotMap.RBumpr);
+
+  public Button A2 = new JoystickButton(copilot, RobotMap.A);
+  public Button B2 = new JoystickButton(copilot, RobotMap.B);
+  public Button X2 = new JoystickButton(copilot, RobotMap.X);
+  public Button Y2 = new JoystickButton(copilot, RobotMap.Y);
+  public Button BACK2 = new JoystickButton(copilot, RobotMap.BACK);
+  public Button START2 = new JoystickButton(copilot, RobotMap.START);
+  public Button LStick2 = new JoystickButton(copilot, RobotMap.LStick);
+  public Button RStick2 = new JoystickButton(copilot, RobotMap.RStick);
+  public Button LBumper2 = new JoystickButton(copilot, RobotMap.LBumpr);
+  public Button RBumper2 = new JoystickButton(copilot, RobotMap.RBumpr);
 
   public OI(){
     
@@ -53,13 +61,15 @@ public class OI {
     //X.whenPressed(new ShooterStopCommand());
     //A.whileHeld(new AimCommand());
     
-    Y.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
-    A.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
+    Y1.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
+    A1.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
    // B.whileHeld(new LiftHomeOutCommand());
-    X.whenPressed(new LiftStopCommand());
-    RBumper.whileHeld(new JogLiftCommand(1));
-    LBumper.whileHeld(new JogLiftCommand(-1));
+    X1.whenPressed(new LiftStopCommand());
+    RBumper1.whileHeld(new JogLiftCommand(1));
+    LBumper1.whileHeld(new JogLiftCommand(-1));
 
+
+    
 
     //LBumper.whenPressed(new LimelightTargetCamCommand());
 
@@ -67,7 +77,6 @@ public class OI {
 
 
     //joystick trigger stuff. This should be what we'd need for variable speed control on a motor using the triggers as pressure sensitive input devices.
-    //joystick.getTriggerAxis(Hand.kRight);
 
 
     // There are a few additional built in buttons you can use. Additionally,
@@ -90,4 +99,11 @@ public class OI {
     // until it is finished as determined by it's isFinished method.
     //RBumper.whenReleased(new TestButtonCommand());
   }
+  public double rightTriggerAxis(){
+    return pilot.getTriggerAxis(Hand.kRight);
+  }
+  public double leftTriggerAxis(){
+    return pilot.getTriggerAxis(Hand.kLeft);
+  }
+
 }
