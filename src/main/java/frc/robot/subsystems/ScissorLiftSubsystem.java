@@ -71,7 +71,7 @@ public class ScissorLiftSubsystem extends Subsystem {
     //if(downSwitch.get()){setHomePosition();}else{homedOut=false;}
 
     //liftSlaveMotor.follow(liftMasterMotor);
- 
+    setHomePosition();
     
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("P Gain", kP);
@@ -104,7 +104,9 @@ public class ScissorLiftSubsystem extends Subsystem {
   public void moveToPosition(liftPosition setting){
 
     double position = liftNumber(setting);
-    masterPID.setReference(position, ControlType.kSmartMotion);
+    if(homedOut){
+      masterPID.setReference(position, ControlType.kSmartMotion);
+    }
   }
 
   public void jogLift(double amount){
