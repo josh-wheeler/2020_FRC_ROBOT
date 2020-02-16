@@ -66,7 +66,7 @@ public class OI {
    // B.whileHeld(new LiftHomeOutCommand());
     X1.whenPressed(new LiftStopCommand());
     RBumper1.whileHeld(new JogLiftCommand(1));
-    LBumper1.whileHeld(new JogLiftCommand(-1));
+    LBumper1.whileHeld(new JogLiftCommand(-1)); 
 
 
     

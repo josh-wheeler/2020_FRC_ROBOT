@@ -26,7 +26,7 @@ public class RobotMap {
   public static int bottomShooterMotorPort = 6;
   public static int liftMasterPort = 7;
   public static int liftSlavePort = 8;
-
+ 
 
   //constants for motor acceleration and max speed. Used in drive subsystem
   public static double maxAccel = .02;

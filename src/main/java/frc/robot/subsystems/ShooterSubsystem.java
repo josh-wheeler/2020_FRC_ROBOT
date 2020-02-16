@@ -26,7 +26,7 @@ public class ShooterSubsystem extends Subsystem {
   CANSparkMax bottomShooterMotor = new CANSparkMax(RobotMap.bottomShooterMotorPort, RobotMap.NEO);
   CANEncoder topEncoder = topShooterMotor.getEncoder();
   CANEncoder bottomEncoder = bottomShooterMotor.getEncoder();
-  CANPIDController topPID = topShooterMotor.getPIDController();
+  CANPIDController topPID = topShooterMotor.getPIDController(); 
   CANPIDController bottomPID = bottomShooterMotor.getPIDController();
   public boolean shooterOn;
   private double topTargetRPM, bottomTargetRPM;

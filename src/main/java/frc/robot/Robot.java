@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     oi = new OI();
     chooser.setDefaultOption("Default Auto", new HumanDriveCommand());
     chooser.addOption("My Auto", new ShooterStopCommand());
-    SmartDashboard.putData("Auto mode", chooser);
+    SmartDashboard.putData("Auto mode", chooser); 
     
    
   }

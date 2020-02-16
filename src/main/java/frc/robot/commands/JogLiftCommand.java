@@ -11,6 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class JogLiftCommand extends Command {
+
+  /*
+  
+  This needs to be on a held down button so it cancels and stops. Otherwise it'll burn up the motor
+
+  */
   private double amount;
 
   public JogLiftCommand(double amount) {

@@ -36,7 +36,7 @@ public class ShooterSpinCommand extends Command {
     requires(Robot.shooterSubsystem);
   }
 
-  public ShooterSpinCommand(double topSpd, double bottomSpd) {
+  public ShooterSpinCommand(double topSpd, double bottomSpd) { 
     this.topSpd = topSpd;
     this.bottomSpd = bottomSpd;
     // Use requires() here to declare subsystem dependencies

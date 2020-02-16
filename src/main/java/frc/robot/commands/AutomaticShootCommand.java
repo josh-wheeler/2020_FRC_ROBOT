@@ -21,7 +21,7 @@ public class AutomaticShootCommand extends CommandGroup {
     
     //add ball magazine FF command here
 
-    // addSequential(new Command2());
+    // addSequential(new Command2()); 
     // these will run in order.
 
     // To run multiple commands at the same time,

@@ -22,7 +22,7 @@ public class LiftHomeOutCommand extends InstantCommand {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.scissorLift);
   }
-
+ 
   // Called once when the command executes
   @Override
   protected void initialize() {

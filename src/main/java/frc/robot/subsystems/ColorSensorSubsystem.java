@@ -28,7 +28,7 @@ public class ColorSensorSubsystem extends Subsystem {
  /**
    * Change the I2C port below to match the connection of your color sensor
    */
-  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  private final I2C.Port i2cPort = I2C.Port.kOnboard; 
 
   /**
    * A Rev Color Sensor V3 object is constructed with an I2C port as a 

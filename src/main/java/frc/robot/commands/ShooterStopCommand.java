@@ -26,7 +26,7 @@ public class ShooterStopCommand extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.shooterSubsystem.stopShooter();
+    Robot.shooterSubsystem.stopShooter(); 
   }
 
 }

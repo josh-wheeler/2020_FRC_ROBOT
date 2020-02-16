@@ -98,7 +98,7 @@ public class ScissorLiftSubsystem extends Subsystem {
   }
   
   public void zeroSetPosition(){
-    setPosition = 0.0;
+    setPosition = 0.0; 
   }
   
   public void moveToPosition(liftPosition setting){

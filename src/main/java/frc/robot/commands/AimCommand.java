@@ -23,7 +23,7 @@ public class AimCommand extends Command {
   @Override
   protected void initialize() {
     Robot.limelight.setCamMode(camMode.target);
-    Robot.limelight.setLed(ledMode.on);
+    Robot.limelight.setLed(ledMode.on); 
   }
 
   // Called repeatedly when this Command is scheduled to run

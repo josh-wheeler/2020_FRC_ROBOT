@@ -122,7 +122,7 @@ public class LimelightSubsystem extends Subsystem {
   public double calcShooterSpeed(){
     //ty() range:-24.85 to 24.85
     //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
-    //limelight angle: 45 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in
+    //limelight angle: 45 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in 
     //length of field: roughly 578. 
     //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output =1 full power)
     return  (RobotMap.targetHeight - RobotMap.limelightHeight) / Math.tan(ty() + RobotMap.limelightAngle)/RobotMap.distanceCoefficient;
