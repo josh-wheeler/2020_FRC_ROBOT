@@ -10,45 +10,36 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class JogLiftCommand extends Command {
-
-  /*
-  
-  This needs to be on a held down button so it cancels and stops. Otherwise it'll burn up the motor
-
-  */
-  private double amount;
-
-  public JogLiftCommand(double amount) {
-
-    this.amount = amount;
+public class IntakeCommand extends Command {
+  public IntakeCommand() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.scissorLift);
+    requires(Robot.intake);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    System.out.println("pushed joglift" + amount);
+    //Robot.intake.toggleActive();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.scissorLift.jogLift(amount);
+    Robot.intake.ballIntake();
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    //return !Robot.intake.toggleActive();
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    Robot.scissorLift.stopLift();
   }
+  
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run

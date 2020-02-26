@@ -15,8 +15,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.HumanDriveCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.BallMagazineSubsystem;
 import frc.robot.subsystems.ColorSensorSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.ScissorLiftSubsystem;
 
@@ -33,6 +35,8 @@ public class Robot extends TimedRobot {
   public static LimelightSubsystem limelight = new LimelightSubsystem();
   public static ColorSensorSubsystem colorSensor = new ColorSensorSubsystem();
   public static ScissorLiftSubsystem scissorLift = new ScissorLiftSubsystem();
+  public static BallMagazineSubsystem ballMagazine = new BallMagazineSubsystem();
+  public static IntakeSubsystem intake = new IntakeSubsystem();
   public static OI oi;
   public int shooterTimeout = 0;
 
@@ -70,7 +74,9 @@ public class Robot extends TimedRobot {
     //shooterSubsystem.shooterStatus();
     //driveSubsystem.driveStatus();
     //colorSensor.checkColor();
+    ballMagazine.magazineStatus();
     scissorLift.liftStatus();
+    intake.intakeStatus();
     if(!shooterSubsystem.upToSpeed()){
       shooterTimeout++;
       System.out.println("Shooter Timeout is " + shooterTimeout);

@@ -26,6 +26,9 @@ public class RobotMap {
   public static int bottomShooterMotorPort = 6;
   public static int liftMasterPort = 7;
   public static int liftSlavePort = 8;
+  public static int magazineMotorPort = 9;
+  public static int intakeRollerMotorPort = 10;
+  public static int transferConveyorMotorPort = 11;
  
 
   //constants for motor acceleration and max speed. Used in drive subsystem
@@ -43,11 +46,11 @@ public class RobotMap {
   //other constants
   public static int wheelDiam = 8;
   //lift heights
-  public static double liftHeightMax = 400; //actual max 500-ish. leaving low for testitng purposes
+  public static double liftHeightMax = 500; //actual max 500-ish. leaving low for testitng purposes
   public static double liftHeightHome = 5.0;//set to 5 so we aren't constantly contacting the limit switch.
   public static double liftHeightWheelSetup = 100.0;
   public static double liftHeightWheelSpin = 90.0;
-  public static double liftJogSpeed = 0.05; 
+  public static double liftJogSpeed = 0.5; //0.4 for competition
 
   //constants for AIM method
     //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
@@ -76,11 +79,11 @@ public class RobotMap {
   public static int BACK = 7;
 
   //Digital inputs
-  public static int leftLowerLiftLimitSwitchPort = 0;
-  public static int leftUpperLimitSwitchPort     = 1;
-  public static int rightLowerLimitSwitchPort    = 2;
-  public static int rightUpperLimitSwitchPort    = 3;
-  public static int beamBreakPort                = 5;
+  public static int leftScissorLimitSwitchPort   = 3;
+  public static int rightScissorLimitSwitchPort  = 4;
+  public static int transferBeamBreakPort        = 1;
+  public static int magBeamBreakPort             = 2;
+  public static int absEncoderPort               = 0;
 
   
   // If you are using multiple modules, make sure to define both the port
@@ -92,5 +95,11 @@ public class RobotMap {
   //constants for Spark Max motor controller types. cleans up some of the drive subsystem code IMO.
   public static CANSparkMaxLowLevel.MotorType NEO = CANSparkMaxLowLevel.MotorType.kBrushless;
   public static CANSparkMaxLowLevel.MotorType neo550 = CANSparkMaxLowLevel.MotorType.kBrushless;
+
+  public static double positionRangeModifier = .05;
+  public static double magPos_1 = 0.0;
+  public static double magPos_2 = 0.33;
+  public static double magPos_3 = 0.66;
+  public static double magJogSpeed = 0.2; //0.4 for competition
 
 }
