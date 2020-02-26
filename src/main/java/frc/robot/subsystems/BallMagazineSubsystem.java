@@ -48,9 +48,6 @@ public class BallMagazineSubsystem extends Subsystem {
   private double kMaxOutput = 1; 
   private double kMinOutput = -1;
 
-  //this can only be set to 1, 2, or 3. Otherwise terrible things may happen
-  public int positionAtLoad; 
-
 
 
 //-----------------------------------------
@@ -69,16 +66,20 @@ public class BallMagazineSubsystem extends Subsystem {
 
     magazineEncoder.setPosition(0.0);
 
+    setCurrentMagPos();
+
+    //the next lines set the ball present for competition pre-loading. this must be done after setCurrentMagPos() since that sets
+    //ballpresent at load position to false
     BS1.ballPresent=true;
     BS2.ballPresent=true;
     BS3.ballPresent=true;
-    setCurrentMagPos();
 
   }
 
   public void revolve(){
         
       //this adds 120° of movement each time, so the motor only goes one direction.
+      //I'm using the motor's PID and built in encoder to move to position, but the absolute rev encoder to set where the shaft is. this is for slippage, and may have been unneccesary
       currentSetPosition = currentSetPosition + rotateAmount;
       magazinePID.setReference(currentSetPosition, ControlType.kPosition);
       setCurrentMagPos();
@@ -87,11 +88,11 @@ public class BallMagazineSubsystem extends Subsystem {
 
  public boolean readyToLoad(){
   //this checks to see if the magazine slot at load position is ready to load(pretty self explanatory)
-    if(positionAtLoad == 1 && !BS1.ballPresent)
+    if(BS1.atLoadPos && !BS1.ballPresent)
       return true;
-    else if(positionAtLoad == 2 && !BS2.ballPresent)
+    else if(BS2.atLoadPos && !BS2.ballPresent)
       return true;
-    else if(positionAtLoad == 3 && !BS3.ballPresent)
+    else if(BS3.atLoadPos && !BS3.ballPresent)
       return true;
     else
      return false;
@@ -111,17 +112,13 @@ public class BallMagazineSubsystem extends Subsystem {
 
   public void loadBall(){
     
-    switch(positionAtLoad){
-      case 1:
+    if(BS1.atLoadPos)
       BS1.setBallLoaded();
-      break;
-      case 2:
+    if(BS2.atLoadPos)
       BS2.setBallLoaded();
-      break;
-      case 3:
+    if(BS3.atLoadPos)
       BS3.setBallLoaded();
-      break;
-    }
+      
 
     if(!oneInTheChamber())
       revolve();
@@ -147,17 +144,12 @@ public class BallMagazineSubsystem extends Subsystem {
    double curPos = getAbsEncoderPos();
 
    if(positionRange(curPos, RobotMap.magPos_1)){
-     positionAtLoad = 1;
      BS1.setAtLoadPosition();
    }
-
    if(positionRange(curPos, RobotMap.magPos_2)){
-     positionAtLoad = 2;     
      BS2.setAtLoadPosition();
    }
-
    if(positionRange(curPos, RobotMap.magPos_3)){
-     positionAtLoad = 3;
      BS3.setAtLoadPosition();
    }
   }

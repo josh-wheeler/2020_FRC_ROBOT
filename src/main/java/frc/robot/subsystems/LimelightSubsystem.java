@@ -103,7 +103,7 @@ public class LimelightSubsystem extends Subsystem {
     }  
    else{
       if(Math.abs(error)>2.0){
-        steerAdjust = (kP*error)-minAdjust;
+        steerAdjust = (kP*error); //-minAdjust
       }
       else if(Math.abs(error)<2.0){
         steerAdjust = (kP*error) + minAdjust;
