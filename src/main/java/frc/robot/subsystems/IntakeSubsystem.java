@@ -25,11 +25,16 @@ public class IntakeSubsystem extends Subsystem {
   // here. Call these from Commands.
 CANSparkMax intakeRollerMotor = new CANSparkMax(RobotMap.intakeRollerMotorPort,RobotMap.neo550);
 CANSparkMax transferConveyorMotor = new CANSparkMax(RobotMap.transferConveyorMotorPort,RobotMap.neo550);
+//CANEncoder intakeEncoder = intakeRollerMotor.getEncoder();
+//CANEncoder transferEncoder = transferConveyorMotor.getEncoder();
+
 public DigitalInput transferBeam = new DigitalInput(RobotMap.transferBeamBreakPort);
-public DigitalInput magLimitSwitch = new DigitalInput(RobotMap.magBeamBreakPort);
+//public DigitalInput magLimitSwitch = new DigitalInput(RobotMap.magBeamBreakPort);
 private boolean active;
 
 public IntakeSubsystem(){
+  //intakeRollerMotor.restoreFactoryDefaults();
+  //transferConveyorMotor.restoreFactoryDefaults();
   intakeRollerMotor.setIdleMode(IdleMode.kBrake);
   transferConveyorMotor.setIdleMode(IdleMode.kBrake);
   active = false;
@@ -38,40 +43,39 @@ public IntakeSubsystem(){
 public void ballIntake(){
 
   if(active){
-    if(transferBeam.get()){
-      transConvJog(false);
-      intakeRollerOn(false);
+    if(!transferBeam.get()){
+      intakeOn(false);
       if(Robot.ballMagazine.readyToLoad()){
         loadMag();
       }
     
     }
     else {
-      transConvJog(true);
-      intakeRollerOn(true);
+      intakeOn(true);
     }
   }
   else{
-    transConvJog(false);
-    intakeRollerOn(false);
+    intakeOn(false);
   }
 }
 public void loadMag(){
-  transConvJog(true);
-  if(magLimitSwitch.get()){
-    transConvJog(false);
-    Robot.ballMagazine.loadBall();
+  
+  intakeOn(true);
+  Robot.ballMagazine.loadBall();
+  
+}
+
+public void intakeOn(boolean on){
+  if(on){
+    intakeRollerMotor.set(-RobotMap.intakeJogSpeed);
+    transferConveyorMotor.set(-RobotMap.intakeJogSpeed);
+  }
+  else{
+    intakeRollerMotor.set(0.0);
+    transferConveyorMotor.set(0.0);
   }
 }
 
-public void intakeRollerOn(boolean on){
-  if(on){intakeRollerMotor.set(.3);}
-  else{intakeRollerMotor.set(0.0);}
-}
-public void transConvJog(boolean on){
-if(on){transferConveyorMotor.set(.3);}
-else{transferConveyorMotor.set(0.0);}
-}
 public boolean toggleActive(){
   active = !active;
   return active;
@@ -79,7 +83,10 @@ public boolean toggleActive(){
 public void intakeStatus(){
   SmartDashboard.putNumber("intake roller setting", intakeRollerMotor.get());
   SmartDashboard.putNumber("transfer conveyor setting", transferConveyorMotor.get());
-  SmartDashboard.putBoolean("Beam Broken", transferBeam.get());
+  SmartDashboard.putBoolean("Beam Connected", transferBeam.get());
+  //SmartDashboard.putBoolean("Magazine Switch OPEN", magLimitSwitch.get());
+  
+  SmartDashboard.putBoolean("Intake Active", active);
 
 }
   @Override

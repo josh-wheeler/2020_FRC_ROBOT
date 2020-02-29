@@ -30,10 +30,10 @@ public class ShooterSubsystem extends Subsystem {
   CANPIDController bottomPID = bottomShooterMotor.getPIDController();
   public boolean shooterOn;
   private double topTargetRPM, bottomTargetRPM;
-  private static final double p = 0.00005; // .5
+  private static final double p = 0.00015; // .5
   private static final double i = 0.000001; // .0
   private static final double d = 0.0; // .0
-  private static final double ff = .00015;
+  private static final double ff = .00005;
   private static final double maxOutputRange = 1; 
   private static final double minOutputRange = -1;
 

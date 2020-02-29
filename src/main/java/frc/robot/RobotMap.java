@@ -29,24 +29,34 @@ public class RobotMap {
   public static int magazineMotorPort = 9;
   public static int intakeRollerMotorPort = 10;
   public static int transferConveyorMotorPort = 11;
+  public static int colorSpinnerMotorPort = 12;
  
 
   //constants for motor acceleration and max speed. Used in drive subsystem
-  public static double maxAccel = .02;
+  public static double maxAccel = .015;
   public static double maxSpeed = 1.0;
   public static double turnMultiplier = .5;
+
+  //constants for aiming
+  public static double fastAimSpeed = 0.5;
+  public static double slowAimSpeed = 0.3;
+ 
+  //deadzone for when the Aim method stops turning the robot.
+  public static double aimDeadZone = 1.0;
+
+
   //default shooter speed. .4 seems good at 10 feet
   public static double ShooterDefaultSpeed = .40;
   //percentage that top motor will slow to for backspin. (set to 1 to make them spin equally)
   public static double topShooterPercentage = .75;
   //for shooter upToSpeed boolean
-  public static double upToSpeedRange = 100.0;
+  public static double upToSpeedRange = 300.0;
   public static double shooterTimout = 50;
  
   //other constants
   public static int wheelDiam = 8;
   //lift heights
-  public static double liftHeightMax = 500; //actual max 500-ish. leaving low for testitng purposes
+  public static double liftHeightMax = 500; //actual max 500-ish. leaving low for testing purposes
   public static double liftHeightHome = 5.0;//set to 5 so we aren't constantly contacting the limit switch.
   public static double liftHeightWheelSetup = 100.0;
   public static double liftHeightWheelSpin = 90.0;
@@ -96,10 +106,11 @@ public class RobotMap {
   public static CANSparkMaxLowLevel.MotorType NEO = CANSparkMaxLowLevel.MotorType.kBrushless;
   public static CANSparkMaxLowLevel.MotorType neo550 = CANSparkMaxLowLevel.MotorType.kBrushless;
 
-  public static double positionRangeModifier = .05;
+  public static double positionRangeModifier = .15;
   public static double magPos_1 = 0.0;
   public static double magPos_2 = 0.33;
   public static double magPos_3 = 0.66;
-  public static double magJogSpeed = 0.2; //0.4 for competition
+  public static double magJogSpeed = 0.1; //0.4 for competition
+  public static double intakeJogSpeed = 0.4;
 
 }

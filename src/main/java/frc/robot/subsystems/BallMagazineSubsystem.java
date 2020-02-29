@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.commands.JogMagCommand;
 
 /**
  * Add your docs here.
@@ -36,16 +37,20 @@ public class BallMagazineSubsystem extends Subsystem {
   public BallMagSlot BS3 = new BallMagSlot();
 
   //number of rotations required to advance the ball 120°. 
-  private double rotateAmount = 10;
+  private double rotateAmount = -21;
   //number to add rotateAmount to so motor always travels in one direction.
   private double currentSetPosition = 0;
 
-  private double kP = 0.00003; // .5
-  private double kI = 2e-6; // .0
-  private double kD = 1e-6;//0.000001;
-  private double kIz = 5;
+  public int ballCount = 0;
+
+  public boolean active;
+
+  private double kP = 1.0; // .5
+  private double kI = 0.0; // .0
+  private double kD = 0.0;//0.000001;
+  private double kIz = 1;
   private double kFF = 0.0;
-  private double kMaxOutput = 1; 
+  private double kMaxOutput = 0; 
   private double kMinOutput = -1;
 
 
@@ -53,6 +58,7 @@ public class BallMagazineSubsystem extends Subsystem {
 //-----------------------------------------
 
   public BallMagazineSubsystem(){
+    active = false;
 
     magazineMotor.restoreFactoryDefaults();
 
@@ -64,23 +70,32 @@ public class BallMagazineSubsystem extends Subsystem {
     magazinePID.setFF(kFF);
     magazinePID.setOutputRange(kMinOutput, kMaxOutput);
 
+    //this zeros the motor encoder (we use the motor encoder to PID the magazine to position)
     magazineEncoder.setPosition(0.0);
 
     setCurrentMagPos();
 
-    //the next lines set the ball present for competition pre-loading. this must be done after setCurrentMagPos() since that sets
+    /*the next lines set the ball present for competition pre-loading. this must be done after setCurrentMagPos() since that sets
     //ballpresent at load position to false
     BS1.ballPresent=true;
     BS2.ballPresent=true;
     BS3.ballPresent=true;
-
+    */
+    ballCounter();
+    magPIDStatus();
   }
 
+  public void setRevolve(){
+    currentSetPosition = currentSetPosition + rotateAmount;
+
+  }
+  public void zeroSetposition(){
+    currentSetPosition = 0.0;
+  }
   public void revolve(){
         
       //this adds 120° of movement each time, so the motor only goes one direction.
-      //I'm using the motor's PID and built in encoder to move to position, but the absolute rev encoder to set where the shaft is. this is for slippage, and may have been unneccesary
-      currentSetPosition = currentSetPosition + rotateAmount;
+      //I'm using the motor's PID and built in encoder to move to position, but the absolute rev encoder to set where the mag position is.
       magazinePID.setReference(currentSetPosition, ControlType.kPosition);
       setCurrentMagPos();
     
@@ -119,14 +134,24 @@ public class BallMagazineSubsystem extends Subsystem {
     if(BS3.atLoadPos)
       BS3.setBallLoaded();
       
-
     if(!oneInTheChamber())
       revolve();
   }
 
   public void magazineStatus(){
-    SmartDashboard.putNumber("Abs Encoder GET()",revAbsoluteEncoder.get());
+    SmartDashboard.putNumber("magazine setting",currentSetPosition);
+    SmartDashboard.putNumber("magazine position",magazineEncoder.getPosition());
     SmartDashboard.putNumber("getAbsEncoderPos result",getAbsEncoderPos());
+    SmartDashboard.putNumber("How many balls do we have",ballCount);
+
+    SmartDashboard.putBoolean("BS1 at load", BS1.atLoadPos);
+    SmartDashboard.putBoolean("BS2 at load", BS2.atLoadPos);
+    SmartDashboard.putBoolean("BS3 at load", BS3.atLoadPos);
+    SmartDashboard.putBoolean("BS1 ball present", BS1.ballPresent);
+    SmartDashboard.putBoolean("BS2 ball present", BS2.ballPresent);
+    SmartDashboard.putBoolean("BS3 ball present", BS3.ballPresent);
+
+
 
   }
 
@@ -138,7 +163,17 @@ public class BallMagazineSubsystem extends Subsystem {
     }
   }
 
-
+  //this checks to see how many balls we have inside (that's what she said!)
+  public void ballCounter(){
+    int BC = 0;
+    if(BS1.ballPresent)
+    BC++;
+    if(BS2.ballPresent)
+    BC++;
+    if(BS3.ballPresent)
+    BC++;
+    ballCount = BC;
+  }
 
   public void setCurrentMagPos(){
    double curPos = getAbsEncoderPos();
@@ -153,16 +188,29 @@ public class BallMagazineSubsystem extends Subsystem {
      BS3.setAtLoadPosition();
    }
   }
+
+  //this is just for the jog function
+  public boolean toggleActive(){
+    active = !active;
+    return active;
+  }
+  
   public double getAbsEncoderPos(){
     double raw = revAbsoluteEncoder.get();
     raw = raw - (int)raw;
     return Math.abs(raw);
+  }
 
+  public void jogMag(){
+    if(active)
+    magazineMotor.set(-RobotMap.magJogSpeed);
+    else
+    magazineMotor.set(0.0);
   }
-  public void jogMag(double amount){
-    amount = Math.signum(amount) * RobotMap.magJogSpeed;
-    magazineMotor.set(amount);
+  public void stopMag(){
+    magazineMotor.set(0.0);
   }
+
   private boolean positionRange(double input, double target){
     double high,low;
     high = Math.abs(target) + RobotMap.positionRangeModifier;
@@ -172,9 +220,62 @@ public class BallMagazineSubsystem extends Subsystem {
     else 
     return false;
   }
+
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    // setDefaultCommand(new MySpecialCommand());
+    setDefaultCommand(new JogMagCommand());
   }
+
+
+
+  public void magPIDStatus(){
+    // display PID coefficients on SmartDashboard
+    SmartDashboard.putNumber("P Gain", kP);
+    SmartDashboard.putNumber("I Gain", kI);
+    SmartDashboard.putNumber("D Gain", kD);
+    SmartDashboard.putNumber("I Zone", kIz);
+    SmartDashboard.putNumber("Feed Forward", kFF);
+    //SmartDashboard.putNumber("Max Output", kMaxOutput);
+   // SmartDashboard.putNumber("Min Output", kMinOutput);
+    //display smartmotion coefficients
+    SmartDashboard.putNumber("Motor Output", magazineMotor.getAppliedOutput());
+    //SmartDashboard.putNumber("Max Acceleration", maxAccel);
+    //SmartDashboard.putNumber("Max Velocity", maxVel);
+
+  }
+
+  public void MagMotorTuner(){
+    // read PID coefficients from SmartDashboard
+    double p = SmartDashboard.getNumber("P Gain", 0);
+    double i = SmartDashboard.getNumber("I Gain", 0);
+    double d = SmartDashboard.getNumber("D Gain", 0);
+    double iz = SmartDashboard.getNumber("I Zone", 0);
+    double ff = SmartDashboard.getNumber("Feed Forward", 0);
+   // double max = SmartDashboard.getNumber("Max Output", 0);
+   // double min = SmartDashboard.getNumber("Min Output", 0);
+    //double maxV = SmartDashboard.getNumber("Max Velocity", 0);
+    //double minV = SmartDashboard.getNumber("Min Velocity", 0);
+    //double maxA = SmartDashboard.getNumber("Max Acceleration", 0);
+    //double allE = SmartDashboard.getNumber("Allowed Closed Loop Error", 0);
+ 
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+    if((p != kP)) { magazinePID.setP(p); kP = p; }
+    if((i != kI)) { magazinePID.setI(i); kI = i; }
+    if((d != kD)) { magazinePID.setD(d); kD = d; }
+    if((iz != kIz)) { magazinePID.setIZone(iz); kIz = iz; }
+    if((ff != kFF)) { magazinePID.setFF(ff); kFF = ff; }
+   // if((max != kMaxOutput) || (min != kMinOutput)) { 
+    //   magazinePID.setOutputRange(min, max); 
+   //   kMinOutput = min; kMaxOutput = max; 
+   // }
+    //if((maxV != maxVel)) { masterPID.setSmartMotionMaxVelocity(maxV,0); maxVel = maxV; }
+    //if((minV != minVel)) { masterPID.setSmartMotionMinOutputVelocity(minV,0); minVel = minV; }
+    //if((maxA != maxAccel)) { masterPID.setSmartMotionMaxAccel(maxA,0); maxAccel = maxA; }
+   // if((allE != allowedErr)) { masterPID.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
+   }
+ 
+
+
+
 }

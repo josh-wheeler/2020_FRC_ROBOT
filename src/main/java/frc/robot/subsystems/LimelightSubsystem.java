@@ -11,8 +11,10 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.LimelightDriverCamCommand;
+import frc.robot.commands.LimelightTargetCamCommand;
 
 /**
  * Add your docs here.
@@ -50,8 +52,8 @@ public class LimelightSubsystem extends Subsystem {
 
     SmartDashboard.putNumber("Y angle", ty());
     SmartDashboard.putNumber("X angle", tx());
-    SmartDashboard.putNumber("Skew?", ts());
-    SmartDashboard.putNumber("Target area", ta());
+    //SmartDashboard.putNumber("Skew?", ts());
+    //SmartDashboard.putNumber("Target area", ta());
     SmartDashboard.putNumber("Target aquired", tv());
 
   }
@@ -87,38 +89,22 @@ public class LimelightSubsystem extends Subsystem {
       }
     
   }
+
+
   public double AIM(){
-    double steerAdjust = 0;
-    double minAdjust = .02;
-    double maxAdjust = .1;
-    double kP = 0.05;
-
-    //tx() range: -29.8 to 29.8
-    double error = tx();
-
-    //checks to see if limelight has target
-    if(tv() == 0.0){
-      //when target not found, set steerAdjust to slowly scan right
-      steerAdjust = 0.1;           
-    }  
-   else{
-      if(Math.abs(error)>2.0){
-        steerAdjust = (kP*error); //-minAdjust
-      }
-      else if(Math.abs(error)<2.0){
-        steerAdjust = (kP*error) + minAdjust;
-      }
-   }
-   SmartDashboard.putNumber("turnToTarget setting", steerAdjust);
-   //sends adjusted limelight tx() to turnToTarget method on drive subsystem  
-   if(steerAdjust > maxAdjust){
-     steerAdjust = maxAdjust;
-   }
-   else if(steerAdjust < minAdjust){
-     steerAdjust = 0.0;
-   }
-   return steerAdjust;            
+    //this gets changed to a speed constant in the turnToTarget method. the direction is passed to get the sign (for direction, obv)
+    double direction = tx();
+    if(tv() == 1.0 ){
+      if(Math.abs(direction) > RobotMap.aimDeadZone)
+      return direction;
+      else
+      return 0.0;
+    }
+    else{
+      return 0.4;
+    }
   }
+
   public double calcShooterSpeed(){
     //ty() range:-24.85 to 24.85
     //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
@@ -133,5 +119,7 @@ public class LimelightSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new LimelightDriverCamCommand());
+    //setDefaultCommand(new LimelightTargetCamCommand());
+
   }
 }

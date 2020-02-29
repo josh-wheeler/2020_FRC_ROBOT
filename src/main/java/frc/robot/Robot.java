@@ -33,7 +33,7 @@ public class Robot extends TimedRobot {
   public static DriveSubsystem driveSubsystem = new DriveSubsystem();
   public static ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   public static LimelightSubsystem limelight = new LimelightSubsystem();
-  public static ColorSensorSubsystem colorSensor = new ColorSensorSubsystem();
+  //public static ColorSensorSubsystem colorSensor = new ColorSensorSubsystem();
   public static ScissorLiftSubsystem scissorLift = new ScissorLiftSubsystem();
   public static BallMagazineSubsystem ballMagazine = new BallMagazineSubsystem();
   public static IntakeSubsystem intake = new IntakeSubsystem();
@@ -68,14 +68,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    SmartDashboard.putNumber("Right Trigger Axis Value", Robot.oi.rightTriggerAxis());
+   // SmartDashboard.putNumber("Right Trigger Axis Value", Robot.oi.rightTriggerAxis());
 
-    limelight.LimelightUpdate();
+    //limelight.LimelightUpdate();
     //shooterSubsystem.shooterStatus();
-    //driveSubsystem.driveStatus();
+   // driveSubsystem.driveStatus();
     //colorSensor.checkColor();
     ballMagazine.magazineStatus();
-    scissorLift.liftStatus();
+    //scissorLift.liftStatus();
     intake.intakeStatus();
     if(!shooterSubsystem.upToSpeed()){
       shooterTimeout++;
@@ -87,7 +87,7 @@ public class Robot extends TimedRobot {
 
     if(shooterTimeout > RobotMap.shooterTimout){
       shooterSubsystem.stopShooter();
-      for(int i = 0; i<100; i++)
+      for(int i = 0; i<10; i++)
       System.out.println("SHOOTER E-STOPPED");
     }
   }

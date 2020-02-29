@@ -11,9 +11,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.RobotMap;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatchResult;
+import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorMatch;
 
 /**
@@ -54,6 +56,9 @@ public class ColorSensorSubsystem extends Subsystem {
   private final Color GreenTarget = ColorMatch.makeColor(0.197, 0.561, 0.240);
   private final Color RedTarget = ColorMatch.makeColor(0.561, 0.232, 0.114);
   private final Color YellowTarget = ColorMatch.makeColor(0.361, 0.524, 0.113);
+
+  private CANSparkMax colorMotor = new CANSparkMax(RobotMap.colorSpinnerMotorPort, RobotMap.neo550);
+
 
   public ColorSensorSubsystem(){
     colorMatcher.addColorMatch(BlueTarget);
@@ -104,6 +109,9 @@ public class ColorSensorSubsystem extends Subsystem {
     SmartDashboard.putString("Detected Color", colorString);
   }
   
+  public void spinWheel(double jog){
+    colorMotor.set(jog);
+  }
 
   @Override
   public void initDefaultCommand() {

@@ -13,6 +13,7 @@ import com.revrobotics.CANSparkMax;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.HumanDriveCommand;
 
@@ -28,6 +29,9 @@ public class DriveSubsystem extends Subsystem {
   CANSparkMax rightSlave = new CANSparkMax(RobotMap.rightSlavePort, RobotMap.NEO);
   CANEncoder rightEncoder = rightMaster.getEncoder();
   CANEncoder leftEncoder  = leftMaster.getEncoder();
+  CANEncoder rightSlaveEncoder = rightSlave.getEncoder();
+  CANEncoder leftSlaveEncoder  = leftSlave.getEncoder();
+
   // instantiate a new DifferentialDrive object and pass motor controllers as arguments
   public DifferentialDrive drive = new DifferentialDrive(leftMaster, rightMaster);
   
@@ -55,7 +59,7 @@ public class DriveSubsystem extends Subsystem {
 
   public void humanDrive(double move, double turn){
 
-    //for joystick deadspots(less touchy conrols)
+    //for joystick deadspots(less touchy controls)
     if (Math.abs(move) < 0.10) {				
       move = 0;
     }
@@ -72,12 +76,26 @@ public class DriveSubsystem extends Subsystem {
   // here. Call these from Commands.
 
 public void turnToTarget(double turnAngle){
-  //this will turn the robot when the AIM() method is called on the limelight. It will probably need to be filtered to go slowly
-  //lmelight x values are from -29.8 to positive 29.8
-  //turnAngle = turnAngle * 0.01;
+  /* 
+  this will turn the robot with a direction value from the AIM() method on the limelight. 
+  limelight x values are from -29.8 to positive 29.8  
+  */ 
+  
+  SmartDashboard.putNumber("Raw turnToTarget setting", turnAngle);
 
-  //TUNING: once mounted, we'll need to measure how much of an input to the tankdrive = 1 degree of motion. Then I can PID to that number
+  if(turnAngle != 0.0){
+    if (Math.abs(turnAngle) > 10) 
+    turnAngle = Math.signum(turnAngle) * RobotMap.fastAimSpeed;
+    else
+    turnAngle = Math.signum(turnAngle) * RobotMap.slowAimSpeed;
+  }
+
+  SmartDashboard.putNumber("Adjusted turnToTarget setting", turnAngle);
+
   drive.tankDrive(turnAngle, -turnAngle);
+
+  SmartDashboard.putNumber("calc shooter speed", Robot.limelight.calcShooterSpeed());
+  
 }
   //for smoothing acceleration. It uses a maxAccel variable to use the periodic function timing to slowly increase robot speed. 
   //i.e. periodic calls every 20ms, the robot's speed can only increase by the maxAccel (.02) every 20ms. prevents jerky robot motion

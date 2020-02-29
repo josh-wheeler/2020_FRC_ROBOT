@@ -27,9 +27,9 @@ public class ScissorLiftSubsystem extends Subsystem {
   CANSparkMax liftMasterMotor = new CANSparkMax(RobotMap.liftMasterPort, RobotMap.NEO);
   CANSparkMax liftSlaveMotor = new CANSparkMax(RobotMap.liftSlavePort, RobotMap.NEO);
   CANEncoder masterEncoder = liftMasterMotor.getEncoder();
- // CANEncoder rightEncoder = rightLiftMotor.getEncoder();
+  CANEncoder slaveEncoder = liftSlaveMotor.getEncoder();
   CANPIDController masterPID = liftMasterMotor.getPIDController();
-  //CANPIDController rightPID = rightLiftMotor.getPIDController();
+  CANPIDController slavePID = liftSlaveMotor.getPIDController();
   public DigitalInput downSwitch = new DigitalInput(RobotMap.leftScissorLimitSwitchPort);
 
   private double kP = 0.00003; // .5
@@ -72,7 +72,10 @@ public class ScissorLiftSubsystem extends Subsystem {
     //if(downSwitch.get()){setHomePosition();}else{homedOut=false;}
 
     setHomePosition();
-    
+    //liftPIDStatus();
+
+  }
+  public void liftPIDStatus(){
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("P Gain", kP);
     SmartDashboard.putNumber("I Gain", kI);
@@ -87,7 +90,6 @@ public class ScissorLiftSubsystem extends Subsystem {
     //SmartDashboard.putNumber("Max Velocity", maxVel);
 
   }
-
   //updates smartdashboard. called in robot's periodic method
   public void liftStatus(){
     SmartDashboard.putNumber("Lift Motor Speed", masterEncoder.getVelocity());

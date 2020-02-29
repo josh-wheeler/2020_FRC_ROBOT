@@ -11,9 +11,17 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.AimCommand;
+import frc.robot.commands.IntakeActiveToggle;
+import frc.robot.commands.JogMagCommand;
 import frc.robot.commands.JogLiftCommand;
 import frc.robot.commands.LiftMoveToPositionCommand;
 import frc.robot.commands.LiftStopCommand;
+import frc.robot.commands.MagToggleCommand;
+import frc.robot.commands.ShooterSpinCommand;
+import frc.robot.commands.ShooterStopCommand;
+import frc.robot.commands.TEST_COMMAND;
+import frc.robot.commands.zeromagpos;
 import frc.robot.subsystems.ScissorLiftSubsystem.liftPosition;
 
 /**
@@ -56,15 +64,19 @@ public class OI {
 
   public OI(){
     
-    //Y.whenPressed(new ShooterSpinCommand());
-    //B.whenPressed(new ShooterSpinCommand(.35));
-    //X.whenPressed(new ShooterStopCommand());
-    //A.whileHeld(new AimCommand());
-    
-    Y1.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
-    A1.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
+    Y1.whenPressed(new IntakeActiveToggle());
+    X1.whenPressed(new zeromagpos());
+    START1.whenPressed(new ShooterSpinCommand(.5));
+    //X1.whenPressed(new ShooterStopCommand());
+    //A1.whileHeld(new AimCommand());
+    A1.whenPressed(new TEST_COMMAND());
+    //X1.whenPressed(new MagToggleCommand());
+    B1.whenPressed(new ShooterStopCommand());
+
+    //Y1.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
+    //A1.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
    // B.whileHeld(new LiftHomeOutCommand());
-    X1.whenPressed(new LiftStopCommand());
+    //X1.whenPressed(new LiftStopCommand());
     RBumper1.whileHeld(new JogLiftCommand(1));
     LBumper1.whileHeld(new JogLiftCommand(-1)); 
 
