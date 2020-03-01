@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AimCommand;
+import frc.robot.commands.CHOOTCommand;
 import frc.robot.commands.IntakeActiveToggle;
 import frc.robot.commands.JogMagCommand;
 import frc.robot.commands.JogLiftCommand;
@@ -65,11 +66,10 @@ public class OI {
   public OI(){
     
     Y1.whenPressed(new IntakeActiveToggle());
-    X1.whenPressed(new zeromagpos());
     START1.whenPressed(new ShooterSpinCommand(.5));
     //X1.whenPressed(new ShooterStopCommand());
-    //A1.whileHeld(new AimCommand());
-    B1.whenPressed(new MagRevolveCommand());
+    A1.whileHeld(new AimCommand());
+    B1.whenPressed(new CHOOTCommand());
     //X1.whenPressed(new MagToggleCommand());
     BACK1.whenPressed(new ShooterStopCommand());
 
