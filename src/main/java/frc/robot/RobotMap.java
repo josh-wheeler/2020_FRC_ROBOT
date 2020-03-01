@@ -92,8 +92,8 @@ public class RobotMap {
   public static int leftScissorLimitSwitchPort   = 3;
   public static int rightScissorLimitSwitchPort  = 4;
   public static int transferBeamBreakPort        = 1;
-  public static int magBeamBreakPort             = 2;
-  public static int absEncoderPort               = 0;
+  public static int magBeamBreakPort             = 0;
+  
 
   
   // If you are using multiple modules, make sure to define both the port

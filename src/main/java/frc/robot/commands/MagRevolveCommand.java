@@ -13,11 +13,11 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class MagToggleCommand extends InstantCommand {
+public class MagRevolveCommand extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public MagToggleCommand() {
+  public MagRevolveCommand() {
     super();
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -26,7 +26,8 @@ public class MagToggleCommand extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.ballMagazine.toggleActive();
+    //Robot.ballMagazine.toggleActive();
+    Robot.ballMagazine.revolve();
   }
 
 }

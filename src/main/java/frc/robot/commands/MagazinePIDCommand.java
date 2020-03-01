@@ -10,8 +10,8 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TEST_COMMAND extends Command {
-  public TEST_COMMAND() {
+public class MagazinePIDCommand extends Command {
+  public MagazinePIDCommand() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.ballMagazine);
   }
@@ -19,15 +19,16 @@ public class TEST_COMMAND extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    Robot.ballMagazine.setRevolve();
-    Robot.ballMagazine.revolve();
+    
+    //Robot.ballMagazine.revolve();
 
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.ballMagazine.revolve();
+   
+    Robot.ballMagazine.magPIDPosition();
     Robot.ballMagazine.MagMotorTuner();
 
   }
@@ -35,7 +36,7 @@ public class TEST_COMMAND extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return true;
+    return false;
   }
 
   // Called once after isFinished returns true

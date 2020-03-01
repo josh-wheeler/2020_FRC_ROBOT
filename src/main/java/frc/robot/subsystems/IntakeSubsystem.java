@@ -21,49 +21,50 @@ import frc.robot.commands.IntakeCommand;
  * Add your docs here.
  */
 public class IntakeSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+
 CANSparkMax intakeRollerMotor = new CANSparkMax(RobotMap.intakeRollerMotorPort,RobotMap.neo550);
 CANSparkMax transferConveyorMotor = new CANSparkMax(RobotMap.transferConveyorMotorPort,RobotMap.neo550);
-//CANEncoder intakeEncoder = intakeRollerMotor.getEncoder();
-//CANEncoder transferEncoder = transferConveyorMotor.getEncoder();
+
 
 public DigitalInput transferBeam = new DigitalInput(RobotMap.transferBeamBreakPort);
-//public DigitalInput magLimitSwitch = new DigitalInput(RobotMap.magBeamBreakPort);
+public DigitalInput magBeam = new DigitalInput(RobotMap.magBeamBreakPort);
+
 private boolean active;
 
 public IntakeSubsystem(){
-  //intakeRollerMotor.restoreFactoryDefaults();
-  //transferConveyorMotor.restoreFactoryDefaults();
+  
   intakeRollerMotor.setIdleMode(IdleMode.kBrake);
   transferConveyorMotor.setIdleMode(IdleMode.kBrake);
   active = false;
+
 }
 
-public void ballIntake(){
+public void ballIntake() {
 
   if(active){
+
+    intakeOn(true);
+
     if(!transferBeam.get()){
+     
+     while(!Robot.ballMagazine.readyToLoad()){
       intakeOn(false);
-      if(Robot.ballMagazine.readyToLoad()){
-        loadMag();
+     }
+
+     intakeOn(true);
+     if(!magBeam.get()){
+       Robot.ballMagazine.loadBall();
       }
+       
+    }
     
-    }
-    else {
-      intakeOn(true);
-    }
+  
   }
   else{
     intakeOn(false);
   }
 }
-public void loadMag(){
-  
-  intakeOn(true);
-  Robot.ballMagazine.loadBall();
-  
-}
+
 
 public void intakeOn(boolean on){
   if(on){
@@ -83,13 +84,13 @@ public boolean toggleActive(){
 public void intakeStatus(){
   SmartDashboard.putNumber("intake roller setting", intakeRollerMotor.get());
   SmartDashboard.putNumber("transfer conveyor setting", transferConveyorMotor.get());
-  SmartDashboard.putBoolean("Beam Connected", transferBeam.get());
-  //SmartDashboard.putBoolean("Magazine Switch OPEN", magLimitSwitch.get());
+  SmartDashboard.putBoolean("Intake Beam Connected", transferBeam.get());
+  SmartDashboard.putBoolean("Magazine Beam Connected", magBeam.get());
   
   SmartDashboard.putBoolean("Intake Active", active);
-
 }
-  @Override
+ 
+@Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     setDefaultCommand(new IntakeCommand());

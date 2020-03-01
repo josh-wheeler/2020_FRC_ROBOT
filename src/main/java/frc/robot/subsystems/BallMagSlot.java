@@ -24,7 +24,7 @@ public class BallMagSlot {
     }
     public void setBallLoaded(){
         setBallPresent(true);;
-        setLoadposition(false);
+        //setLoadposition(false);
     }
     public void atFirePosition(){
 

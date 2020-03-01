@@ -17,10 +17,10 @@ import frc.robot.commands.JogMagCommand;
 import frc.robot.commands.JogLiftCommand;
 import frc.robot.commands.LiftMoveToPositionCommand;
 import frc.robot.commands.LiftStopCommand;
-import frc.robot.commands.MagToggleCommand;
+import frc.robot.commands.MagRevolveCommand;
 import frc.robot.commands.ShooterSpinCommand;
 import frc.robot.commands.ShooterStopCommand;
-import frc.robot.commands.TEST_COMMAND;
+import frc.robot.commands.MagazinePIDCommand;
 import frc.robot.commands.zeromagpos;
 import frc.robot.subsystems.ScissorLiftSubsystem.liftPosition;
 
@@ -69,9 +69,9 @@ public class OI {
     START1.whenPressed(new ShooterSpinCommand(.5));
     //X1.whenPressed(new ShooterStopCommand());
     //A1.whileHeld(new AimCommand());
-    A1.whenPressed(new TEST_COMMAND());
+    B1.whenPressed(new MagRevolveCommand());
     //X1.whenPressed(new MagToggleCommand());
-    B1.whenPressed(new ShooterStopCommand());
+    BACK1.whenPressed(new ShooterStopCommand());
 
     //Y1.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
     //A1.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
