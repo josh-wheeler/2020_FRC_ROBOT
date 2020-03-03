@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.subsystems.LimelightSubsystem.camMode;
 import frc.robot.subsystems.LimelightSubsystem.ledMode;
@@ -30,6 +31,7 @@ public class AimCommand extends Command {
   @Override
   protected void execute() {
    Robot.driveSubsystem.turnToTarget(Robot.limelight.AIM());
+   //Robot.limelight.calcShooterSpeed();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -47,6 +49,9 @@ public class AimCommand extends Command {
     //Robot.limelight.setCamMode(camMode.driver);
     //Robot.limelight.setLed(ledMode.off);
     Robot.driveSubsystem.turnToTarget(0.0);
+    Robot.limelight.calcShooterSpeed();
+
+    
   }
 
   // Called when another command which requires one or more of the same

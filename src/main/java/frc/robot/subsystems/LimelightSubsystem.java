@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.LimelightDriverCamCommand;
-import frc.robot.commands.LimelightTargetCamCommand;
 
 /**
  * Add your docs here.
@@ -24,6 +23,8 @@ public class LimelightSubsystem extends Subsystem {
   // here. Call these from Commands.
   
   public NetworkTable llTable = NetworkTableInstance.getDefault().getTable("limelight");
+  
+
 
   public enum camMode{
     driver, target
@@ -36,7 +37,6 @@ public class LimelightSubsystem extends Subsystem {
     //sets camera mode to driver cam and led off for initial startup
    //setCamMode(camMode.driver);
    //setLed(ledMode.off);
-
   }
   //returns current value for limelight variables
   public double tx()  {return llTable.getEntry("tx").getDouble(0);}
@@ -53,10 +53,12 @@ public class LimelightSubsystem extends Subsystem {
     SmartDashboard.putNumber("Y angle", ty());
     SmartDashboard.putNumber("X angle", tx());
     //SmartDashboard.putNumber("Skew?", ts());
-    //SmartDashboard.putNumber("Target area", ta());
+    SmartDashboard.putNumber("Target area", ta());
     SmartDashboard.putNumber("Target aquired", tv());
+    //SmartDashboard.putNumber("Distance to Target", distanceToTarget);
 
   }
+
   //sets the camera mode to Vision processor if true, driver cam if false
   public void setCamMode(camMode mode){
 
@@ -90,6 +92,10 @@ public class LimelightSubsystem extends Subsystem {
     
   }
 
+    //constants for AIM method
+    //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
+    //length of field: roughly 578. 
+    //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output =1 full power)
 
   public double AIM(){
     //this gets changed to a speed constant in the turnToTarget method. the direction is passed to get the sign (for direction, obv)
@@ -102,18 +108,20 @@ public class LimelightSubsystem extends Subsystem {
     }
     else{
       return 0.4;
+      //returning .4 as a default if there is no target allows us to slowly scan right and look for a target
     }
+
   }
 
-  public double calcShooterSpeed(){
+  public void calcShooterSpeed(){
     //ty() range:-24.85 to 24.85
     //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
-    //limelight angle: 45 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in 
+    //limelight angle: 25 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in 
     //length of field: roughly 578. 
     //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output =1 full power)
-    return  (RobotMap.targetHeight - RobotMap.limelightHeight) / Math.tan(ty() + RobotMap.limelightAngle)/RobotMap.distanceCoefficient;
-   
-
+    double distanceToTarget = (76) / Math.tan(ty() + 25);
+    if(distanceToTarget != 0)
+    Robot.shooterSubsystem.inputDistanceToGoal(distanceToTarget);
   }
   @Override
   public void initDefaultCommand() {

@@ -115,26 +115,27 @@ public class ScissorLiftSubsystem extends Subsystem {
 
     }
   }
+  //constants fo lift jogging
+  private int liftSafeUp = 350;
+  private int liftSafeDown = 10;
+  private double liftSafeJog = .1;
+  private double liftJog = .5;
 
   public void jogLift(double amount){
-    amount = Math.signum(amount) * RobotMap.liftJogSpeed;
+
+    if(masterEncoder.getPosition() < liftSafeDown || masterEncoder.getPosition() > liftSafeUp)
+    amount = Math.signum(amount) * liftSafeJog;
+    else
+    amount = Math.signum(amount) * liftJog;
+
+
     liftMasterMotor.set(amount);
   }
   
   public void stopLift(){   
     liftMasterMotor.set(0.0);
   }
-  /*public void homeOutLift(){
-    if(!homedOut){
-      while(!downSwitch.get()){
-        liftMasterMotor.set(-.01);
-      }
-    }
-    if(downSwitch.get()){
-      setHomePosition();
-      //moveToPosition(liftPosition.home);
-    }
-  }*/
+
 
   private void setHomePosition(){
     masterEncoder.setPosition(0.0);

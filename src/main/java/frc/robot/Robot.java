@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.AutomaticShootCommand;
 import frc.robot.commands.HumanDriveCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -50,8 +51,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     oi = new OI();
-    chooser.setDefaultOption("Default Auto", new HumanDriveCommand());
-    chooser.addOption("My Auto", new ShooterStopCommand());
+    chooser.setDefaultOption("Default Auto: humandrive", new HumanDriveCommand());
+    chooser.addOption("Automatic Shoot", new AutomaticShootCommand());
     SmartDashboard.putData("Auto mode", chooser); 
     
    
@@ -70,14 +71,14 @@ public class Robot extends TimedRobot {
 
    // SmartDashboard.putNumber("Right Trigger Axis Value", Robot.oi.rightTriggerAxis());
 
-    //limelight.LimelightUpdate();
-    //shooterSubsystem.shooterStatus();
+    limelight.LimelightUpdate();
+    shooterSubsystem.shooterStatus();
    // driveSubsystem.driveStatus();
     //colorSensor.checkColor();
     ballMagazine.magazineStatus();
-    //scissorLift.liftStatus();
+    scissorLift.liftStatus();
     intake.intakeStatus();
-    if(!shooterSubsystem.upToSpeed()){
+    /*if(!shooterSubsystem.upToSpeed()){
       shooterTimeout++;
       System.out.println("Shooter Timeout is " + shooterTimeout);
     }
@@ -89,7 +90,7 @@ public class Robot extends TimedRobot {
       shooterSubsystem.stopShooter();
       for(int i = 0; i<10; i++)
       System.out.println("SHOOTER E-STOPPED");
-    }
+    }*/
   }
   
   /**

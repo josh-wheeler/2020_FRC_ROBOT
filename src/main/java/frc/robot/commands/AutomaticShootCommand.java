@@ -17,7 +17,7 @@ public class AutomaticShootCommand extends CommandGroup {
   public AutomaticShootCommand() {
     // Add Commands here:
     addSequential(new AimCommand());
-    addSequential(new ShooterSpinCommand(Robot.limelight.calcShooterSpeed()));
+    addSequential(new CalcShooterSpinCommand());
     addSequential(new CHOOTCommand());
     
     //add ball magazine FF command here

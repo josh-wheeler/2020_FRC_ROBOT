@@ -81,7 +81,7 @@ public void turnToTarget(double turnAngle){
   limelight x values are from -29.8 to positive 29.8  
   */ 
   
-  SmartDashboard.putNumber("Raw turnToTarget setting", turnAngle);
+  //SmartDashboard.putNumber("Raw turnToTarget setting", turnAngle);
 
   if(turnAngle != 0.0){
     if (Math.abs(turnAngle) > 10) 
@@ -90,11 +90,11 @@ public void turnToTarget(double turnAngle){
     turnAngle = Math.signum(turnAngle) * RobotMap.slowAimSpeed;
   }
 
-  SmartDashboard.putNumber("Adjusted turnToTarget setting", turnAngle);
+  //SmartDashboard.putNumber("Adjusted turnToTarget setting", turnAngle);
 
   drive.tankDrive(turnAngle, -turnAngle);
 
-  SmartDashboard.putNumber("calc shooter speed", Robot.limelight.calcShooterSpeed());
+  //SmartDashboard.putNumber("calc shooter speed", Robot.limelight.calcShooterSpeed());
   
 }
   //for smoothing acceleration. It uses a maxAccel variable to use the periodic function timing to slowly increase robot speed. 

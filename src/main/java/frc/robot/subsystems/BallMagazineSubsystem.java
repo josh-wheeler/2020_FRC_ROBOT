@@ -10,29 +10,28 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
-import frc.robot.commands.JogMagCommand;
 import frc.robot.commands.MagazinePIDCommand;
 
 /**
  * Add your docs here.
  */
 public class BallMagazineSubsystem extends Subsystem {
-  // Put methods for controlling this subsystem
-  // here. Call these from Commands.
+ 
 
   CANSparkMax magazineMotor = new CANSparkMax(RobotMap.magazineMotorPort, RobotMap.neo550);
   CANEncoder magazineEncoder = magazineMotor.getEncoder();
   CANPIDController magazinePID = magazineMotor.getPIDController();
 
+
+  public DigitalInput magBeam = new DigitalInput(RobotMap.magBeamBreakPort);
 
 
   public BallMagSlot BS1 = new BallMagSlot();
@@ -40,17 +39,21 @@ public class BallMagazineSubsystem extends Subsystem {
   public BallMagSlot BS3 = new BallMagSlot();
 
   //number of rotations required to advance the ball 120°. 
-  private double rotateAmount = -21;
+  private double rotateAmount = -19.3;
   //number to add rotateAmount to so motor always travels in one direction.
   private double currentSetPosition = 0;
 
   public int ballCount = 0;
+  private int loadTimer = 0;
+
+  //this is for conveyor timing
+  private static final int loadTimerSetting = 50;
 
   public boolean active;
 
   private double kP = .01; // .0095
-  private double kI = 15e-6; // .000015
-  private double kD = 0.2;//0.000000001;
+  private double kI = 52e-8; // .000015
+  private double kD = 0.32;//0.000000001;
   private double kIz = 0.0;
   private double kFF = 0.0;
   private double kMaxOutput = 1.0; 
@@ -95,13 +98,29 @@ public class BallMagazineSubsystem extends Subsystem {
     magazinePID.setReference(currentSetPosition, ControlType.kPosition);
   }
 
+  public void magMonitor(){
+
+    if(!magBeam.get()){
+      if(loadTimer == 0){
+        loadBall();
+        loadTimer = loadTimerSetting;
+      }
+    }
+    if(loadTimer > 0)
+    loadTimer--;
+
+  }
+
+
   public void zeroSetposition(){
     currentSetPosition = 0.0;
   }
 
+
   public void revolve(){
         
-    //this subrtracts 120° of movement each time, so the motor only goes one direction.
+    //this subtracts 120° of movement each time, so the motor only goes one direction.
+
     currentSetPosition = currentSetPosition + rotateAmount;
 
       if(BS1.atLoadPos){
@@ -122,14 +141,14 @@ public class BallMagazineSubsystem extends Subsystem {
 
  public boolean readyToLoad(){
   //this checks to see if the magazine slot at load position is ready to load(pretty self explanatory)
-    if(BS1.atLoadPos && !BS1.ballPresent)
+    if(BS1.atLoadPos && !BS1.ballPresent && loadTimer == 0)
       return true;
-    else if(BS2.atLoadPos && !BS2.ballPresent)
+    else if(BS2.atLoadPos && !BS2.ballPresent && loadTimer == 0)
       return true;
-    else if(BS3.atLoadPos && !BS3.ballPresent)
+    else if(BS3.atLoadPos && !BS3.ballPresent && loadTimer == 0)
       return true;
     else
-     return false;
+      return false;
   }
 
   public boolean oneInTheChamber(){
@@ -141,7 +160,7 @@ public class BallMagazineSubsystem extends Subsystem {
     else if(BS3.atLoadPos && BS2.ballPresent)
       return true;
     else
-    return false;
+      return false;
   }
 
   public void loadBall(){
@@ -161,7 +180,9 @@ public class BallMagazineSubsystem extends Subsystem {
     SmartDashboard.putNumber("magazine setting", currentSetPosition);
     SmartDashboard.putNumber("magazine position", magazineEncoder.getPosition());
     SmartDashboard.putNumber("BALLS", ballCount);
-
+    SmartDashboard.putBoolean("OneInTheChamber", oneInTheChamber());
+    SmartDashboard.putBoolean("Magazine Beam Connected", magBeam.get());
+    SmartDashboard.putNumber("Load Timer", loadTimer);
     SmartDashboard.putBoolean("BS1 at load", BS1.atLoadPos);
     SmartDashboard.putBoolean("BS2 at load", BS2.atLoadPos);
     SmartDashboard.putBoolean("BS3 at load", BS3.atLoadPos);

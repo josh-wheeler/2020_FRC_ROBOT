@@ -31,48 +31,6 @@ public class RobotMap {
   public static int transferConveyorMotorPort = 11;
   public static int colorSpinnerMotorPort = 12;
  
-
-  //constants for motor acceleration and max speed. Used in drive subsystem
-  public static double maxAccel = .015;
-  public static double maxSpeed = 1.0;
-  public static double turnMultiplier = .5;
-
-  //constants for aiming
-  public static double fastAimSpeed = 0.5;
-  public static double slowAimSpeed = 0.3;
- 
-  //deadzone for when the Aim method stops turning the robot.
-  public static double aimDeadZone = 1.0;
-
-
-  //default shooter speed. .4 seems good at 10 feet
-  public static double ShooterDefaultSpeed = .40;
-  //percentage that top motor will slow to for backspin. (set to 1 to make them spin equally)
-  public static double topShooterPercentage = .75;
-  //for shooter upToSpeed boolean
-  public static double upToSpeedRange = 300.0;
-  public static double shooterTimout = 50;
- 
-  //other constants
-  public static int wheelDiam = 8;
-  //lift heights
-  public static double liftHeightMax = 500; //actual max 500-ish. leaving low for testing purposes
-  public static double liftHeightHome = 5.0;//set to 5 so we aren't constantly contacting the limit switch.
-  public static double liftHeightWheelSetup = 100.0;
-  public static double liftHeightWheelSpin = 90.0;
-  public static double liftJogSpeed = 0.5; //0.4 for competition
-
-  //constants for AIM method
-    //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
-    //length of field: roughly 578. 
-    //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output =1 full power)
-    public static double distanceCoefficient = 578;
-    
-    //limelight angle: 45 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in
-    public static double limelightHeight = 22.25;
-    public static double targetHeight = 98.25;
-    public static double limelightAngle = 45; 
-
   //joysticks
   public static int joyStickPort = 0;
     
@@ -101,16 +59,42 @@ public class RobotMap {
   // public static int rangefinderPort = 1;
   // public static int rangefinderModule = 1;
 
+  //constants for motor acceleration and max speed. Used in drive subsystem
+  public static double maxAccel = .015;
+  public static double maxSpeed = 1.0;
+  public static double turnMultiplier = .7;
+
+  //constants for aiming
+  public static double fastAimSpeed = 0.5;
+  public static double slowAimSpeed = 0.3;
+ 
+  //deadzone for when the Aim method stops turning the robot.
+  public static double aimDeadZone = 1.0;
+
+
+  //default shooter speed. .4 seems good at 10 feet
+  public static double ShooterDefaultSpeed = .50;
+ 
+  //percentage that top motor will slow to for backspin. (set to 1 to make them spin equally)
+  public static double topShooterPercentage = .75;
+ 
+  //for shooter upToSpeed boolean
+  public static double upToSpeedRange = 300.0;
+  public static double shooterTimout = 50;
+  public static double shooterMAX = .9;
+
+  //lift heights
+  public static double liftHeightMax = 100; //actual max 500-ish. leaving low for testing purposes
+  public static double liftHeightHome = 10.0;//set to 10 for safety.
+  public static double liftHeightWheelSetup = 100.0;
+  public static double liftHeightWheelSpin = 90.0;
+
 
   //constants for Spark Max motor controller types. cleans up some of the drive subsystem code IMO.
   public static CANSparkMaxLowLevel.MotorType NEO = CANSparkMaxLowLevel.MotorType.kBrushless;
   public static CANSparkMaxLowLevel.MotorType neo550 = CANSparkMaxLowLevel.MotorType.kBrushless;
 
   public static double positionRangeModifier = .15;
-  public static double magPos_1 = 0.0;
-  public static double magPos_2 = 0.33;
-  public static double magPos_3 = 0.66;
-  public static double magJogSpeed = 0.1; //0.4 for competition
-  public static double intakeJogSpeed = 0.4;
+  public static double magJogSpeed = 0.1;
 
 }

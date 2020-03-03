@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.CHOOTCommand;
+import frc.robot.commands.CalcShooterSpinCommand;
 import frc.robot.commands.IntakeActiveToggle;
 import frc.robot.commands.JogMagCommand;
 import frc.robot.commands.JogLiftCommand;
@@ -63,11 +64,13 @@ public class OI {
   public Button LBumper2 = new JoystickButton(copilot, RobotMap.LBumpr);
   public Button RBumper2 = new JoystickButton(copilot, RobotMap.RBumpr);
 
+
+
   public OI(){
     
     Y1.whenPressed(new IntakeActiveToggle());
-    START1.whenPressed(new ShooterSpinCommand(.5));
-    //X1.whenPressed(new ShooterStopCommand());
+    START1.whenPressed(new CalcShooterSpinCommand());
+    X1.whenPressed(new ShooterSpinCommand());
     A1.whileHeld(new AimCommand());
     B1.whenPressed(new CHOOTCommand());
     //X1.whenPressed(new MagToggleCommand());
@@ -75,11 +78,11 @@ public class OI {
 
     //Y1.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
     //A1.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
-   // B.whileHeld(new LiftHomeOutCommand());
     //X1.whenPressed(new LiftStopCommand());
     RBumper1.whileHeld(new JogLiftCommand(1));
     LBumper1.whileHeld(new JogLiftCommand(-1)); 
 
+    //LBumper1.whenPressed(new ShooterSpinCommand(.5)); 
 
     
 

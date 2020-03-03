@@ -27,9 +27,11 @@ CANSparkMax transferConveyorMotor = new CANSparkMax(RobotMap.transferConveyorMot
 
 
 public DigitalInput transferBeam = new DigitalInput(RobotMap.transferBeamBreakPort);
-public DigitalInput magBeam = new DigitalInput(RobotMap.magBeamBreakPort);
+//public DigitalInput magBeam = new DigitalInput(RobotMap.magBeamBreakPort);
 
 private boolean active;
+public static double intakeJogSpeed = 0.3;
+
 
 public IntakeSubsystem(){
   
@@ -43,21 +45,14 @@ public void ballIntake() {
 
   if(active){
 
-    intakeOn(true);
 
-    if(!transferBeam.get()){
-     
-     while(!Robot.ballMagazine.readyToLoad()){
+    if(!transferBeam.get()&&!Robot.ballMagazine.readyToLoad()){
+      
       intakeOn(false);
-     }
-
-     intakeOn(true);
-     if(!magBeam.get()){
-       Robot.ballMagazine.loadBall();
-      }
        
     }
-    
+    else
+    intakeOn(true);
   
   }
   else{
@@ -68,8 +63,8 @@ public void ballIntake() {
 
 public void intakeOn(boolean on){
   if(on){
-    intakeRollerMotor.set(-RobotMap.intakeJogSpeed);
-    transferConveyorMotor.set(-RobotMap.intakeJogSpeed);
+    intakeRollerMotor.set(-intakeJogSpeed);
+    transferConveyorMotor.set(-intakeJogSpeed);
   }
   else{
     intakeRollerMotor.set(0.0);
@@ -85,8 +80,7 @@ public void intakeStatus(){
   SmartDashboard.putNumber("intake roller setting", intakeRollerMotor.get());
   SmartDashboard.putNumber("transfer conveyor setting", transferConveyorMotor.get());
   SmartDashboard.putBoolean("Intake Beam Connected", transferBeam.get());
-  SmartDashboard.putBoolean("Magazine Beam Connected", magBeam.get());
-  
+  SmartDashboard.putBoolean("Ready To Load", Robot.ballMagazine.readyToLoad());
   SmartDashboard.putBoolean("Intake Active", active);
 }
  

@@ -15,6 +15,7 @@ import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 
 /**
@@ -28,14 +29,19 @@ public class ShooterSubsystem extends Subsystem {
   CANEncoder bottomEncoder = bottomShooterMotor.getEncoder();
   CANPIDController topPID = topShooterMotor.getPIDController(); 
   CANPIDController bottomPID = bottomShooterMotor.getPIDController();
+
   public boolean shooterOn;
   private double topTargetRPM, bottomTargetRPM;
-  private static final double p = 0.00015; // .5
-  private static final double i = 0.000001; // .0
-  private static final double d = 0.0; // .0
-  private static final double ff = .00005;
-  private static final double maxOutputRange = 1; 
-  private static final double minOutputRange = -1;
+
+  private double calcDist;
+
+  private static double kP = 0.00003; // .5
+  private static double kI = 0.000001; // .0
+  private static double kD = 0.00003; // .0
+  private static double kIz = 0.0;
+  private static double kFF = 0.0;
+  private static double kMaxOutput = 1; 
+  private static double kMinOutput = -1;
 
 
 //constructor
@@ -44,17 +50,21 @@ public class ShooterSubsystem extends Subsystem {
     setTargets(0.0, 0.0);
     topShooterMotor.setIdleMode(IdleMode.kCoast);
     bottomShooterMotor.setIdleMode(IdleMode.kCoast);
-    topPID.setP(p);
-    topPID.setI(i);
-    topPID.setD(d);
-    topPID.setFF(ff);
+    topPID.setP(kP);
+    topPID.setI(kI);
+    topPID.setD(kD);
+    topPID.setIZone(kIz);
+    topPID.setFF(kFF);
 
-    bottomPID.setP(p);
-    bottomPID.setI(i);
-    bottomPID.setD(d);
-    bottomPID.setFF(ff);
+    bottomPID.setP(kP);
+    bottomPID.setI(kI);
+    bottomPID.setD(kD);
+    bottomPID.setIZone(kIz);
+    bottomPID.setFF(kFF);
 
-    topPID.setOutputRange(minOutputRange, maxOutputRange);
+    topPID.setOutputRange(kMinOutput, kMaxOutput);
+    bottomPID.setOutputRange(kMinOutput, kMaxOutput);
+    shooterPIDStatus();
   }
 
   //updates smartdashboard. called in robot's periodic method
@@ -65,15 +75,25 @@ public class ShooterSubsystem extends Subsystem {
     SmartDashboard.putNumber("Bottom Shooter Motor Speed", bottomEncoder.getVelocity());
     SmartDashboard.putBoolean("Shooter upToSpeed", upToSpeed());
     SmartDashboard.putBoolean("ShooterOn", shooterOn);
+    SmartDashboard.putNumber("Distance to Target", calcDist);
+    ShooterMotorTuner();
+
   }
 
   //starts motors to currently set target RPMS.
   public void startShooter(){
     topPID.setReference(topTargetRPM, ControlType.kVelocity);
     bottomPID.setReference(bottomTargetRPM, ControlType.kVelocity);
-    //topShooterMotor.set(topTargetRPM/5676);
-    //bottomShooterMotor.set(bottomTargetRPM/5676);
     shooterOn = true;
+  }
+  public void inputDistanceToGoal(double input){
+
+    this.calcDist = input;
+  
+  }
+  public void calcSpin(){
+    double setting = calcDist / 528;
+    setTargets(setting , setting);
   }
 
   //stops motors and sets target speeds to 0.0
@@ -85,12 +105,18 @@ public class ShooterSubsystem extends Subsystem {
   }
   //sets target speeds for motors
   public void setTargets(double topSetting, double bottomSetting){
-     topTargetRPM = topSetting * 5676;
-     bottomTargetRPM = bottomSetting * (-5676); 
+    if(Math.abs(topSetting) > RobotMap.shooterMAX)
+      topSetting = (Math.signum(topSetting) * RobotMap.shooterMAX) * 5600;
+    else
+      topTargetRPM = topSetting * 5600;
+    if(Math.abs(bottomSetting) > RobotMap.shooterMAX)
+      bottomSetting = (Math.signum(bottomSetting) * RobotMap.shooterMAX) * (-5600);
+    else
+      bottomTargetRPM = bottomSetting * (-5600); 
    }
  
 
-  //this will be for the conveyor, to tell it to only release balls when the motors are at speed.
+  //this is for the ballMagazine, to tell it to only release balls when the motors are at speed.
   public boolean upToSpeed(){
     if(speedRange(topEncoder.getVelocity(),topTargetRPM) && speedRange(bottomEncoder.getVelocity(), bottomTargetRPM))
     return true;
@@ -107,6 +133,46 @@ public class ShooterSubsystem extends Subsystem {
     return true;
     else 
     return false;
+  }
+  public void ShooterMotorTuner(){
+    // read PID coefficients from SmartDashboard
+    double p = SmartDashboard.getNumber("P Gain", 0);
+    double i = SmartDashboard.getNumber("I Gain", 0);
+    double d = SmartDashboard.getNumber("D Gain", 0);
+    double iz = SmartDashboard.getNumber("I Zone", 0);
+    double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    double max = SmartDashboard.getNumber("Max Output", 0);
+    double min = SmartDashboard.getNumber("Min Output", 0);
+    //double maxV = SmartDashboard.getNumber("Max Velocity", 0);
+    //double minV = SmartDashboard.getNumber("Min Velocity", 0);
+    //double maxA = SmartDashboard.getNumber("Max Acceleration", 0);
+    //double allE = SmartDashboard.getNumber("Allowed Closed Loop Error", 0);
+ 
+    // if PID coefficients on SmartDashboard have changed, write new values to controller
+    if((p != kP)) { topPID.setP(p); kP = p; }
+    if((i != kI)) { topPID.setI(i); kI = i; }
+    if((d != kD)) { topPID.setD(d); kD = d; }
+    if((iz != kIz)) { topPID.setIZone(iz); kIz = iz; }
+    if((ff != kFF)) { topPID.setFF(ff); kFF = ff; }
+    if((max != kMaxOutput) || (min != kMinOutput)) { 
+       topPID.setOutputRange(min, max); 
+      kMinOutput = min; kMaxOutput = max; 
+    }
+    //if((maxV != maxVel)) { masterPID.setSmartMotionMaxVelocity(maxV,0); maxVel = maxV; }
+    //if((minV != minVel)) { masterPID.setSmartMotionMinOutputVelocity(minV,0); minVel = minV; }
+    //if((maxA != maxAccel)) { masterPID.setSmartMotionMaxAccel(maxA,0); maxAccel = maxA; }
+   // if((allE != allowedErr)) { masterPID.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
+   }
+   public void shooterPIDStatus(){
+    // display PID coefficients on SmartDashboard
+    SmartDashboard.putNumber("P Gain", kP);
+    SmartDashboard.putNumber("I Gain", kI);
+    SmartDashboard.putNumber("D Gain", kD);
+    SmartDashboard.putNumber("I Zone", kIz);
+    SmartDashboard.putNumber("Feed Forward", kFF);
+    SmartDashboard.putNumber("Max Output", kMaxOutput);
+    SmartDashboard.putNumber("Min Output", kMinOutput);
+
   }
 
 
