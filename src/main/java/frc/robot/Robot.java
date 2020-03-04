@@ -71,26 +71,14 @@ public class Robot extends TimedRobot {
 
    // SmartDashboard.putNumber("Right Trigger Axis Value", Robot.oi.rightTriggerAxis());
 
-    limelight.LimelightUpdate();
+    //limelight.LimelightUpdate();
     shooterSubsystem.shooterStatus();
    // driveSubsystem.driveStatus();
     //colorSensor.checkColor();
     ballMagazine.magazineStatus();
     scissorLift.liftStatus();
     intake.intakeStatus();
-    /*if(!shooterSubsystem.upToSpeed()){
-      shooterTimeout++;
-      System.out.println("Shooter Timeout is " + shooterTimeout);
-    }
-    else{
-      shooterTimeout = 0;
-    }
-
-    if(shooterTimeout > RobotMap.shooterTimout){
-      shooterSubsystem.stopShooter();
-      for(int i = 0; i<10; i++)
-      System.out.println("SHOOTER E-STOPPED");
-    }*/
+   
   }
   
   /**

@@ -66,10 +66,10 @@ public class RobotMap {
 
   //constants for aiming
   public static double fastAimSpeed = 0.6;
-  public static double slowAimSpeed = 0.2;
+  public static double slowAimSpeed = 0.35;
  
   //deadzone for when the Aim method stops turning the robot.
-  public static double aimDeadZone = 1.5;
+  public static double aimDeadZone = 1.0;
 
 
   //default shooter speed. .4 seems good at 10 feet
@@ -79,7 +79,7 @@ public class RobotMap {
   public static double topShooterPercentage = .75;
  
   //for shooter upToSpeed boolean
-  public static double upToSpeedRange = 100.0;
+  public static double upToSpeedRange = 300;
   public static double shooterTimout = 50;
   
 

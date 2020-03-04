@@ -14,15 +14,23 @@ public class AutonomousCommand extends CommandGroup {
   /**
    * Add your docs here.
    */
+  //50 counts per sec, 50 on timer = 1 sec wait time
+  private int timer = 150;
   public AutonomousCommand() {
     // Add Commands here:
     addSequential(new AimCommand());
+    addSequential(new AutoWait(timer));
+    addSequential(new AutoShooterSpinCommand());
+    addSequential(new AutoWait(timer));
     addSequential(new CHOOTCommand());
+    addSequential(new AutoWait(timer));
     addSequential(new CHOOTCommand());
+    addSequential(new AutoWait(timer));
     addSequential(new CHOOTCommand());
-
+    addSequential(new AutoWait(timer));
+    addSequential(new ShooterStopCommand());
     
-    //add ball magazine FF command here
+    
 
     // addSequential(new Command2()); 
     // these will run in order.

@@ -49,7 +49,7 @@ public class BallMagazineSubsystem extends Subsystem {
 
   public boolean readyToLoad;
 
-  private double kP = .025;
+  private double kP = .03;
   private double kI = 0.0; 
   private double kD = 0.0;
   private double kIz = 0.0;
@@ -79,12 +79,12 @@ public class BallMagazineSubsystem extends Subsystem {
     magazineEncoder.setPosition(0.0);
 
 
-    /*
+    
     //the next lines set the ball present for competition pre-loading.     
     BS1.ballPresent=true;
     BS2.ballPresent=true;
     BS3.ballPresent=true;
-    */
+    
 
 
     BS1.atLoadPos = true;
@@ -159,9 +159,9 @@ public class BallMagazineSubsystem extends Subsystem {
     SmartDashboard.putBoolean("readyToLoad", readyToLoad);
     SmartDashboard.putBoolean("Mag Load Position Ball Present", !magBeam.get());
     SmartDashboard.putNumber("Load Timer", loadTimer);
-    SmartDashboard.putBoolean("BS1 at load", BS1.atLoadPos);
-    SmartDashboard.putBoolean("BS2 at load", BS2.atLoadPos);
-    SmartDashboard.putBoolean("BS3 at load", BS3.atLoadPos);
+    // SmartDashboard.putBoolean("BS1 at load", BS1.atLoadPos);
+    //SmartDashboard.putBoolean("BS2 at load", BS2.atLoadPos);
+    //SmartDashboard.putBoolean("BS3 at load", BS3.atLoadPos);
     SmartDashboard.putBoolean("BS1 ball present", BS1.ballPresent);
     SmartDashboard.putBoolean("BS2 ball present", BS2.ballPresent);
     SmartDashboard.putBoolean("BS3 ball present", BS3.ballPresent);
@@ -170,10 +170,9 @@ public class BallMagazineSubsystem extends Subsystem {
 
   public void CHOOT(){
     if(Robot.shooterSubsystem.upToSpeed()){
-      if(ballCounter() > 0){
-        revolve();
-     }
+      revolve();
     }
+   //System.out.println("CHOOT!");
   }
 
 

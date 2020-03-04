@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.CHOOTCommand;
-import frc.robot.commands.CalcShooterSpinCommand;
 import frc.robot.commands.IntakeActiveToggle;
 import frc.robot.commands.JogLiftCommand;
 import frc.robot.commands.LiftMoveToPositionCommand;
@@ -67,12 +66,12 @@ public class OI {
   public OI(){
     
     Y1.whenPressed(new IntakeActiveToggle());
-    X1.whenPressed(new clearBallsPresent());
+    X1.whenPressed(new ShooterStopCommand());
     START1.whenPressed(new ShooterSpinCommand());
     A1.whileHeld(new AimCommand());
     B1.whenPressed(new CHOOTCommand());
     //X1.whenPressed(new MagToggleCommand());
-    BACK1.whenPressed(new ShooterStopCommand());
+    BACK1.whenPressed(new clearBallsPresent());
 
     //Y1.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
     //A1.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));

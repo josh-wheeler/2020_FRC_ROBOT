@@ -13,20 +13,20 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class CalcShooterSpinCommand extends InstantCommand {
+public class AutoShooterSpinCommand extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public CalcShooterSpinCommand() {
+  public AutoShooterSpinCommand() {
     super();
     // Use requires() here to declare subsystem dependencies
-    //requires(Robot.shooterSubsystem);
+    requires(Robot.shooterSubsystem);
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.shooterSubsystem.calcSpin();
+    Robot.shooterSubsystem.startShooter();
   }
 
 }

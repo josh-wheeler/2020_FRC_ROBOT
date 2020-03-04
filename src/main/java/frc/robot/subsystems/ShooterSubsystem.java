@@ -97,7 +97,7 @@ public class ShooterSubsystem extends Subsystem {
   public void calcSpin(){
     
     // math for figuring out numerator: k * math.sqrt(targetArea)
-    double numerator = .25;
+    double numerator = .5;
     //ty() range:-24.85 to 24.85
     //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
     //limelight angle: 25 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in 
@@ -107,7 +107,7 @@ public class ShooterSubsystem extends Subsystem {
 
     //math for distance to target (and by extension, shooter RPM) goes here. this is my white whale.
     double setting = numerator/Math.sqrt(targetArea);
-
+    //System.out.println("setting is " + setting);
     setTargets(setting);
   }
 

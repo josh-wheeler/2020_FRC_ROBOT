@@ -30,7 +30,7 @@ public DigitalInput transferBeam = new DigitalInput(RobotMap.transferBeamBreakPo
 //public DigitalInput magBeam = new DigitalInput(RobotMap.magBeamBreakPort);
 
 private boolean active;
-public static double intakeJogSpeed = 0.6;
+public static double intakeJogSpeed = 0.65;
 
 
 public IntakeSubsystem(){
@@ -44,7 +44,7 @@ public IntakeSubsystem(){
 public void ballIntake() {
 
   if(active){
-    if(!transferBeam.get()&&!Robot.ballMagazine.magBeam.get()){ 
+    if(!transferBeam.get()&&!Robot.ballMagazine.readyToLoad){ 
       intakeOn(false);
     }
     else

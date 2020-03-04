@@ -51,11 +51,11 @@ public class LimelightSubsystem extends Subsystem {
   //posts smartdashboard values
   public void LimelightUpdate(){
 
-    SmartDashboard.putNumber("Y angle", ty());
-    SmartDashboard.putNumber("X angle", tx());
+    //SmartDashboard.putNumber("Y angle", ty());
+    //SmartDashboard.putNumber("X angle", tx());
     //SmartDashboard.putNumber("Skew?", ts());
     SmartDashboard.putNumber("Target area", ta());
-    SmartDashboard.putNumber("Target aquired", tv());
+    //SmartDashboard.putNumber("Target aquired", tv());
     //SmartDashboard.putNumber("Distance to Target", distanceToTarget);
 
   }
