@@ -30,7 +30,7 @@ public DigitalInput transferBeam = new DigitalInput(RobotMap.transferBeamBreakPo
 //public DigitalInput magBeam = new DigitalInput(RobotMap.magBeamBreakPort);
 
 private boolean active;
-public static double intakeJogSpeed = 0.65;
+public static double intakeJogSpeed = 0.66;
 
 
 public IntakeSubsystem(){
