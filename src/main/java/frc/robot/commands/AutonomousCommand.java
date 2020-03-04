@@ -15,9 +15,10 @@ public class AutonomousCommand extends CommandGroup {
    * Add your docs here.
    */
   //50 counts per sec, 50 on timer = 1 sec wait time
-  private int timer = 150;
+  private int timer = 50;
   public AutonomousCommand() {
     // Add Commands here:
+    addParallel(new MagazinePIDCommand());
     addSequential(new AimCommand());
     addSequential(new AutoWait(timer));
     addSequential(new AutoShooterSpinCommand());

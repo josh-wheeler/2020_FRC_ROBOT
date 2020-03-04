@@ -7,21 +7,17 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.CHOOTCommand;
 import frc.robot.commands.IntakeActiveToggle;
 import frc.robot.commands.JogLiftCommand;
-import frc.robot.commands.LiftMoveToPositionCommand;
-import frc.robot.commands.LiftStopCommand;
 import frc.robot.commands.ShooterSpinCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.commands.clearBallsPresent;
-import frc.robot.commands.MagazinePIDCommand;
-import frc.robot.subsystems.ScissorLiftSubsystem.liftPosition;
 
 /**
  * This class is the glue that binds the controls on the physical operator
