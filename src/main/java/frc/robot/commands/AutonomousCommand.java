@@ -10,15 +10,17 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.Robot;
 
-public class AutomaticShootCommand extends CommandGroup {
+public class AutonomousCommand extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public AutomaticShootCommand() {
+  public AutonomousCommand() {
     // Add Commands here:
     addSequential(new AimCommand());
-    addSequential(new CalcShooterSpinCommand());
     addSequential(new CHOOTCommand());
+    addSequential(new CHOOTCommand());
+    addSequential(new CHOOTCommand());
+
     
     //add ball magazine FF command here
 

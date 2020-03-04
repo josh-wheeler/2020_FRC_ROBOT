@@ -12,20 +12,16 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AimCommand;
-import frc.robot.commands.CHOOT;
 import frc.robot.commands.CHOOTCommand;
 import frc.robot.commands.CalcShooterSpinCommand;
 import frc.robot.commands.IntakeActiveToggle;
-import frc.robot.commands.JogMagCommand;
 import frc.robot.commands.JogLiftCommand;
 import frc.robot.commands.LiftMoveToPositionCommand;
 import frc.robot.commands.LiftStopCommand;
-import frc.robot.commands.MagRevolveCommand;
 import frc.robot.commands.ShooterSpinCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.commands.clearBallsPresent;
 import frc.robot.commands.MagazinePIDCommand;
-import frc.robot.commands.zeromagpos;
 import frc.robot.subsystems.ScissorLiftSubsystem.liftPosition;
 
 /**
@@ -71,10 +67,10 @@ public class OI {
   public OI(){
     
     Y1.whenPressed(new IntakeActiveToggle());
-    START1.whenPressed(new clearBallsPresent());
-    X1.whenPressed(new CalcShooterSpinCommand());
+    X1.whenPressed(new clearBallsPresent());
+    START1.whenPressed(new ShooterSpinCommand());
     A1.whileHeld(new AimCommand());
-    B1.whenPressed(new CHOOT());
+    B1.whenPressed(new CHOOTCommand());
     //X1.whenPressed(new MagToggleCommand());
     BACK1.whenPressed(new ShooterStopCommand());
 

@@ -114,18 +114,10 @@ public class LimelightSubsystem extends Subsystem {
 
   }
 
-  public void outputTA(){
-    //ty() range:-24.85 to 24.85
-    //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
-    //limelight angle: 25 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in 
-    //length of field: roughly 578. 
-    //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output = 1 full power)
-   // double distanceToTarget = (76) / Math.tan(ty());
-    
-    //System.out.println("raw distance to target" + distanceToTarget);
-
-    Robot.shooterSubsystem.inputTargetArea(ta());
+  public void outputTargetData(){
+    Robot.shooterSubsystem.inputTargetData(ta(),ty());
   }
+  
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.

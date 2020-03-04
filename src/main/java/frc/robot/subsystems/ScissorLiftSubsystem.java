@@ -95,7 +95,7 @@ public class ScissorLiftSubsystem extends Subsystem {
     SmartDashboard.putNumber("Lift Motor Speed", masterEncoder.getVelocity());
     SmartDashboard.putNumber("Lift Motor Position", masterEncoder.getPosition());
     SmartDashboard.putNumber("Set Position Variable", setPosition);
-    SmartDashboard.putBoolean("Lift Homed Out", homedOut);
+    //SmartDashboard.putBoolean("Lift Homed Out", homedOut);
 
   }
   

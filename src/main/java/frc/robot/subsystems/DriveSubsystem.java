@@ -63,7 +63,7 @@ public class DriveSubsystem extends Subsystem {
     if (Math.abs(move) < 0.10) {				
       move = 0;
     }
-    if (Math.abs(turn) < 0.30) {
+    if (Math.abs(turn) < 0.25) {
       turn = 0;
     }
 
@@ -84,7 +84,7 @@ public void turnToTarget(double turnAngle){
   //SmartDashboard.putNumber("Raw turnToTarget setting", turnAngle);
 
   if(turnAngle != 0.0){
-    if (Math.abs(turnAngle) > 10) 
+    if (Math.abs(turnAngle) > 8.0) 
     turnAngle = Math.signum(turnAngle) * RobotMap.fastAimSpeed;
     else
     turnAngle = Math.signum(turnAngle) * RobotMap.slowAimSpeed;

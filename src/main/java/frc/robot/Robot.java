@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.AutomaticShootCommand;
+import frc.robot.commands.AutonomousCommand;
 import frc.robot.commands.HumanDriveCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -51,8 +51,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     oi = new OI();
-    chooser.setDefaultOption("Default Auto: humandrive", new HumanDriveCommand());
-    chooser.addOption("Automatic Shoot", new AutomaticShootCommand());
+    chooser.setDefaultOption("Default Auto: Automatic Shoot", new AutonomousCommand());
+    //chooser.addOption("Automatic Shoot", new AutonomousCommand());
     SmartDashboard.putData("Auto mode", chooser); 
     
    

@@ -26,7 +26,7 @@ public class LiftStopCommand extends Command {
   @Override
   protected void execute() {
     Robot.scissorLift.stopLift();
-    Robot.scissorLift.zeroSetPosition();
+    //Robot.scissorLift.zeroSetPosition();
   }
 
   // Make this return true when this Command no longer needs to run execute()

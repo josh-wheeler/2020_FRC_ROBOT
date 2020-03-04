@@ -30,7 +30,7 @@ public DigitalInput transferBeam = new DigitalInput(RobotMap.transferBeamBreakPo
 //public DigitalInput magBeam = new DigitalInput(RobotMap.magBeamBreakPort);
 
 private boolean active;
-public static double intakeJogSpeed = 0.5;
+public static double intakeJogSpeed = 0.6;
 
 
 public IntakeSubsystem(){
@@ -44,16 +44,11 @@ public IntakeSubsystem(){
 public void ballIntake() {
 
   if(active){
-
-
-    if(!transferBeam.get()&&!Robot.ballMagazine.magBeam.get()){
-      
+    if(!transferBeam.get()&&!Robot.ballMagazine.magBeam.get()){ 
       intakeOn(false);
-       
     }
     else
     intakeOn(true);
-  
   }
   else{
     intakeOn(false);
@@ -79,8 +74,7 @@ public boolean toggleActive(){
 public void intakeStatus(){
   SmartDashboard.putNumber("intake roller setting", intakeRollerMotor.get());
   SmartDashboard.putNumber("transfer conveyor setting", transferConveyorMotor.get());
-  SmartDashboard.putBoolean("Intake Beam Connected", transferBeam.get());
-  SmartDashboard.putBoolean("Ready To Load", Robot.ballMagazine.readyToLoad());
+  SmartDashboard.putBoolean("Intake Ball Present", !transferBeam.get());
   SmartDashboard.putBoolean("Intake Active", active);
 }
  

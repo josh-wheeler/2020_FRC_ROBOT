@@ -33,7 +33,7 @@ public class ShooterSubsystem extends Subsystem {
   public boolean shooterOn;
   private double topTargetRPM, bottomTargetRPM;
 
-  private double targetArea;
+  private double targetArea, targetAngle;
 
   private static double kP = 0.00002; // .5
   private static double kI = 0.00000015; // .0
@@ -63,7 +63,7 @@ public class ShooterSubsystem extends Subsystem {
 
     topPID.setOutputRange(kMinOutput, kMaxOutput);
     bottomPID.setOutputRange(kMinOutput, kMaxOutput);
-    shooterPIDStatus();
+    //shooterPIDStatus();
   }
 
   //updates smartdashboard. called in robot's periodic method
@@ -76,26 +76,39 @@ public class ShooterSubsystem extends Subsystem {
     SmartDashboard.putBoolean("ShooterOn", shooterOn);
     SmartDashboard.putNumber("Target Area", targetArea);
 
-    ShooterMotorTuner();
+    //ShooterMotorTuner();
 
   }
 
   //starts motors to currently set target RPMS.
   public void startShooter(){
-    topPID.setReference(topTargetRPM, ControlType.kVelocity);
-    bottomPID.setReference(bottomTargetRPM, ControlType.kVelocity);
+    //topPID.setReference(topTargetRPM, ControlType.kVelocity);
+    //bottomPID.setReference(bottomTargetRPM, ControlType.kVelocity);
+    topShooterMotor.set(topTargetRPM/5676);
+    bottomShooterMotor.set(bottomTargetRPM/5676);
     shooterOn = true;
   }
-  public void inputTargetArea(double input){
 
-    this.targetArea = input;
-  
+  public void inputTargetData(double ta, double ty){
+    this.targetArea = ta;
+    this.targetAngle = ty;
   }
-  public void calcSpin(){
 
-    double setting = .25/targetArea;
+  public void calcSpin(){
+    
+    // math for figuring out numerator: k * math.sqrt(targetArea)
+    double numerator = .25;
+    //ty() range:-24.85 to 24.85
+    //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
+    //limelight angle: 25 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in 
+    //length of field: roughly 578. 
+    //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output = 1 full power)
+    //double distanceToTarget = (76) / Math.tan(targetAngle);
+
+    //math for distance to target (and by extension, shooter RPM) goes here. this is my white whale.
+    double setting = numerator/Math.sqrt(targetArea);
+
     setTargets(setting);
-   
   }
 
   //stops motors and sets target speeds to 0.0

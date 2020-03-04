@@ -66,7 +66,7 @@ public class RobotMap {
 
   //constants for aiming
   public static double fastAimSpeed = 0.6;
-  public static double slowAimSpeed = 0.35;
+  public static double slowAimSpeed = 0.2;
  
   //deadzone for when the Aim method stops turning the robot.
   public static double aimDeadZone = 1.5;
@@ -79,12 +79,12 @@ public class RobotMap {
   public static double topShooterPercentage = .75;
  
   //for shooter upToSpeed boolean
-  public static double upToSpeedRange = 300.0;
+  public static double upToSpeedRange = 100.0;
   public static double shooterTimout = 50;
   
 
   //lift heights
-  public static double liftHeightMax = 100; //actual max 500-ish. leaving low for testing purposes
+  public static double liftHeightMax = 220; //actual max 500-ish. leaving at 220ish to get to bar height.
   public static double liftHeightHome = 10.0;//set to 10 for safety.
   public static double liftHeightWheelSetup = 100.0;
   public static double liftHeightWheelSpin = 90.0;

@@ -32,7 +32,7 @@ public class AimCommand extends Command {
   @Override
   protected void execute() {
    Robot.driveSubsystem.turnToTarget(Robot.limelight.AIM());
-   Robot.limelight.outputTA();
+   Robot.limelight.outputTargetData();
   }
 
   // Make this return true when this Command no longer needs to run execute()
