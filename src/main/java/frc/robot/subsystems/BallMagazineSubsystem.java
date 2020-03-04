@@ -39,7 +39,7 @@ public class BallMagazineSubsystem extends Subsystem {
   public BallMagSlot BS3 = new BallMagSlot();
 
   //number of rotations required to advance the ball 120°. 
-  private double rotateAmount = -19.3;
+  private double rotateAmount = -18.45;
   //number to add rotateAmount to so motor always travels in one direction.
   private double currentSetPosition = 0;
 
@@ -47,12 +47,12 @@ public class BallMagazineSubsystem extends Subsystem {
   private int loadTimer = 0;
 
   //this is for conveyor timing
-  private static final int loadTimerSetting = 50;
+  private static final int loadTimerSetting = 150;
 
   public boolean active;
 
   private double kP = .01; // .0095
-  private double kI = 52e-8; // .000015
+  private double kI = 52e-8; // .00000052
   private double kD = 0.32;//0.000000001;
   private double kIz = 0.0;
   private double kFF = 0.0;
@@ -90,7 +90,7 @@ public class BallMagazineSubsystem extends Subsystem {
 
     BS1.atLoadPos = true;
     ballCounter();
-    magPIDStatus();
+    //magPIDStatus();
   }
 
   public void magPIDPosition(){
@@ -99,7 +99,7 @@ public class BallMagazineSubsystem extends Subsystem {
   }
 
   public void magMonitor(){
-
+    //maybe add to a toggle?
     if(!magBeam.get()){
       if(loadTimer == 0){
         loadBall();
@@ -113,6 +113,8 @@ public class BallMagazineSubsystem extends Subsystem {
 
 
   public void zeroSetposition(){
+    stopMag();
+    magazineEncoder.setPosition(0.0);
     currentSetPosition = 0.0;
   }
 
@@ -137,6 +139,13 @@ public class BallMagazineSubsystem extends Subsystem {
       }
 
 
+  }
+
+  public void clearBalls(){
+
+    BS1.ballPresent = false;
+    BS2.ballPresent = false;
+    BS3.ballPresent = false;
   }
 
  public boolean readyToLoad(){
@@ -179,7 +188,7 @@ public class BallMagazineSubsystem extends Subsystem {
   public void magazineStatus(){
     SmartDashboard.putNumber("magazine setting", currentSetPosition);
     SmartDashboard.putNumber("magazine position", magazineEncoder.getPosition());
-    SmartDashboard.putNumber("BALLS", ballCount);
+    SmartDashboard.putNumber("BALLS", ballCounter());
     SmartDashboard.putBoolean("OneInTheChamber", oneInTheChamber());
     SmartDashboard.putBoolean("Magazine Beam Connected", magBeam.get());
     SmartDashboard.putNumber("Load Timer", loadTimer);
@@ -194,14 +203,26 @@ public class BallMagazineSubsystem extends Subsystem {
 
   public void CHOOT(){
     if(Robot.shooterSubsystem.upToSpeed()){
-      if(BS1.ballPresent || BS2.ballPresent || BS3.ballPresent){
+      //if(BS1.ballPresent || BS2.ballPresent || BS3.ballPresent){
         revolve();
-      }
+     //}
     }
   }
 
+
+
+
+
+//rewrite the revolve methode so each balls position is defined for each spot it can be in (enum, maybe?)
+
+
+
+
+
+
+
   //this checks to see how many balls we have inside (that's what she said!)
-  public void ballCounter(){
+  public int ballCounter(){
     int BC = 0;
     if(BS1.ballPresent)
     BC++;
@@ -209,7 +230,7 @@ public class BallMagazineSubsystem extends Subsystem {
     BC++;
     if(BS3.ballPresent)
     BC++;
-    ballCount = BC;
+    return BC;
   }
 
 
@@ -221,10 +242,9 @@ public class BallMagazineSubsystem extends Subsystem {
   
 
   public void jogMag(){
-    if(active)
+    
     magazineMotor.set(-RobotMap.magJogSpeed);
-    else
-    magazineMotor.set(0.0);
+    
   }
   public void stopMag(){
     magazineMotor.set(0.0);
@@ -236,7 +256,7 @@ public class BallMagazineSubsystem extends Subsystem {
     setDefaultCommand(new MagazinePIDCommand());
   }
 
-  public void magPIDStatus(){
+  /*public void magPIDStatus(){
     // display PID coefficients on SmartDashboard
     SmartDashboard.putNumber("P Gain", kP);
     SmartDashboard.putNumber("I Gain", kI);
@@ -271,7 +291,7 @@ public class BallMagazineSubsystem extends Subsystem {
       kMinOutput = min; kMaxOutput = max; 
     }
    
-   }
+   }*/
  
 
 

@@ -18,6 +18,7 @@ public class AimCommand extends Command {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.driveSubsystem);
     requires(Robot.limelight);
+    requires(Robot.shooterSubsystem);
   }
 
   // Called just before this Command runs the first time
@@ -31,7 +32,7 @@ public class AimCommand extends Command {
   @Override
   protected void execute() {
    Robot.driveSubsystem.turnToTarget(Robot.limelight.AIM());
-   //Robot.limelight.calcShooterSpeed();
+   Robot.limelight.outputTA();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -49,7 +50,8 @@ public class AimCommand extends Command {
     //Robot.limelight.setCamMode(camMode.driver);
     //Robot.limelight.setLed(ledMode.off);
     Robot.driveSubsystem.turnToTarget(0.0);
-    Robot.limelight.calcShooterSpeed();
+    Robot.shooterSubsystem.calcSpin();
+    //Robot.shooterSubsystem.startShooter();
 
     
   }

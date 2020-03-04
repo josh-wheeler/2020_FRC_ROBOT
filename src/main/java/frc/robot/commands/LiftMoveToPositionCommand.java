@@ -34,7 +34,7 @@ public class LiftMoveToPositionCommand extends Command {
   @Override
   protected void execute() {
     //Robot.scissorLift.startLift(amount);
-   Robot.scissorLift.LiftMotorTuner();
+   //Robot.scissorLift.LiftMotorTuner();
 
   }
 

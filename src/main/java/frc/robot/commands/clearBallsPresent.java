@@ -13,27 +13,20 @@ import frc.robot.Robot;
 /**
  * Add your docs here.
  */
-public class CHOOTCommand extends InstantCommand {
+public class clearBallsPresent extends InstantCommand {
   /**
    * Add your docs here.
    */
-  public CHOOTCommand() {
+  public clearBallsPresent() {
     super();
     // Use requires() here to declare subsystem dependencies
     requires(Robot.ballMagazine);
-    //requires(Robot.shooterSubsystem);
-
   }
 
   // Called once when the command executes
   @Override
   protected void initialize() {
-    //Robot.shooterSubsystem.startShooter();
-    Robot.ballMagazine.CHOOT();
-    //Robot.ballMagazine.revolve();;
-    if(Robot.ballMagazine.ballCounter() == 0)
-    Robot.shooterSubsystem.stopShooter();
-
+    Robot.ballMagazine.clearBalls();
   }
 
 }

@@ -10,41 +10,40 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class MagazinePIDCommand extends Command {
-  public MagazinePIDCommand() {
+public class CHOOT extends Command {
+  public CHOOT() {
     // Use requires() here to declare subsystem dependencies
+    requires(Robot.shooterSubsystem);
     requires(Robot.ballMagazine);
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    
-    //Robot.ballMagazine.revolve();
-
+    Robot.shooterSubsystem.startShooter();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
-   
-    Robot.ballMagazine.magPIDPosition();
-    Robot.ballMagazine.magMonitor();
-    Robot.ballMagazine.ballCounter();
-   //Robot.ballMagazine.MagMotorTuner();
+  protected void execute() {    //Robot.shooterSubsystem.startShooter();
+    Robot.ballMagazine.CHOOT();
+    //Robot.ballMagazine.revolve();;
 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(Robot.ballMagazine.ballCounter() == 0)
+    return true;
+    else
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    
+    Robot.shooterSubsystem.stopShooter();
   }
 
   // Called when another command which requires one or more of the same

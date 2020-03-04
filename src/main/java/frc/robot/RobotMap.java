@@ -60,16 +60,16 @@ public class RobotMap {
   // public static int rangefinderModule = 1;
 
   //constants for motor acceleration and max speed. Used in drive subsystem
-  public static double maxAccel = .015;
+  public static double maxAccel = .02;
   public static double maxSpeed = 1.0;
   public static double turnMultiplier = .7;
 
   //constants for aiming
-  public static double fastAimSpeed = 0.5;
-  public static double slowAimSpeed = 0.3;
+  public static double fastAimSpeed = 0.6;
+  public static double slowAimSpeed = 0.35;
  
   //deadzone for when the Aim method stops turning the robot.
-  public static double aimDeadZone = 1.0;
+  public static double aimDeadZone = 1.5;
 
 
   //default shooter speed. .4 seems good at 10 feet
@@ -81,7 +81,7 @@ public class RobotMap {
   //for shooter upToSpeed boolean
   public static double upToSpeedRange = 300.0;
   public static double shooterTimout = 50;
-  public static double shooterMAX = .9;
+  
 
   //lift heights
   public static double liftHeightMax = 100; //actual max 500-ish. leaving low for testing purposes

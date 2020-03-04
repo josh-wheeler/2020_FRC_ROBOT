@@ -33,21 +33,20 @@ public class ShooterSubsystem extends Subsystem {
   public boolean shooterOn;
   private double topTargetRPM, bottomTargetRPM;
 
-  private double calcDist;
+  private double targetArea;
 
-  private static double kP = 0.00003; // .5
-  private static double kI = 0.000001; // .0
-  private static double kD = 0.00003; // .0
+  private static double kP = 0.00002; // .5
+  private static double kI = 0.00000015; // .0
+  private static double kD = 0.0000; // .0
   private static double kIz = 0.0;
   private static double kFF = 0.0;
   private static double kMaxOutput = 1; 
   private static double kMinOutput = -1;
 
-
 //constructor
   public ShooterSubsystem(){
     shooterOn = false;
-    setTargets(0.0, 0.0);
+    setTargets(0.0);
     topShooterMotor.setIdleMode(IdleMode.kCoast);
     bottomShooterMotor.setIdleMode(IdleMode.kCoast);
     topPID.setP(kP);
@@ -75,7 +74,8 @@ public class ShooterSubsystem extends Subsystem {
     SmartDashboard.putNumber("Bottom Shooter Motor Speed", bottomEncoder.getVelocity());
     SmartDashboard.putBoolean("Shooter upToSpeed", upToSpeed());
     SmartDashboard.putBoolean("ShooterOn", shooterOn);
-    SmartDashboard.putNumber("Distance to Target", calcDist);
+    SmartDashboard.putNumber("Target Area", targetArea);
+
     ShooterMotorTuner();
 
   }
@@ -86,39 +86,54 @@ public class ShooterSubsystem extends Subsystem {
     bottomPID.setReference(bottomTargetRPM, ControlType.kVelocity);
     shooterOn = true;
   }
-  public void inputDistanceToGoal(double input){
+  public void inputTargetArea(double input){
 
-    this.calcDist = input;
+    this.targetArea = input;
   
   }
   public void calcSpin(){
-    double setting = calcDist / 528;
-    setTargets(setting , setting);
+
+    double setting = .25/targetArea;
+    setTargets(setting);
+   
   }
 
   //stops motors and sets target speeds to 0.0
   public void stopShooter(){   
-    setTargets(0.0, 0.0);
+    setTargets(0.0);
     topShooterMotor.set(0.0);
     bottomShooterMotor.set(0.0);
     shooterOn = false;
   }
   //sets target speeds for motors
-  public void setTargets(double topSetting, double bottomSetting){
-    if(Math.abs(topSetting) > RobotMap.shooterMAX)
-      topSetting = (Math.signum(topSetting) * RobotMap.shooterMAX) * 5600;
-    else
-      topTargetRPM = topSetting * 5600;
-    if(Math.abs(bottomSetting) > RobotMap.shooterMAX)
-      bottomSetting = (Math.signum(bottomSetting) * RobotMap.shooterMAX) * (-5600);
-    else
-      bottomTargetRPM = bottomSetting * (-5600); 
+  private double shooterMaxRPM = 4500;
+  private double shooterMinRPM = 2300;
+
+  public void setTargets(double setting){
+
+    //this converts duty cycle to RPM
+      setting = setting * 5676;
+      
+
+      if(setting > shooterMaxRPM){
+        topTargetRPM = shooterMaxRPM;
+        bottomTargetRPM = -shooterMaxRPM;
+      }
+      else if(setting < shooterMinRPM){
+        topTargetRPM = shooterMinRPM;
+        bottomTargetRPM = -shooterMinRPM;
+      }
+      else{
+        topTargetRPM = setting;
+        bottomTargetRPM = -setting;
+      }
+     
    }
  
 
   //this is for the ballMagazine, to tell it to only release balls when the motors are at speed.
   public boolean upToSpeed(){
-    if(speedRange(topEncoder.getVelocity(),topTargetRPM) && speedRange(bottomEncoder.getVelocity(), bottomTargetRPM))
+    if(speedRange(topEncoder.getVelocity(),topTargetRPM) && speedRange(bottomEncoder.getVelocity(), bottomTargetRPM) && topTargetRPM != 0)
     return true;
     else
     return false;
@@ -172,7 +187,7 @@ public class ShooterSubsystem extends Subsystem {
     SmartDashboard.putNumber("Feed Forward", kFF);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
-
+    
   }
 
 
