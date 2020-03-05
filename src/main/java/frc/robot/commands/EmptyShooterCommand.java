@@ -9,54 +9,60 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-/*
 
+public class EmptyShooterCommand extends Command {
+  private int timer = 0;
+  private int timerGap = 50;
 
-This command can be called three ways. 
-No arguments () makes the speed the default, 
-1 argument (double) set the speeds, 
-
-it then passes these to the setTargets() method in the shooter subsystem, and calls startShooter()
-
-*/ 
-public class ShooterSpinCommand extends Command {
-  private double speed;
-
-  public ShooterSpinCommand(){
-    this.speed = RobotMap.ShooterDefaultSpeed;
-    requires(Robot.shooterSubsystem);
- }
-
-  public ShooterSpinCommand(double input){
-    this.speed = input;
-    requires(Robot.shooterSubsystem);
+  public EmptyShooterCommand(){
+    // Use requires() here to declare subsystem dependencies
+    requires(Robot.ballMagazine);
+    requires(Robot.shooterSubsystem); 
   }
 
+  public EmptyShooterCommand(double speed) {    
+    // Use requires() here to declare subsystem dependencies
+    requires(Robot.ballMagazine);
+    requires(Robot.shooterSubsystem);
+    Robot.shooterSubsystem.setTargets(speed);
+
+  }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    //Robot.shooterSubsystem.setTargets(speed); 
     Robot.shooterSubsystem.startShooter();
+
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.shooterSubsystem.startShooter();
+    timer++;
+    if(timer == timerGap || timer == timerGap*2 || timer == timerGap*3){
+      Robot.ballMagazine.revolve();
+    }
+
+
+    Robot.ballMagazine.magPIDPosition();
+    
+    
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(timer == timerGap*4)
     return true;
+    else
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    //Robot.shooterSubsystem.stopShooter();
+    Robot.ballMagazine.stopMag();
+    //Robot.ballMagazine.resetMagazineEncoder();
   }
 
   // Called when another command which requires one or more of the same

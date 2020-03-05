@@ -28,10 +28,17 @@ public class ShooterSubsystem extends Subsystem {
   CANPIDController topPID = topShooterMotor.getPIDController(); 
   CANPIDController bottomPID = bottomShooterMotor.getPIDController();
 
+  RangeChecker rangeChecker = new RangeChecker();
+
   public boolean shooterOn;
   private double topTargetRPM, bottomTargetRPM;
 
   private double targetArea, targetAngle;
+  
+    //sets speed limits for AIM() method
+    private double shooterMaxRPM = 4500;
+    private double shooterMinRPM = 2300;
+
 
   private static double kP = 0.00002; // .5
   private static double kI = 0.00000015; // .0
@@ -93,19 +100,23 @@ public class ShooterSubsystem extends Subsystem {
   }
 
   public void calcSpin(){
-    
-    // math for figuring out numerator: k * math.sqrt(targetArea)
-    double numerator = .5;
     //ty() range:-24.85 to 24.85
     //math for dist:  d = (heightoftarget-heightofcamera) / tan(angleofcamera + angletotarget)
     //limelight angle: 25 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in 
     //length of field: roughly 578. 
     //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output = 1 full power)
-    //double distanceToTarget = (76) / Math.tan(targetAngle);
+    //double distanceToTarget = (76) / Math.tan(targetAngle+25);
 
+    // math for figuring out numerator: k * math.sqrt(targetArea)
+    double numerator = .5;
     //math for distance to target (and by extension, shooter RPM) goes here. this is my white whale.
     double setting = numerator/Math.sqrt(targetArea);
-    //System.out.println("setting is " + setting);
+    
+    if(setting > shooterMaxRPM/5676)
+      setting = shooterMaxRPM/5676; 
+    else if(setting < shooterMinRPM/5676)
+      setting = shooterMinRPM/5676;
+    
     setTargets(setting);
   }
 
@@ -116,50 +127,28 @@ public class ShooterSubsystem extends Subsystem {
     bottomShooterMotor.set(0.0);
     shooterOn = false;
   }
-  //sets target speeds for motors
-  private double shooterMaxRPM = 4500;
-  private double shooterMinRPM = 2300;
+
 
   public void setTargets(double setting){
 
     //this converts duty cycle to RPM
       setting = setting * 5676;
       
-
-      if(setting > shooterMaxRPM){
-        topTargetRPM = shooterMaxRPM;
-        bottomTargetRPM = -shooterMaxRPM;
-      }
-      else if(setting < shooterMinRPM){
-        topTargetRPM = shooterMinRPM;
-        bottomTargetRPM = -shooterMinRPM;
-      }
-      else{
-        topTargetRPM = setting;
-        bottomTargetRPM = -setting;
-      }
+      topTargetRPM = setting;
+      bottomTargetRPM = -setting;
+      
      
    }
  
 
   //this is for the ballMagazine, to tell it to only release balls when the motors are at speed.
   public boolean upToSpeed(){
-    if(speedRange(topEncoder.getVelocity(),topTargetRPM) && speedRange(bottomEncoder.getVelocity(), bottomTargetRPM) && topTargetRPM != 0)
+    if(rangeChecker.within(topEncoder.getVelocity(), topTargetRPM, RobotMap.upToSpeedRange) && rangeChecker.within(bottomEncoder.getVelocity(), bottomTargetRPM, RobotMap.upToSpeedRange) && topTargetRPM != 0)
     return true;
     else
     return false;
   }
 
-
-  private boolean speedRange(double input, double targetRPM){
-    double high,low;
-    high = Math.abs(targetRPM) + RobotMap.upToSpeedRange;
-    low = Math.abs(targetRPM) - RobotMap.upToSpeedRange;
-    if(Math.abs(input) < high && Math.abs(input) > low)
-    return true;
-    else 
-    return false;
-  }
   
   public void ShooterMotorTuner(){
     // read PID coefficients from SmartDashboard

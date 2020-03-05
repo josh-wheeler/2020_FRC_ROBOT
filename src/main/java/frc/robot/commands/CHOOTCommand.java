@@ -29,11 +29,8 @@ public class CHOOTCommand extends InstantCommand {
   @Override
   protected void initialize() {
     Robot.shooterSubsystem.startShooter();
-    Robot.ballMagazine.CHOOT();
-    //Robot.ballMagazine.revolve();
-    //if(Robot.ballMagazine.ballCounter() == 0)
-    //Robot.shooterSubsystem.stopShooter();
-
+    if(Robot.shooterSubsystem.upToSpeed())
+    Robot.ballMagazine.revolve();
   }
 
 }

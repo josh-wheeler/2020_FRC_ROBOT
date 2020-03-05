@@ -41,10 +41,10 @@ public class BallMagazineSubsystem extends Subsystem {
   //number of rotations required to advance the ball 120°. 
   private double rotateAmount = -18.45;
   //number to add rotateAmount to so motor always travels in one direction.
-  private double setPoint = 0;
+  private double setPoint;
 
   public int ballCount = 0;
-  private int loadTimer = 0;
+  
 
 
   public boolean readyToLoad;
@@ -76,16 +76,10 @@ public class BallMagazineSubsystem extends Subsystem {
     magazinePID.setOutputRange(kMinOutput, kMaxOutput);
 
     //this zeros the motor encoder (we use the motor encoder to PID the magazine to position)
-    magazineEncoder.setPosition(0.0);
+    resetMagazineEncoder();
 
-
-    
-    //the next lines set the ball present for competition pre-loading.     
-    BS1.ballPresent=true;
-    BS2.ballPresent=true;
-    BS3.ballPresent=true;
-    
-
+    //the next line sets the ball present for competition pre-loading.     
+    setBalls(true);
 
     BS1.atLoadPos = true;
     ballCounter();
@@ -131,11 +125,11 @@ public class BallMagazineSubsystem extends Subsystem {
 
   }
 
-  public void clearBalls(){
+  public void setBalls(boolean set){
 
-    BS1.ballPresent = false;
-    BS2.ballPresent = false;
-    BS3.ballPresent = false;
+    BS1.ballPresent = set;
+    BS2.ballPresent = set;
+    BS3.ballPresent = set;
   }
 
 
@@ -158,7 +152,6 @@ public class BallMagazineSubsystem extends Subsystem {
     SmartDashboard.putNumber("BALLS", ballCounter());
     SmartDashboard.putBoolean("readyToLoad", readyToLoad);
     SmartDashboard.putBoolean("Mag Load Position Ball Present", !magBeam.get());
-    SmartDashboard.putNumber("Load Timer", loadTimer);
     // SmartDashboard.putBoolean("BS1 at load", BS1.atLoadPos);
     //SmartDashboard.putBoolean("BS2 at load", BS2.atLoadPos);
     //SmartDashboard.putBoolean("BS3 at load", BS3.atLoadPos);
@@ -166,13 +159,6 @@ public class BallMagazineSubsystem extends Subsystem {
     SmartDashboard.putBoolean("BS2 ball present", BS2.ballPresent);
     SmartDashboard.putBoolean("BS3 ball present", BS3.ballPresent);
     //MagMotorTuner();
-  }
-
-  public void CHOOT(){
-    if(Robot.shooterSubsystem.upToSpeed()){
-      revolve();
-    }
-   //System.out.println("CHOOT!");
   }
 
 
@@ -188,6 +174,10 @@ public class BallMagazineSubsystem extends Subsystem {
     return BC;
   }
 
+  public void resetMagazineEncoder(){
+    magazineEncoder.setPosition(0.0);
+    setPoint = 0.0;
+  }
 
   
   public void jogMag(){   
