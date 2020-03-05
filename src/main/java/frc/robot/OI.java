@@ -12,12 +12,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AimCommand;
+import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.CHOOTCommand;
 import frc.robot.commands.IntakeActiveToggle;
 import frc.robot.commands.JogLiftCommand;
+import frc.robot.commands.LiftMoveToPositionCommand;
+import frc.robot.commands.LiftStopCommand;
 import frc.robot.commands.ShooterSpinCommand;
 import frc.robot.commands.ShooterStopCommand;
 import frc.robot.commands.clearBallsPresent;
+import frc.robot.subsystems.ScissorLiftSubsystem.liftPosition;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -32,7 +36,7 @@ public class OI {
   // Joystick stick = new Joystick(port);  
   // Button button = new JoystickButton(stick, buttonNumber);
   public XboxController pilot = new XboxController(RobotMap.joyStickPort);
-  public XboxController copilot = new XboxController(RobotMap.joyStickPort);
+  public XboxController copilot = new XboxController(RobotMap.joyStickPort2);
 
   
   public Button A1 = new JoystickButton(pilot, RobotMap.A);
@@ -60,20 +64,22 @@ public class OI {
 
 
   public OI(){
-    
-    Y1.whenPressed(new IntakeActiveToggle());
-    X1.whenPressed(new ShooterStopCommand());
-    START1.whenPressed(new ShooterSpinCommand());
+
+    //PILOT CONTROLS
     A1.whileHeld(new AimCommand());
     B1.whenPressed(new CHOOTCommand());
-    //X1.whenPressed(new MagToggleCommand());
+    X1.whenPressed(new ShooterStopCommand());
+    Y1.whenPressed(new IntakeActiveToggle());
+    START1.whenPressed(new ShooterSpinCommand());
     BACK1.whenPressed(new clearBallsPresent());
-
-    //Y1.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
-    //A1.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
-    //X1.whenPressed(new LiftStopCommand());
-    RBumper1.whileHeld(new JogLiftCommand(1));
-    LBumper1.whileHeld(new JogLiftCommand(-1)); 
+    
+    //COPILOT CONTROLS
+    A2.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
+    B2.whenPressed(new LiftStopCommand());
+    X2.whenPressed(new LiftMoveToPositionCommand(liftPosition.wheelSetup));
+    Y2.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
+    RBumper2.whileHeld(new JogLiftCommand(1));
+    LBumper2.whileHeld(new JogLiftCommand(-1)); 
 
     //LBumper1.whenPressed(new ShooterSpinCommand(.5)); 
 

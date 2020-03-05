@@ -33,6 +33,7 @@ public class RobotMap {
  
   //joysticks
   public static int joyStickPort = 0;
+  public static int joyStickPort2 = 1;
     
   //Joystick Buttons
   public static int A = 1;
@@ -47,8 +48,6 @@ public class RobotMap {
   public static int BACK = 7;
 
   //Digital inputs
-  public static int leftScissorLimitSwitchPort   = 3;
-  public static int rightScissorLimitSwitchPort  = 4;
   public static int transferBeamBreakPort        = 1;
   public static int magBeamBreakPort             = 0;
   
@@ -79,7 +78,7 @@ public class RobotMap {
   public static double topShooterPercentage = .75;
  
   //for shooter upToSpeed boolean
-  public static double upToSpeedRange = 300;
+  public static double upToSpeedRange = 400;
   public static double shooterTimout = 50;
   
 

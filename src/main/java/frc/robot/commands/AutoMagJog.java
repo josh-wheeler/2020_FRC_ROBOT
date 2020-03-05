@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
 public class AutoMagJog extends Command {
+  private int timer = 150;
   public AutoMagJog() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.ballMagazine);
@@ -19,27 +20,36 @@ public class AutoMagJog extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.ballMagazine.jogMag();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
-  protected void execute() {
+  protected void execute() { 
+   timer--;
+   System.out.println("Timer is " + timer);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(timer == 0)
+    return true;
+    else
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.ballMagazine.stopMag();
+    Robot.ballMagazine.resetMagazineEncoder();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    end();
   }
 }

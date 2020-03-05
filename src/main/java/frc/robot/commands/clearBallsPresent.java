@@ -26,7 +26,7 @@ public class clearBallsPresent extends InstantCommand {
   // Called once when the command executes
   @Override
   protected void initialize() {
-    Robot.ballMagazine.clearBalls();
+    Robot.ballMagazine.setBalls(false);
   }
 
 }

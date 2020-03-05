@@ -9,54 +9,44 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-/*
 
+public class AutoDriveCommand extends Command {
 
-This command can be called three ways. 
-No arguments () makes the speed the default, 
-1 argument (double) set the speeds, 
+  private int timer = 100;
+  private double speed = -.35;
 
-it then passes these to the setTargets() method in the shooter subsystem, and calls startShooter()
-
-*/ 
-public class ShooterSpinCommand extends Command {
-  private double speed;
-
-  public ShooterSpinCommand(){
-    this.speed = RobotMap.ShooterDefaultSpeed;
-    requires(Robot.shooterSubsystem);
- }
-
-  public ShooterSpinCommand(double input){
-    this.speed = input;
-    requires(Robot.shooterSubsystem);
+  public AutoDriveCommand() {
+    // Use requires() here to declare subsystem dependencies
+    requires(Robot.driveSubsystem);
   }
-
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    //Robot.shooterSubsystem.setTargets(speed); 
-    Robot.shooterSubsystem.startShooter();
+    //Robot.driveSubsystem.drive.tankDrive(speed, speed);
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    //Robot.shooterSubsystem.startShooter();
+    timer--;
+    Robot.driveSubsystem.drive.tankDrive(speed, speed);
+
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if(timer == 0)
     return true;
+    else
+    return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
-    //Robot.shooterSubsystem.stopShooter();
+    Robot.driveSubsystem.drive.tankDrive(0.0, 0.0);
   }
 
   // Called when another command which requires one or more of the same

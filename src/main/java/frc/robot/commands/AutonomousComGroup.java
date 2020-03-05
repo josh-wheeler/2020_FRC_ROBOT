@@ -9,29 +9,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
-public class AutonomousCommand extends CommandGroup {
+public class AutonomousComGroup extends CommandGroup {
   /**
    * Add your docs here.
    */
-  //50 counts per sec, 50 on timer = 1 sec wait time
-  private int timer = 50;
-  public AutonomousCommand() {
+  
+  public AutonomousComGroup() {
     // Add Commands here:
-    addParallel(new MagazinePIDCommand());
-    addSequential(new AimCommand());
-    addSequential(new AutoWait(timer));
-    addSequential(new AutoShooterSpinCommand());
-    addSequential(new AutoWait(timer));
-    addSequential(new CHOOTCommand());
-    addSequential(new AutoWait(timer));
-    addSequential(new CHOOTCommand());
-    addSequential(new AutoWait(timer));
-    addSequential(new CHOOTCommand());
-    addSequential(new AutoWait(timer));
-    addSequential(new ShooterStopCommand());
-    
-    
 
+    addSequential(new AutoAimCommand());
+    addSequential(new EmptyShooterCommand());
+    addSequential(new ShooterStopCommand());
+    addSequential(new AutoDriveCommand());
+    
     // addSequential(new Command2()); 
     // these will run in order.
 

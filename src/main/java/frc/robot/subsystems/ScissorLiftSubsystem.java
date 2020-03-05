@@ -30,7 +30,6 @@ public class ScissorLiftSubsystem extends Subsystem {
   CANEncoder slaveEncoder = liftSlaveMotor.getEncoder();
   CANPIDController masterPID = liftMasterMotor.getPIDController();
   CANPIDController slavePID = liftSlaveMotor.getPIDController();
-  public DigitalInput downSwitch = new DigitalInput(RobotMap.leftScissorLimitSwitchPort);
 
   private double kP = 0.00003; // .5
   private double kI = 2e-6; // .0
@@ -40,9 +39,6 @@ public class ScissorLiftSubsystem extends Subsystem {
   private double kMaxOutput = 1; 
   private double kMinOutput = -1;
 
-  //smartmotion coefficients. set these to 
-  //private double maxVel = .5; //RPM the lift will move at full speed
-  //private double maxAccel = .1;//RPMs per second it can increase until it hits maxVel
 
   private double setPosition = 0.0;
   public boolean homedOut;
@@ -65,38 +61,17 @@ public class ScissorLiftSubsystem extends Subsystem {
     masterPID.setFF(kFF);
     masterPID.setOutputRange(kMinOutput, kMaxOutput);
 
-    //masterPID.setSmartMotionMaxVelocity(maxVel, slotID);
-    //masterPID.setSmartMotionMaxAccel(maxAccel, slotID);
-
-   
-    //if(downSwitch.get()){setHomePosition();}else{homedOut=false;}
-
     setHomePosition();
     //liftPIDStatus();
 
   }
- /* public void liftPIDStatus(){
-    // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("P Gain", kP);
-    SmartDashboard.putNumber("I Gain", kI);
-    SmartDashboard.putNumber("D Gain", kD);
-    SmartDashboard.putNumber("I Zone", kIz);
-    SmartDashboard.putNumber("Feed Forward", kFF);
-    SmartDashboard.putNumber("Max Output", kMaxOutput);
-    SmartDashboard.putNumber("Min Output", kMinOutput);
-    //display smartmotion coefficients
-    SmartDashboard.putNumber("Motor Output", liftMasterMotor.getAppliedOutput());
-    //SmartDashboard.putNumber("Max Acceleration", maxAccel);
-    //SmartDashboard.putNumber("Max Velocity", maxVel);
 
-  }*/
+
   //updates smartdashboard. called in robot's periodic method
   public void liftStatus(){
     SmartDashboard.putNumber("Lift Motor Speed", masterEncoder.getVelocity());
     SmartDashboard.putNumber("Lift Motor Position", masterEncoder.getPosition());
     SmartDashboard.putNumber("Set Position Variable", setPosition);
-    //SmartDashboard.putBoolean("Lift Homed Out", homedOut);
-
   }
   
   public void zeroSetPosition(){
@@ -106,13 +81,10 @@ public class ScissorLiftSubsystem extends Subsystem {
   public void moveToPosition(liftPosition setting){
 
     setPosition = liftNumber(setting);
-    System.out.println("lift setting" + setting);
-
+    
     if(homedOut){
-     //masterPID.setReference(setPosition, ControlType.kSmartMotion);
      masterPID.setReference(setPosition, ControlType.kPosition);
      System.out.println("set position" + setPosition);
-
     }
   }
   //constants fo lift jogging
@@ -163,7 +135,18 @@ public class ScissorLiftSubsystem extends Subsystem {
     }
     return output;
   }
- /* public void LiftMotorTuner(){
+  public void liftPIDStatus(){
+    // display PID coefficients on SmartDashboard
+    SmartDashboard.putNumber("P Gain", kP);
+    SmartDashboard.putNumber("I Gain", kI);
+    SmartDashboard.putNumber("D Gain", kD);
+    SmartDashboard.putNumber("I Zone", kIz);
+    SmartDashboard.putNumber("Feed Forward", kFF);
+    SmartDashboard.putNumber("Max Output", kMaxOutput);
+    SmartDashboard.putNumber("Min Output", kMinOutput);
+  }
+
+  public void LiftMotorTuner(){
    // read PID coefficients from SmartDashboard
    double p = SmartDashboard.getNumber("P Gain", 0);
    double i = SmartDashboard.getNumber("I Gain", 0);
@@ -172,10 +155,6 @@ public class ScissorLiftSubsystem extends Subsystem {
    double ff = SmartDashboard.getNumber("Feed Forward", 0);
    double max = SmartDashboard.getNumber("Max Output", 0);
    double min = SmartDashboard.getNumber("Min Output", 0);
-   //double maxV = SmartDashboard.getNumber("Max Velocity", 0);
-   //double minV = SmartDashboard.getNumber("Min Velocity", 0);
-   //double maxA = SmartDashboard.getNumber("Max Acceleration", 0);
-   //double allE = SmartDashboard.getNumber("Allowed Closed Loop Error", 0);
 
    // if PID coefficients on SmartDashboard have changed, write new values to controller
    if((p != kP)) { masterPID.setP(p); kP = p; }
@@ -187,11 +166,8 @@ public class ScissorLiftSubsystem extends Subsystem {
       masterPID.setOutputRange(min, max); 
      kMinOutput = min; kMaxOutput = max; 
    }
-   //if((maxV != maxVel)) { masterPID.setSmartMotionMaxVelocity(maxV,0); maxVel = maxV; }
-   //if((minV != minVel)) { masterPID.setSmartMotionMinOutputVelocity(minV,0); minVel = minV; }
-   //if((maxA != maxAccel)) { masterPID.setSmartMotionMaxAccel(maxA,0); maxAccel = maxA; }
-  // if((allE != allowedErr)) { masterPID.setSmartMotionAllowedClosedLoopError(allE,0); allowedErr = allE; }
-  }*/
+
+  }
 
 
   @Override
