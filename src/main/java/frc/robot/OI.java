@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import frc.robot.commands.AimCommand;
 import frc.robot.commands.AutoAimCommand;
 import frc.robot.commands.CHOOTCommand;
+import frc.robot.commands.EmptyShooterCommand;
 import frc.robot.commands.IntakeActiveToggle;
 import frc.robot.commands.JogLiftCommand;
 import frc.robot.commands.LiftMoveToPositionCommand;
@@ -66,18 +67,22 @@ public class OI {
   public OI(){
 
     //PILOT CONTROLS
-    A1.whileHeld(new AimCommand());
-    B1.whenPressed(new CHOOTCommand());
-    X1.whenPressed(new ShooterStopCommand());
     Y1.whenPressed(new IntakeActiveToggle());
-    START1.whenPressed(new ShooterSpinCommand());
-    BACK1.whenPressed(new clearBallsPresent());
+    //START1.whenPressed(new ShooterSpinCommand());
+    //BACK1.whenPressed(new clearBallsPresent());
     
     //COPILOT CONTROLS
-    A2.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
-    B2.whenPressed(new LiftStopCommand());
-    X2.whenPressed(new LiftMoveToPositionCommand(liftPosition.wheelSetup));
-    Y2.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
+    //A2.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
+    Y2.whenPressed(new EmptyShooterCommand(.21));
+    START2.whenPressed(new ShooterSpinCommand());
+    BACK2.whenPressed(new clearBallsPresent());
+    A2.whileHeld(new AimCommand());
+    B2.whenPressed(new CHOOTCommand());
+    X2.whenPressed(new ShooterStopCommand());
+
+
+    //X2.whenPressed(new LiftMoveToPositionCommand(liftPosition.wheelSetup));
+    //Y2.whenPressed(new LiftMoveToPositionCommand(liftPosition.maxHeight));
     RBumper2.whileHeld(new JogLiftCommand(1));
     LBumper2.whileHeld(new JogLiftCommand(-1)); 
 

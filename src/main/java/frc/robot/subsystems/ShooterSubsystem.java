@@ -37,7 +37,7 @@ public class ShooterSubsystem extends Subsystem {
   
     //sets speed limits for AIM() method
     private double shooterMaxRPM = 4500;
-    private double shooterMinRPM = 2300;
+    private double shooterMinRPM = 2000;
 
 
   private static double kP = 0.00002; // .5
@@ -108,7 +108,9 @@ public class ShooterSubsystem extends Subsystem {
     //double distanceToTarget = (76) / Math.tan(targetAngle+25);
 
     // math for figuring out numerator: k * math.sqrt(targetArea)
-    double numerator = .5;
+    double numerator = .52;                                                                   //<-------------------------adjust auto shooter speed here
+
+    
     //math for distance to target (and by extension, shooter RPM) goes here. this is my white whale.
     double setting = numerator/Math.sqrt(targetArea);
     

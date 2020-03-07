@@ -13,24 +13,31 @@ import frc.robot.Robot;
 public class EmptyShooterCommand extends Command {
   private int timer = 0;
   private int timerGap = 50;
+  private boolean auto;
+  private double speed;
 
   public EmptyShooterCommand(){
+    auto = true;
     // Use requires() here to declare subsystem dependencies
     requires(Robot.ballMagazine);
     requires(Robot.shooterSubsystem); 
+
   }
 
   public EmptyShooterCommand(double speed) {    
     // Use requires() here to declare subsystem dependencies
+    auto = false;
     requires(Robot.ballMagazine);
     requires(Robot.shooterSubsystem);
-    Robot.shooterSubsystem.setTargets(speed);
-
+    this.speed = speed;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    if(!auto)
+    Robot.shooterSubsystem.setTargets(speed);
+    
     Robot.shooterSubsystem.startShooter();
 
   }
@@ -39,7 +46,7 @@ public class EmptyShooterCommand extends Command {
   @Override
   protected void execute() {
     timer++;
-    if(timer == timerGap || timer == timerGap*2 || timer == timerGap*3){
+    if(timer == timerGap || timer == timerGap*2 || timer == timerGap*3 || timer == timerGap*4){
       Robot.ballMagazine.revolve();
     }
 
@@ -52,7 +59,7 @@ public class EmptyShooterCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if(timer == timerGap*4)
+    if(timer == timerGap*5)
     return true;
     else
     return false;

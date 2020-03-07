@@ -69,9 +69,9 @@ public class ScissorLiftSubsystem extends Subsystem {
 
   //updates smartdashboard. called in robot's periodic method
   public void liftStatus(){
-    SmartDashboard.putNumber("Lift Motor Speed", masterEncoder.getVelocity());
+   // SmartDashboard.putNumber("Lift Motor Speed", masterEncoder.getVelocity());
     SmartDashboard.putNumber("Lift Motor Position", masterEncoder.getPosition());
-    SmartDashboard.putNumber("Set Position Variable", setPosition);
+    //SmartDashboard.putNumber("Set Position Variable", setPosition);
   }
   
   public void zeroSetPosition(){

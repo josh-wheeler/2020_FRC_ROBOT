@@ -34,6 +34,8 @@ public static double intakeJogSpeed = 0.66;
 
 
 public IntakeSubsystem(){
+  intakeRollerMotor.restoreFactoryDefaults();
+  transferConveyorMotor.restoreFactoryDefaults();
   
   intakeRollerMotor.setIdleMode(IdleMode.kBrake);
   transferConveyorMotor.setIdleMode(IdleMode.kBrake);

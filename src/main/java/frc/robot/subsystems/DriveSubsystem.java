@@ -38,6 +38,10 @@ public class DriveSubsystem extends Subsystem {
   double currSpeed = 0.0;
 
   public DriveSubsystem(){
+    leftMaster.restoreFactoryDefaults();
+    rightMaster.restoreFactoryDefaults();
+    leftSlave.restoreFactoryDefaults();
+    rightSlave.restoreFactoryDefaults();
   
     // point slaves to masters
     leftSlave.follow(leftMaster);
