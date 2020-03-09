@@ -108,9 +108,9 @@ public class ShooterSubsystem extends Subsystem {
     //double distanceToTarget = (76) / Math.tan(targetAngle+25);
 
     // math for figuring out numerator: k * math.sqrt(targetArea)
-    double numerator = .52;                                                                   //<-------------------------adjust auto shooter speed here
+    double numerator = .5;                                                                   //<-------------------------adjust auto shooter speed here
 
-    
+
     //math for distance to target (and by extension, shooter RPM) goes here. this is my white whale.
     double setting = numerator/Math.sqrt(targetArea);
     
