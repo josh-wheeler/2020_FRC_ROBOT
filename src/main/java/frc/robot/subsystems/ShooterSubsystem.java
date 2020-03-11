@@ -37,7 +37,7 @@ public class ShooterSubsystem extends Subsystem {
   
     //sets speed limits for AIM() method
     private double shooterMaxRPM = 4500;
-    private double shooterMinRPM = 2000;
+    private double shooterMinRPM = 2200;
 
 
   private static double kP = 0.00002; // .5
@@ -79,7 +79,7 @@ public class ShooterSubsystem extends Subsystem {
     SmartDashboard.putNumber("Bottom Shooter Motor Speed", bottomEncoder.getVelocity());
     SmartDashboard.putBoolean("Shooter upToSpeed", upToSpeed());
     SmartDashboard.putBoolean("ShooterOn", shooterOn);
-    SmartDashboard.putNumber("Target Area", targetArea);
+    //SmartDashboard.putNumber("Target Area", targetArea);
 
     //ShooterMotorTuner();
 
@@ -105,14 +105,16 @@ public class ShooterSubsystem extends Subsystem {
     //limelight angle: 25 target height: 98.25 in (center of inside upper target) Limelight height: 22.25 in 
     //length of field: roughly 578. 
     //dividing by this gives us a percentage for the motors (if we are 578 inches from target, output = 1 full power)
-    //double distanceToTarget = (76) / Math.tan(targetAngle+25);
+    double distanceToTarget = 76.5 / Math.tan(Math.toRadians(targetAngle));
+    SmartDashboard.putNumber("DistanceToTarget", distanceToTarget);
 
     // math for figuring out numerator: k * math.sqrt(targetArea)
-    double numerator = .5;                                                                   //<-------------------------adjust auto shooter speed here
+   //double numerator = .5;                                                                   //<-------------------------adjust auto shooter speed here
 
 
     //math for distance to target (and by extension, shooter RPM) goes here. this is my white whale.
-    double setting = numerator/Math.sqrt(targetArea);
+    //double setting = numerator/Math.sqrt(targetArea);
+    double setting = (distanceToTarget * RobotMap.distanceMultiplier)/5676;
     
     if(setting > shooterMaxRPM/5676)
       setting = shooterMaxRPM/5676; 
@@ -124,7 +126,7 @@ public class ShooterSubsystem extends Subsystem {
 
   //stops motors and sets target speeds to 0.0
   public void stopShooter(){   
-    setTargets(0.0);
+    //setTargets(0.0);
     topShooterMotor.set(0.0);
     bottomShooterMotor.set(0.0);
     shooterOn = false;
@@ -136,7 +138,7 @@ public class ShooterSubsystem extends Subsystem {
     //this converts duty cycle to RPM
       setting = setting * 5676;
       
-      topTargetRPM = setting;
+      topTargetRPM = setting*RobotMap.topShooterPercentage;
       bottomTargetRPM = -setting;
       
      

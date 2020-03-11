@@ -12,7 +12,8 @@ import frc.robot.Robot;
 
 public class AutoDriveCommand extends Command {
 
-  private int timer = 100;
+  private int timer = 200;
+  private int turnTime = 125;
   private double speed = -.35;
 
   public AutoDriveCommand() {
@@ -30,7 +31,10 @@ public class AutoDriveCommand extends Command {
   @Override
   protected void execute() {
     timer--;
+    if(timer > turnTime)
     Robot.driveSubsystem.drive.tankDrive(speed, speed);
+    else
+    Robot.driveSubsystem.drive.tankDrive(speed,-speed);
 
   }
 

@@ -13,30 +13,24 @@ import frc.robot.Robot;
 public class EmptyShooterCommand extends Command {
   private int timer = 0;
   private int timerGap = 50;
-  private boolean auto;
-  private double speed;
 
   public EmptyShooterCommand(){
-    auto = true;
     // Use requires() here to declare subsystem dependencies
     requires(Robot.ballMagazine);
     requires(Robot.shooterSubsystem); 
 
   }
 
-  public EmptyShooterCommand(double speed) {    
+  public EmptyShooterCommand(int timerGap) {    
     // Use requires() here to declare subsystem dependencies
-    auto = false;
     requires(Robot.ballMagazine);
     requires(Robot.shooterSubsystem);
-    this.speed = speed;
+    this.timerGap = timerGap;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-    if(!auto)
-    Robot.shooterSubsystem.setTargets(speed);
     
     Robot.shooterSubsystem.startShooter();
 

@@ -34,9 +34,9 @@ public class LimelightSubsystem extends Subsystem {
   }
 
   public LimelightSubsystem(){
-    //sets camera mode to driver cam and led off for initial startup
-   //setCamMode(camMode.driver);
-   //setLed(ledMode.off);
+    
+   //sets current pipeline. 0 is kingsford settings, 1 is for at home
+   //setPipeline(1);
   }
   //returns current value for limelight variables
   public double tx()  {return llTable.getEntry("tx").getDouble(0);}
@@ -50,13 +50,16 @@ public class LimelightSubsystem extends Subsystem {
   //posts smartdashboard values
   public void LimelightUpdate(){
 
-    //SmartDashboard.putNumber("Y angle", ty());
-    //SmartDashboard.putNumber("X angle", tx());
+    SmartDashboard.putNumber("Y angle", ty());
+    SmartDashboard.putNumber("X angle", tx());
     //SmartDashboard.putNumber("Skew?", ts());
     SmartDashboard.putNumber("Target area", ta());
     //SmartDashboard.putNumber("Target aquired", tv());
     //SmartDashboard.putNumber("Distance to Target", distanceToTarget);
-
+    
+  }
+  public void setPipeline(int pipeline){
+    llTable.getEntry("pipeline").setNumber(pipeline);
   }
 
   //sets the camera mode to Vision processor if true, driver cam if false
@@ -107,7 +110,7 @@ public class LimelightSubsystem extends Subsystem {
       return 0.0;
     }
     else{
-      return 0.4;
+      return RobotMap.fastAimSpeed;
       //returning .4 as a default if there is no target allows us to slowly scan right and look for a target
     }
 

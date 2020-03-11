@@ -64,18 +64,21 @@ public class RobotMap {
   public static double turnMultiplier = .7;
 
   //constants for aiming
-  public static double fastAimSpeed = 0.6;
-  public static double slowAimSpeed = 0.35;
+  public static double fastAimSpeed = 0.4;
+  public static double slowAimSpeed = 0.3;
+
+
+  public static double distanceMultiplier = 19.1;
  
   //deadzone for when the Aim method stops turning the robot.
-  public static double aimDeadZone = 1.0;
+  public static double aimDeadZone = 1.3;
 
 
   //default shooter speed. .4 seems good at 10 feet
   public static double ShooterDefaultSpeed = .50;
  
   //percentage that top motor will slow to for backspin. (set to 1 to make them spin equally)
-  public static double topShooterPercentage = .75;
+  public static double topShooterPercentage = 1.0;
  
   //for shooter upToSpeed boolean
   public static double upToSpeedRange = 400;

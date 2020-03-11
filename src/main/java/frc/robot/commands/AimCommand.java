@@ -50,6 +50,7 @@ public class AimCommand extends Command {
     //Robot.limelight.setLed(ledMode.off);
     Robot.driveSubsystem.turnToTarget(0.0);
     Robot.shooterSubsystem.calcSpin();
+    Robot.shooterSubsystem.startShooter();
     //Robot.shooterSubsystem.startShooter();
 
     
