@@ -71,7 +71,7 @@ public class RobotMap {
   public static double distanceMultiplier = 19.1;
  
   //deadzone for when the Aim method stops turning the robot.
-  public static double aimDeadZone = 1.3;
+  public static double aimDeadZone = 1.4;
 
 
   //default shooter speed. .4 seems good at 10 feet
