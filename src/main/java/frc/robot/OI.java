@@ -72,13 +72,12 @@ public class OI {
     //BACK1.whenPressed(new clearBallsPresent());
     
     //COPILOT CONTROLS
-    //A2.whenPressed(new LiftMoveToPositionCommand(liftPosition.home));
-    Y2.whenPressed(new EmptyShooterCommand(20));
-    START1.whenPressed(new ShooterSpinCommand(.65));
-    BACK1.whenPressed(new clearBallsPresent());
-    A1.whileHeld(new AimCommand());
-    B1.whenPressed(new CHOOTCommand());
-    X1.whenPressed(new ShooterStopCommand());
+    //Y2.whenPressed(new EmptyShooterCommand(20));
+    START2.whenPressed(new ShooterSpinCommand(.5));
+    BACK2.whenPressed(new clearBallsPresent());
+    A2.whileHeld(new AimCommand());
+    B2.whenPressed(new CHOOTCommand());
+    X2.whenPressed(new ShooterStopCommand());
 
 
     //X2.whenPressed(new LiftMoveToPositionCommand(liftPosition.wheelSetup));
